@@ -1,0 +1,6 @@
+@Household.Budget_HostAddress = http://localhost:5215
+
+GET {{Household.Budget_HostAddress}}/v1/categories/
+Accept: application/json
+
+###
