@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 
+using Household.Budget;
 using Household.Budget.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,5 +25,6 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.UserHeader();
 
 app.Run();

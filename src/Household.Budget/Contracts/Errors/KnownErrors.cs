@@ -2,5 +2,5 @@ namespace Household.Budget.Contracts.Errors;
 
 public class KnownErrors
 {
-    public static Error SOME_ERROR = new Error("SOME_ERROR", "Some error message");        
+    public static Error USER_ID_IS_REQUIRED = new Error("USER_ID_IS_REQUIRED", "The x-user-id header is required");        
 }
