@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-using Household.Budget;
+using Household.Budget.Api.Controllers.Middlewares;
 using Household.Budget.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

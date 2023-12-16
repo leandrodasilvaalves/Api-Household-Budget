@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Http.Responses;
 
-namespace Household.Budget;
+namespace Household.Budget.Api.Controllers.Middlewares;
 
 public class UserHeaderMiddleware
 {
