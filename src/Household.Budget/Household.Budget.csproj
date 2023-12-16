@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="Api/Config/" />
     <Folder Include="Api/Controllers/" />
-    <Folder Include="Contracts/Errors/" />
   </ItemGroup>
 
 </Project>

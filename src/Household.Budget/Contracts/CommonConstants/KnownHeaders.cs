@@ -2,5 +2,5 @@
 
 public class KnownHeaders
 {
-    public const string UserHeader = "x-user-id";
+    public const string USER_HEADER = "x-user-id";
 }

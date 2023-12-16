@@ -36,7 +36,7 @@ public class CategoriesController : CustomControllerBase
     public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request)
     {
         var result = await _mediator.Send(request, HttpContext.RequestAborted);
-        return Ok(result);
+        return result.IsSuccess ? Created(default(Uri), result) : BadRequest(result);
     }
 
     [HttpPut("{id:guid}")]

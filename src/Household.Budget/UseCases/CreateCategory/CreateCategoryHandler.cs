@@ -1,5 +1,4 @@
 using Household.Budget.Contracts.Data;
-using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
 using MediatR;
@@ -17,13 +16,18 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, Crea
 
     public async Task<CreateCategoryResponse> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
+        if(request.IsValid == false)
+        {
+            return new CreateCategoryResponse(request.Notifications);
+        }
+
         var category = new Category
         {
             Id = $"{Guid.NewGuid()}",
             Name = request.Name,
+            Type = request.Type,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Type = ModelType.SYSTEM,
         };
         
         await _repository.CreateAsync(category, cancellationToken);

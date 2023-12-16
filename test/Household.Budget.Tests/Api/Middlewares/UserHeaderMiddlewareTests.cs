@@ -19,7 +19,7 @@ namespace Household.Budget.Tests.Api.Middlewares
             // Arrange
             var middleware = new UserHeaderMiddleware(next: context => Task.CompletedTask);
             var context = new DefaultHttpContext();
-            context.Request.Headers[KnownHeaders.UserHeader] = "some-value";
+            context.Request.Headers[KnownHeaders.USER_HEADER] = "some-value";
 
             // Act
             await middleware.Invoke(context);

@@ -17,7 +17,7 @@ public class UserHeaderMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        if (!context.Request.Headers.ContainsKey(KnownHeaders.UserHeader))
+        if (!context.Request.Headers.ContainsKey(KnownHeaders.USER_HEADER))
         {
             context.Response.StatusCode = 400;
             context.Response.ContentType = "application/json; charset=utf-8";

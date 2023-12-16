@@ -3,8 +3,11 @@ using System.Text.Json.Serialization;
 using Household.Budget.Api.Controllers.Middlewares;
 using Household.Budget.Infra.Extensions;
 
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
