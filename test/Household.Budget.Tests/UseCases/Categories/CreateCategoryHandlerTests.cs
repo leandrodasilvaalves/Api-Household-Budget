@@ -1,11 +1,11 @@
-﻿using Household.Budget.UseCases.CreateCategory;
-using Household.Budget.Contracts.Data;
+﻿using Household.Budget.Contracts.Data;
 using NSubstitute;
 using Household.Budget.Contracts.Models;
 using Household.Budget.Contracts.Errors;
 using FluentAssertions;
+using Household.Budget.UseCases.Categories.CreateCategories;
 
-namespace Household.Budget.UnitTests.UseCases.CreateCategory
+namespace Household.Budget.UnitTests.UseCases.CreateCategories
 {
     public class CreateCategoryHandlerTests
     {

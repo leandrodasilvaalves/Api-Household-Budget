@@ -28,4 +28,8 @@
     <ProjectReference Include="..\..\src\Household.Budget\Household.Budget.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases/Categories/" />
+  </ItemGroup>
+
 </Project>

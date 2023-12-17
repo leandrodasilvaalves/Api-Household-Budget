@@ -2,7 +2,7 @@ using Household.Budget.Contracts.Data;
 
 using MediatR;
 
-namespace Household.Budget.UseCases.CreateCategory;
+namespace Household.Budget.UseCases.Categories.CreateCategories;
 
 public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, CreateCategoryResponse>
 {

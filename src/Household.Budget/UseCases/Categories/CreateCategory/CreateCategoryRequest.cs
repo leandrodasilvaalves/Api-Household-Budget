@@ -5,7 +5,7 @@ using Household.Budget.Contracts.Models;
 
 using MediatR;
 
-namespace Household.Budget.UseCases.CreateCategory;
+namespace Household.Budget.UseCases.Categories.CreateCategories;
 
 public class CreateCategoryRequest : Notifiable<Notification>, IRequest<CreateCategoryResponse>
 {

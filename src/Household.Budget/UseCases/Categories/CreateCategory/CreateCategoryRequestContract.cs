@@ -2,7 +2,7 @@ using Flunt.Validations;
 
 using Household.Budget.Contracts.Errors;
 
-namespace Household.Budget.UseCases.CreateCategory;
+namespace Household.Budget.UseCases.Categories.CreateCategories;
 
 public class CreateCategoryRequestContract : Contract<CreateCategoryRequest>
 {

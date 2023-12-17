@@ -3,7 +3,7 @@ using Flunt.Notifications;
 using Household.Budget.Contracts.Http.Responses;
 using Household.Budget.Contracts.Models;
 
-namespace Household.Budget.UseCases.CreateCategory;
+namespace Household.Budget.UseCases.Categories.CreateCategories;
 
 public class CreateCategoryResponse : Response<Category>
 {

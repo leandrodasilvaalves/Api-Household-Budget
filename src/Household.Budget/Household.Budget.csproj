@@ -12,6 +12,7 @@
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="RavenDB.Client" Version="6.0.1" />
+    <PackageReference Include="RavenDB.Identity" Version="8.0.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 

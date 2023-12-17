@@ -3,7 +3,7 @@ using Household.Budget.Contracts.Models;
 
 using MediatR;
 
-namespace Household.Budget;
+namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
 public class UpdateCategoryRequest : IRequest<UpdateCategoryResponse>
 {

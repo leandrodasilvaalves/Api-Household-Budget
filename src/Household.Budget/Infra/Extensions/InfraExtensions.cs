@@ -1,6 +1,10 @@
 using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Models.Identity;
 using Household.Budget.Infra.Data.Context;
 using Household.Budget.Infra.Data.Repositories;
+
+using Raven.DependencyInjection;
+using Raven.Identity;
 
 namespace Household.Budget.Infra.Extensions
 {
@@ -9,6 +13,7 @@ namespace Household.Budget.Infra.Extensions
         public static void AddInfra(this IServiceCollection services, IConfiguration config)
         {
             services.AddRavenDb(config);
+            services.AddRavenIdentity(config);
         }
 
         private static void AddRavenDb(this IServiceCollection services, IConfiguration config)
@@ -17,6 +22,15 @@ namespace Household.Budget.Infra.Extensions
             services.AddSingleton<IRavenDbContext, RavenDbContext>();
             services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+        }
+
+        private static void AddRavenIdentity(this IServiceCollection services, IConfiguration config)
+        {
+            services
+                .AddRavenDbDocStore()
+                .AddRavenDbAsyncSession()
+                .AddIdentity<AppIdentityModel, IdentityRole>()
+                .AddRavenDbIdentityStores<AppIdentityModel, IdentityRole>();
         }
     }
 }

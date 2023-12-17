@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace Household.Budget;
+namespace Household.Budget.UseCases.Categories.ListCategories;
 
 public class ListCategoriesHandler : IRequestHandler<ListCategoriesRequest, ListCategoriesResponse>
 {

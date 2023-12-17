@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace Household.Budget;
+namespace Household.Budget.UseCases.Categories.GetCategoryById;
 
 public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdRequest, GetCategoryByIdResponse>
 {

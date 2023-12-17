@@ -2,7 +2,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Household.Budget;
+namespace Household.Budget.UseCases.Categories.GetCategoryById;
 
 public class GetCategoryByIdRequest : IRequest<GetCategoryByIdResponse>
 {

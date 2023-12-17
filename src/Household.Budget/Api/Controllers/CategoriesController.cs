@@ -1,5 +1,8 @@
 using Household.Budget.Contracts.Http.Controllers;
-using Household.Budget.UseCases.CreateCategory;
+using Household.Budget.UseCases.Categories.CreateCategories;
+using Household.Budget.UseCases.Categories.GetCategoryById;
+using Household.Budget.UseCases.Categories.ListCategories;
+using Household.Budget.UseCases.Categories.UpdateCategory;
 
 using MediatR;
 
@@ -9,14 +12,9 @@ namespace Household.Budget.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/categories")]
-public class CategoriesController : CustomControllerBase
+public class CategoriesController(IMediator mediator) : CustomControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public CategoriesController(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()

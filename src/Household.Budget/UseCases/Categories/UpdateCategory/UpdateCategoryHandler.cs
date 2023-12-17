@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace Household.Budget;
+namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
 public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryRequest, UpdateCategoryResponse>
 {
