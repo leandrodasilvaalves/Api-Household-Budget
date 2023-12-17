@@ -29,7 +29,7 @@ public class UserHeaderMiddleware
 
     private static string ResponseError()
     {
-        var response = new Response<object>(KnownErrors.USER_ID_IS_REQUIRED);
+        var response = new Response<object>(IdentityKnownErrors.USER_ID_IS_REQUIRED);
         var jsonOptions = new JsonSerializerOptions
         {
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,

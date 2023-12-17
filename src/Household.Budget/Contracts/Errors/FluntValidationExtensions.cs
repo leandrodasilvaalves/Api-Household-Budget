@@ -16,14 +16,14 @@ public static class FluntValidationExtensions
         return contract.IsNotNullOrEmpty(val, notification.Key, notification.Message);
     }
 
-    public static Contract<T> IsGreaterThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
+    public static Contract<T> IsGreaterOrEqualsThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
     {
-        return contract.IsGreaterThan(val, comparer, notification.Key, notification.Message);
+        return contract.IsGreaterOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }
 
-    public static Contract<T> IsLowerThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
+    public static Contract<T> IsLowerOrEqualsThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
     {
-        return contract.IsLowerThan(val, comparer, notification.Key, notification.Message);
+        return contract.IsLowerOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }
 
     public static Contract<T> IsValidModelTypeForUser<T>(this Contract<T> contract, ModelType modelType, string userClaim)
@@ -31,10 +31,20 @@ public static class FluntValidationExtensions
         if (modelType == ModelType.SYSTEM)
         {
             contract.AreEquals(UserClaims.ADMIN_WRITER, userClaim,
-                KnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER.Key,
-                KnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER.Message);
+                CategoryKnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER.Key,
+                CategoryKnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER.Message);
         }
         return contract;
+    }
+
+    public static Contract<T> Matches<T>(this Contract<T> contract, string val, string pattern, Notification notification)
+    {
+        return contract.Matches(val, pattern, notification.Key, notification.Message);
+    }
+
+    public static Contract<T> IsEmail<T>(this Contract<T> contract, string val, Notification notification)
+    {
+        return contract.IsEmail(val, notification.Key, notification.Message);
     }
 }
 

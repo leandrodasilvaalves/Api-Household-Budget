@@ -31,6 +31,16 @@ namespace Household.Budget.Infra.Extensions
                 .AddRavenDbAsyncSession()
                 .AddIdentity<AppIdentityModel, IdentityRole>()
                 .AddRavenDbIdentityStores<AppIdentityModel, IdentityRole>();
+
+            services.Configure<Microsoft.AspNetCore.Identity.IdentityOptions>(opt =>
+            {
+                opt.Password.RequireDigit = true;
+                opt.Password.RequireLowercase = true;
+                opt.Password.RequireNonAlphanumeric = true;
+                opt.Password.RequireUppercase = true;
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequiredUniqueChars = 1;
+            });
         }
     }
 }

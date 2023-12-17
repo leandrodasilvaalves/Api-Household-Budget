@@ -20,12 +20,17 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, Register
 
     public async Task<RegisterUserResponse> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
     {
+        if(request.IsValid is false)
+        {
+            return new RegisterUserResponse(request.Notifications);
+        }
+        
         var appUser = request.ToModel();
         var result = await _userManager.CreateAsync(appUser, request.Password);
 
         return result.Succeeded ?
             new RegisterUserResponse(request.ToViewModel()) :
             new RegisterUserResponse(result.Errors.Select(e =>
-                new Notification($"AUTH_{e.Code.ToUpperSnakeCase()}", e.Description)));
+                new Notification($"IDENTITY_{e.Code.ToUpperSnakeCase()}", e.Description)));
     }
 }

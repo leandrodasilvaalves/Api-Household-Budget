@@ -1,10 +1,12 @@
-﻿using Household.Budget.Contracts.Models.Identity;
+﻿using Flunt.Notifications;
+
+using Household.Budget.Contracts.Models.Identity;
 
 using MediatR;
 
 namespace Household.Budget.UseCases.Identity.RegisterUser;
 
-public class RegisterUserRequest : IRequest<RegisterUserResponse>
+public class RegisterUserRequest : Notifiable<Notification>, IRequest<RegisterUserResponse>
 {
     public RegisterUserRequest(string fullName,
                                string userName,
@@ -15,6 +17,7 @@ public class RegisterUserRequest : IRequest<RegisterUserResponse>
         UserName = userName;
         Email = email;
         Password = password;
+        AddNotifications(new RegisterUserRequestContract(this));
     }
 
     public string FullName { get; }

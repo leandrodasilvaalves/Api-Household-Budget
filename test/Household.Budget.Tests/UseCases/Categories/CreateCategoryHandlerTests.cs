@@ -45,7 +45,7 @@ namespace Household.Budget.UnitTests.UseCases.CreateCategories
 
             // Assert
             response.Should().BeOfType<CreateCategoryResponse>();
-            response.Errors.Should().Contain(error => error.Key == KnownErrors.CATEGORY_NAME_IS_REQUIRED.Key);
+            response.Errors.Should().Contain(error => error.Key == CategoryKnownErrors.CATEGORY_NAME_IS_REQUIRED.Key);
         }
     }
 }

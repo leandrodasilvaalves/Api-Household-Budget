@@ -15,7 +15,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, Crea
 
     public async Task<CreateCategoryResponse> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
-        if(request.IsValid == false)
+        if(request.IsValid is false)
         {
             return new CreateCategoryResponse(request.Notifications);
         }
