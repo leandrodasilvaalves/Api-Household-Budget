@@ -1,4 +1,6 @@
-﻿using Flunt.Notifications;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Flunt.Notifications;
 using Flunt.Validations;
 
 using Household.Budget.Contracts.Enums;
@@ -6,6 +8,7 @@ using Household.Budget.Contracts.Errors;
 
 namespace Household.Budget;
 
+[ExcludeFromCodeCoverage]
 public static class FluntValidationExtensions
 {
     public static Contract<T> IsNotNullOrEmpty<T>(this Contract<T> contract, string val, Notification notification)

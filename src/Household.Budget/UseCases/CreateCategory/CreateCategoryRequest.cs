@@ -1,6 +1,7 @@
 using Flunt.Notifications;
 
 using Household.Budget.Contracts.Enums;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -17,4 +18,14 @@ public class CreateCategoryRequest : Notifiable<Notification>, IRequest<CreateCa
 
     public string Name { get; }
     public ModelType Type { get; }
+
+    public Category ToModel() => new()
+    {
+        Id = $"{Guid.NewGuid()}",
+        Name = Name,
+        Type = Type,
+        Status = ModelStatus.ACTIVE,
+        UserId = Guid.NewGuid(),//TODO: obter ID do usuario logado
+        UpdatedAt = DateTime.UtcNow,
+    };
 }

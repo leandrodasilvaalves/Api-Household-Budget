@@ -1,7 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Flunt.Notifications;
 
 namespace Household.Budget.Contracts.Errors;
 
+[ExcludeFromCodeCoverage]
 public class KnownErrors
 {
     public static Notification USER_ID_IS_REQUIRED = new("USER_ID_IS_REQUIRED", "The x-user-id header is required");        

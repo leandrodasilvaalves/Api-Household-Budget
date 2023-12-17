@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FluentAssertions;
 
 using Household.Budget.Api.Controllers.Middlewares;
 
 using Microsoft.AspNetCore.Http;
-
-using Xunit;
 
 namespace Household.Budget.Tests.Api.Middlewares
 {
@@ -25,7 +20,7 @@ namespace Household.Budget.Tests.Api.Middlewares
             await middleware.Invoke(context);
 
             // Assert
-            Assert.Equal(200, context.Response.StatusCode);
+            context.Response.StatusCode.Should().Be(200);
         }
 
         [Fact]
@@ -39,8 +34,8 @@ namespace Household.Budget.Tests.Api.Middlewares
             await middleware.Invoke(context);
 
             // Assert
-            Assert.Equal(400, context.Response.StatusCode);
-            Assert.Equal("application/json; charset=utf-8", context.Response.ContentType);
+            context.Response.StatusCode.Should().Be(400);
+            context.Response.ContentType.Should().Be("application/json; charset=utf-8");
         }
     }
 }

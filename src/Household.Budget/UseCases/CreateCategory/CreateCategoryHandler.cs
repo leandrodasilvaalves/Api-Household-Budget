@@ -1,5 +1,4 @@
 using Household.Budget.Contracts.Data;
-using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -21,15 +20,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, Crea
             return new CreateCategoryResponse(request.Notifications);
         }
 
-        var category = new Category
-        {
-            Id = $"{Guid.NewGuid()}",
-            Name = request.Name,
-            Type = request.Type,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-        };
-        
+        var category = request.ToModel();
         await _repository.CreateAsync(category, cancellationToken);
         return new CreateCategoryResponse(category);
     }
