@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Api/Config/" />
     <Folder Include="Api/Controllers/" />
   </ItemGroup>
 

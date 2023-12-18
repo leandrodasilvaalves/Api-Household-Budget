@@ -13,7 +13,7 @@ namespace Household.Budget.Infra.Extensions
         public static void AddInfra(this IServiceCollection services, IConfiguration config)
         {
             services.AddRavenDb(config);
-            services.AddRavenIdentity(config);
+            services.AddIdentityProvider(config);
         }
 
         private static void AddRavenDb(this IServiceCollection services, IConfiguration config)
@@ -24,23 +24,13 @@ namespace Household.Budget.Infra.Extensions
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
         }
 
-        private static void AddRavenIdentity(this IServiceCollection services, IConfiguration config)
+        public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
         {
             services
                 .AddRavenDbDocStore()
                 .AddRavenDbAsyncSession()
                 .AddIdentity<AppIdentityModel, IdentityRole>()
                 .AddRavenDbIdentityStores<AppIdentityModel, IdentityRole>();
-
-            services.Configure<Microsoft.AspNetCore.Identity.IdentityOptions>(opt =>
-            {
-                opt.Password.RequireDigit = true;
-                opt.Password.RequireLowercase = true;
-                opt.Password.RequireNonAlphanumeric = true;
-                opt.Password.RequireUppercase = true;
-                opt.Password.RequiredLength = 6;
-                opt.Password.RequiredUniqueChars = 1;
-            });
         }
     }
 }

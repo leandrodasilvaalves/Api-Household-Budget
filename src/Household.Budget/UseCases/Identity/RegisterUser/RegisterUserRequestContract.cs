@@ -1,4 +1,3 @@
-using Flunt.Localization;
 using Flunt.Validations;
 
 namespace Household.Budget.UseCases.Identity.RegisterUser;
@@ -10,13 +9,6 @@ public class RegisterUserRequestContract : Contract<RegisterUserRequest>
         ContractFullName(request.FullName);
         ContractUserName(request.UserName);
         ContractEmail(request.Email);
-        ContractPassword(request.Password);
-    }
-
-    private void ContractPassword(string password)
-    {
-        Requires()
-            .IsNotNullOrEmpty(password, IdentityKnownErrors.PASSWORD_IS_REQUIRED);
     }
 
     private void ContractEmail(string email)
@@ -30,8 +22,7 @@ public class RegisterUserRequestContract : Contract<RegisterUserRequest>
     {
         Requires()
             .IsGreaterOrEqualsThan(userName, 3, IdentityKnownErrors.USER_NAME_MIN_LENGTH)
-            .IsLowerOrEqualsThan(userName, 25, IdentityKnownErrors.USER_NAME_MIN_LENGTH)
-            .Matches(userName, FluntRegexPatterns.OnlyLettersAndNumbersPatter, IdentityKnownErrors.USER_NAME_MUST_HAVE_VALID_FORMAT);
+            .IsLowerOrEqualsThan(userName, 25, IdentityKnownErrors.USER_NAME_MIN_LENGTH);            
     }
 
     private void ContractFullName(string fullName)
@@ -39,6 +30,7 @@ public class RegisterUserRequestContract : Contract<RegisterUserRequest>
         Requires()
             .IsNotNullOrEmpty(fullName, IdentityKnownErrors.FULL_NAME_ID_IS_REQUIRED)
             .IsGreaterOrEqualsThan(fullName, 3, IdentityKnownErrors.FULL_NAME_MIN_LENGTH)
-            .IsLowerOrEqualsThan(fullName, 80, IdentityKnownErrors.FULL_NAME_MAX_LENGTH);
+            .IsLowerOrEqualsThan(fullName, 80, IdentityKnownErrors.FULL_NAME_MAX_LENGTH)
+            .Matches(fullName, @"[A-Za-z\s]", IdentityKnownErrors.USER_NAME_MUST_HAVE_VALID_FORMAT);
     }
 }

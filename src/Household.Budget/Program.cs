@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 
+using Household.Budget;
 using Household.Budget.Api.Controllers.Middlewares;
 using Household.Budget.Infra.Extensions;
 
@@ -20,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddInfra(builder.Configuration);
+builder.Services.ConfigureIdentity();
 
 var app = builder.Build();
 
