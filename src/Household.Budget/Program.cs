@@ -21,7 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddInfra(builder.Configuration);
-builder.Services.ConfigureIdentity();
+builder.Services.ConfigureIdentity(builder.Configuration);
+builder.Services.ConfigureJwt(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,6 +32,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UserHeader();
+// app.UserHeader();
 
 app.Run();

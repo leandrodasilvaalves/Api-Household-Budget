@@ -1,23 +1,37 @@
-﻿namespace Household.Budget;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Household.Budget;
 
 public static class IdentityConfig
 {
-    public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
+    public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration config)
     {
-        services.Configure<Microsoft.AspNetCore.Identity.IdentityOptions>(opt =>
-        {
-            opt.Password.RequireDigit = true;
-            opt.Password.RequireLowercase = true;
-            opt.Password.RequireNonAlphanumeric = true;
-            opt.Password.RequireUppercase = true;
-            opt.Password.RequiredLength = 6;
-            opt.Password.RequiredUniqueChars = 1;
-            opt.User.RequireUniqueEmail = true;
-            opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            opt.Lockout.MaxFailedAccessAttempts = 5;
-            opt.Lockout.AllowedForNewUsers = true;
-        });
+        var options = config.GetSection("Identity").Get<IdentityOptions>();
+        services.Configure<IdentityOptions>(opt => opt = options ?? DefaultOptions());
         return services;
     }
+
+    private static IdentityOptions DefaultOptions() => new()
+    {
+        Password = new()
+        {
+            RequireDigit = true,
+            RequireLowercase = true,
+            RequireNonAlphanumeric = true,
+            RequireUppercase = true,
+            RequiredLength = 6,
+            RequiredUniqueChars = 1,
+        },
+        User = new()
+        {
+            RequireUniqueEmail = true,
+            AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+",
+        },
+        Lockout = new()
+        {
+            DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5),
+            MaxFailedAccessAttempts = 5,
+            AllowedForNewUsers = true,
+        }
+    };
 }
