@@ -1,5 +1,5 @@
 using Household.Budget.Contracts.Data;
-using Household.Budget.Contracts.Models.Identity;
+using Household.Budget.Contracts.Models;
 using Household.Budget.Infra.Data.Context;
 using Household.Budget.Infra.Data.Repositories;
 
@@ -29,8 +29,8 @@ namespace Household.Budget.Infra.Extensions
             services
                 .AddRavenDbDocStore()
                 .AddRavenDbAsyncSession()
-                .AddIdentity<AppIdentityModel, IdentityRole>()
-                .AddRavenDbIdentityStores<AppIdentityModel, IdentityRole>();
+                .AddIdentity<AppIdentityUser, IdentityRole>()
+                .AddRavenDbIdentityStores<AppIdentityUser, IdentityRole>();
         }
     }
 }

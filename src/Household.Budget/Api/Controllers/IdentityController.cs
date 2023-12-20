@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Household.Budget.Api.Controllers;
 
 [ApiController]
-[Route("api/v1")]
+[Route("api/v1/identity")]
 public class IdentityController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-    [HttpPost("auth")]
+    [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest request)
     {
         var result = await _mediator.Send(request);

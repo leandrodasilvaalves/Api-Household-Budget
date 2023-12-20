@@ -1,6 +1,6 @@
 ﻿using Flunt.Notifications;
 
-using Household.Budget.Contracts.Models.Identity;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -10,10 +10,10 @@ namespace Household.Budget.UseCases.Identity.LoginUser;
 
 public class LoginUserRequestHandler : IRequestHandler<LoginUserRequest, LoginUserResponse>
 {
-    private readonly SignInManager<AppIdentityModel> _signInManager;
+    private readonly SignInManager<AppIdentityUser> _signInManager;
     private readonly IMediator _mediator;
 
-    public LoginUserRequestHandler(SignInManager<AppIdentityModel> signInManager, IMediator mediator)
+    public LoginUserRequestHandler(SignInManager<AppIdentityUser> signInManager, IMediator mediator)
     {
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

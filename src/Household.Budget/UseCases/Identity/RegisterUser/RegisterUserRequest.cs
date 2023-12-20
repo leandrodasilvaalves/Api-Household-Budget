@@ -1,6 +1,6 @@
 ﻿using Flunt.Notifications;
 
-using Household.Budget.Contracts.Models.Identity;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -25,7 +25,7 @@ public class RegisterUserRequest : Notifiable<Notification>, IRequest<RegisterUs
     public string Email { get; }
     public string Password { get; }
 
-    public AppIdentityModel ToModel() => new()
+    public AppIdentityUser ToModel() => new()
     {
         FullName = FullName,
         UserName = UserName,

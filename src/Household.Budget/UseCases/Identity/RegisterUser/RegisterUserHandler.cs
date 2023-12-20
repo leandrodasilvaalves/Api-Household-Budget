@@ -1,7 +1,7 @@
 using Flunt.Notifications;
 
 using Household.Budget.Contracts.Extensions;
-using Household.Budget.Contracts.Models.Identity;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -11,9 +11,9 @@ namespace Household.Budget.UseCases.Identity.RegisterUser;
 
 public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, RegisterUserResponse>
 {
-    private readonly UserManager<AppIdentityModel> _userManager;
+    private readonly UserManager<AppIdentityUser> _userManager;
 
-    public RegisterUserHandler(UserManager<AppIdentityModel> userManager)
+    public RegisterUserHandler(UserManager<AppIdentityUser> userManager)
     {
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     }

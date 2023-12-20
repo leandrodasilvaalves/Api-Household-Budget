@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-using Household.Budget.Contracts.Models.Identity;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -13,11 +13,11 @@ namespace Household.Budget;
 
 public class GenerateAccessTokenRequestHandler : IRequestHandler<GenerateAccessTokenRequest, GenerateAccessTokenResponse>
 {
-  private readonly UserManager<AppIdentityModel> _userManager;
+  private readonly UserManager<AppIdentityUser> _userManager;
   private readonly JwtSettings _settings;
 
 
-  public GenerateAccessTokenRequestHandler(UserManager<AppIdentityModel> userManager, IOptionsMonitor<JwtSettings> settings)
+  public GenerateAccessTokenRequestHandler(UserManager<AppIdentityUser> userManager, IOptionsMonitor<JwtSettings> settings)
   {
     if (settings is null) throw new ArgumentNullException(nameof(settings));
 
@@ -35,14 +35,14 @@ public class GenerateAccessTokenRequestHandler : IRequestHandler<GenerateAccessT
       Subject = await GetUserClaimsAsync(request),
       Expires = DateTime.UtcNow.AddMinutes(_settings.ExpiresInMinutes),
       SigningCredentials = new SigningCredentials(
-          new SymmetricSecurityKey(_settings.EncodeSecret), SecurityAlgorithms.HmacSha256Signature),
+          new SymmetricSecurityKey(_settings.EncodeSecret), SecurityAlgorithms.HmacSha512Signature),
     });
 
     var encodedToken = tokenHandler.WriteToken(token);
     return new GenerateAccessTokenResponse
     {
       AccessToken = encodedToken,
-      ExpiresIn = default, //TODO: resolver isso aqui
+      ExpiresIn = ((DateTimeOffset)token.ValidTo).ToUnixTimeSeconds(),
     };
   }
 
@@ -53,11 +53,10 @@ public class GenerateAccessTokenRequestHandler : IRequestHandler<GenerateAccessT
     if (user is not null)
     {
       var claims = await _userManager.GetClaimsAsync(user) ?? new List<Claim>();
-      claims.Add(new Claim(type: JwtRegisteredClaimNames.Sub, value: $"{user.Id}"));
-      claims.Add(new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email));
+      claims.Add(new Claim(type: "user_id", value: $"{user.Id}"));
+      claims.Add(new Claim(type: "user_name", value: user.UserName));
+      claims.Add(new Claim(type: "email", value: user.Email));
       claims.Add(new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()));
-      // claims.Add(new Claim(type: JwtRegisteredClaimNames.Nbf, value: DateTime.UtcNow().ToString()));
-      // claims.Add(new Claim(type: JwtRegisteredClaimNames.Iat, value: DateTime.UtcNow.ToUnixEpocate().ToString(), ClaimValueTypes.Integer64));
       claimsIdentity.AddClaims(claims);
     }
     return claimsIdentity;
