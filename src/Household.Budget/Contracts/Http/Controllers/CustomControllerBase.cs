@@ -1,10 +1,12 @@
 using Household.Budget.Contracts.Http.StatusCodeResults;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Household.Budget.Contracts.Http.Controllers
 {
+    [Authorize]
     public abstract class CustomControllerBase : ControllerBase
     {
         [NonAction]
