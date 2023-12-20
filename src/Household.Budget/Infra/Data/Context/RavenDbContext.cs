@@ -9,7 +9,7 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Household.Budget.Infra.Data.Context;
 
-public class RavenDbContext : IRavenDbContext
+public class RavenDbContext : IRavenDbContext, IDatabaseCreator
 {
     private readonly RavenConfig _config;
 
@@ -25,12 +25,11 @@ public class RavenDbContext : IRavenDbContext
         };
 
         Store.Initialize();
-        EnsureDatabaseIsCreated();
     }
 
     public IDocumentStore Store { get; }
 
-    private void EnsureDatabaseIsCreated()
+    public void EnsureDatabaseIsCreated()
     {
         try
         {

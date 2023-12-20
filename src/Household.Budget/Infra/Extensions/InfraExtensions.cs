@@ -20,8 +20,10 @@ namespace Household.Budget.Infra.Extensions
         {
             services.Configure<RavenConfig>(config.GetSection(RavenConfig.SectionName));
             services.AddSingleton<IRavenDbContext, RavenDbContext>();
+            services.AddSingleton<IDatabaseCreator, RavenDbContext>();
             services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            services.AddHostedService<DatabaseCreatorService>();
         }
 
         public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)

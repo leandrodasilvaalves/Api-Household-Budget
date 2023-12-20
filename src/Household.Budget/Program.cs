@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 
 using Household.Budget;
-using Household.Budget.Api.Controllers.Middlewares;
 using Household.Budget.Infra.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -33,5 +32,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 // app.UserHeader();
+
 
 app.Run();
