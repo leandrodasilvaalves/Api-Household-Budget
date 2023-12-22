@@ -27,6 +27,7 @@ public class CreateCategoryRequest : Request, IRequest<CreateCategoryResponse>
         Type = Type,
         Status = ModelStatus.ACTIVE,
         UserId = Guid.TryParse(UserId, out var userId) ? userId : default,
+        CreatedAt = DateTime.UtcNow,
         UpdatedAt = DateTime.UtcNow,
     };
 }

@@ -1,4 +1,5 @@
-﻿using Household.Budget.Contracts.Models;
+﻿using Household.Budget.Contracts.Constants;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -22,12 +23,18 @@ public class RegisterUserRequest : Request, IRequest<RegisterUserResponse>
     public string Email { get; }
     public string Password { get; }
 
-    public AppIdentityUser ToModel() => new()
+    public AppIdentityUser ToModel()
     {
-        FullName = FullName,
-        UserName = UserName,
-        Email = Email,
-    };
+        AppIdentityUser model =  new()
+        {
+            FullName = FullName,
+            UserName = UserName,
+            Email = Email,
+        };
+        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.USER_READER));
+        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.USER_WRITER));
+        return model;
+    }
 
     public RegisterUserResponseViewModel ToViewModel() => new(this);
 
