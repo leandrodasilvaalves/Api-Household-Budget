@@ -58,7 +58,7 @@ public class GenerateAccessTokenRequestHandler : IRequestHandler<GenerateAccessT
       claims.Add(new Claim(type: IdentityClaims.USER_ID, value: $"{user.Id}"));
       claims.Add(new Claim(type: IdentityClaims.USER_NAME, value: user.UserName));
       claims.Add(new Claim(type: IdentityClaims.USER_EMAIL, value: user.Email));
-      claims.Add(new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString())); //TODO: melhorar aqui
+      claims.Add(new Claim(type: JwtRegisteredClaimNames.Jti, value: $"{Guid.NewGuid()}"));
       claimsIdentity.AddClaims(claims);
     }
     return claimsIdentity;

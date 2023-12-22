@@ -21,11 +21,6 @@ public class LoginUserRequestHandler : IRequestHandler<LoginUserRequest, LoginUs
 
     public async Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken)
     {
-        if (request.IsValid is false)
-        {
-            return new LoginUserResponse(request.Notifications);
-        }
-
         var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, true, false);
         return result.Succeeded ? await GenerateJwtToken(request) : ReturnLoginUserResponseError(result);
     }

@@ -20,11 +20,6 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, Register
 
     public async Task<RegisterUserResponse> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
     {
-        if(request.IsValid is false)
-        {
-            return new RegisterUserResponse(request.Notifications);
-        }
-        
         var appUser = request.ToModel();
         var result = await _userManager.CreateAsync(appUser, request.Password);
 
