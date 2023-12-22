@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
+using Household.Budget.Api.Config;
+using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Models;
 
 using MediatR;
@@ -53,10 +55,10 @@ public class GenerateAccessTokenRequestHandler : IRequestHandler<GenerateAccessT
     if (user is not null)
     {
       var claims = await _userManager.GetClaimsAsync(user) ?? new List<Claim>();
-      claims.Add(new Claim(type: "user_id", value: $"{user.Id}"));
-      claims.Add(new Claim(type: "user_name", value: user.UserName));
-      claims.Add(new Claim(type: "email", value: user.Email));
-      claims.Add(new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()));
+      claims.Add(new Claim(type: IdentityClaims.USER_ID, value: $"{user.Id}"));
+      claims.Add(new Claim(type: IdentityClaims.USER_NAME, value: user.UserName));
+      claims.Add(new Claim(type: IdentityClaims.USER_EMAIL, value: user.Email));
+      claims.Add(new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString())); //TODO: melhorar aqui
       claimsIdentity.AddClaims(claims);
     }
     return claimsIdentity;

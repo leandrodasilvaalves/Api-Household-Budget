@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Household.Budget;
+namespace Household.Budget.Api.Config;
 
 public static class IdentityConfig
 {

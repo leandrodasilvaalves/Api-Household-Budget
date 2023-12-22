@@ -3,8 +3,8 @@
 using Flunt.Notifications;
 using Flunt.Validations;
 
+using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Enums;
-using Household.Budget.Contracts.Errors;
 
 namespace Household.Budget;
 
@@ -26,13 +26,14 @@ public static class FluntValidationExtensions
         return contract.IsLowerOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }
 
-    public static Contract<T> IsValidModelTypeForUser<T>(this Contract<T> contract, ModelType modelType, string userClaim)
+    public static Contract<T> IsValidModelTypeForUser<T>(this Contract<T> contract, ModelType modelType, IEnumerable<string> userClaims, Notification notification)
     {
         if (modelType == ModelType.SYSTEM)
         {
-            contract.AreEquals(UserClaims.ADMIN_WRITER, userClaim,
-                CategoryKnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER.Key,
-                CategoryKnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER.Message);
+            if (userClaims?.Contains(IdentityClaims.ADMIN_WRITER) is false)
+            {
+                contract.AddNotification(notification);
+            }
         }
         return contract;
     }

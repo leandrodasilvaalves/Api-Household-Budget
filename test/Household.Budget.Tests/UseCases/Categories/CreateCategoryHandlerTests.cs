@@ -41,6 +41,7 @@ namespace Household.Budget.UnitTests.UseCases.CreateCategories
             var cancellationToken = new CancellationToken();
 
             // Act
+            invalidRequest.Validate();
             var response = await _handler.Handle(invalidRequest, cancellationToken);
 
             // Assert

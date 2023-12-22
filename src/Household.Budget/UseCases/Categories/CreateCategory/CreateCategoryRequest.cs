@@ -1,5 +1,3 @@
-using Flunt.Notifications;
-
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
@@ -7,17 +5,20 @@ using MediatR;
 
 namespace Household.Budget.UseCases.Categories.CreateCategories;
 
-public class CreateCategoryRequest : Notifiable<Notification>, IRequest<CreateCategoryResponse>
+public class CreateCategoryRequest : Request, IRequest<CreateCategoryResponse>
 {
     public CreateCategoryRequest(string name, ModelType type = default)
     {
         Name = name;
         Type = type;
-        AddNotifications(new CreateCategoryRequestContract(this));
     }
 
     public string Name { get; }
+
     public ModelType Type { get; }
+
+    public override void Validate() =>
+        AddNotifications(new CreateCategoryRequestContract(this));
 
     public Category ToModel() => new()
     {
@@ -25,7 +26,7 @@ public class CreateCategoryRequest : Notifiable<Notification>, IRequest<CreateCa
         Name = Name,
         Type = Type,
         Status = ModelStatus.ACTIVE,
-        UserId = Guid.NewGuid(),//TODO: obter ID do usuario logado
+        UserId = Guid.TryParse(UserId, out var userId) ? userId : default,
         UpdatedAt = DateTime.UtcNow,
     };
 }

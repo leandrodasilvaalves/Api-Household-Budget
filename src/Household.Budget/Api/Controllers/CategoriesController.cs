@@ -1,3 +1,4 @@
+using Household.Budget.Api.Config;
 using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.Categories.CreateCategories;
 using Household.Budget.UseCases.Categories.GetCategoryById;
@@ -12,9 +13,14 @@ namespace Household.Budget.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/categories")]
-public class CategoriesController(IMediator mediator) : CustomControllerBase
+public class CategoriesController : CustomControllerBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator;
+
+    public CategoriesController(IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()
@@ -38,7 +44,7 @@ public class CategoriesController(IMediator mediator) : CustomControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateAsync([FromRoute]Guid id, [FromBody] UpdateCategoryRequest request)
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateCategoryRequest request)
     {
         var result = await _mediator.Send(request.WithId(id), HttpContext.RequestAborted);
         return Ok(result);

@@ -19,7 +19,6 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, Crea
         {
             return new CreateCategoryResponse(request.Notifications);
         }
-
         var category = request.ToModel();
         await _repository.CreateAsync(category, cancellationToken);
         return new CreateCategoryResponse(category);

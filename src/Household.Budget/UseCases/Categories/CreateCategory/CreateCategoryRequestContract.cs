@@ -12,6 +12,6 @@ public class CreateCategoryRequestContract : Contract<CreateCategoryRequest>
             .IsNotNullOrEmpty(request.Name, CategoryKnownErrors.CATEGORY_NAME_IS_REQUIRED)
             .IsGreaterOrEqualsThan(request.Name, 3, CategoryKnownErrors.CATEGORY_NAME_MIN_LENGTH)
             .IsLowerOrEqualsThan(request.Name, 25, CategoryKnownErrors.CATEGORY_NAME_MAX_LENGTH)
-            .IsValidModelTypeForUser(request.Type, "admin"); //TODO: obter claims do usuario logado
+            .IsValidModelTypeForUser(request.Type, request.UserClaims ?? [], CategoryKnownErrors.CATEGORY_TYPE_FORBIDDEN_FOR_USER);
     }
 }

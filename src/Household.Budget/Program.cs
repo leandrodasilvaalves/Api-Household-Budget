@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 
-using Household.Budget;
+using Household.Budget.Api.Config;
+using Household.Budget.Api.Controllers.Filters;
 using Household.Budget.Infra.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
-builder.Services.AddControllers()
+builder.Services.AddControllers(options => options.Filters.Add<AddUserClaimsFilter>())
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+      options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+      options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -31,7 +32,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-// app.UserHeader();
-
 
 app.Run();

@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Api/" />
     <Folder Include="UseCases/Categories/" />
   </ItemGroup>
 
