@@ -25,4 +25,11 @@ public class IdentityController(IMediator mediator) : ControllerBase
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
+
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePasswordAysnc([FromBody]ChangeUserPasswordRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
+    }
 }

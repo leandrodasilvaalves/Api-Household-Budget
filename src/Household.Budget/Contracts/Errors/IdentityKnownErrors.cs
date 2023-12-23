@@ -24,4 +24,9 @@ public partial class IdentityKnownErrors
     public static Notification USER_IS_NOT_ALLOWED = new("USER_IS_NOT_ALLOWED", "Your user is not allowed to sign in");
     public static Notification TWO_FACTOR_IS_REQUIRED = new("TWO_FACTOR_IS_REQUIRED", "2FA is required");
     public static Notification BAD_USER_NAME_OR_PASSWORD = new("BAD_USER_NAME_OR_PASSWORD", "Bad user name or password");
+    
+    public static Notification CURRENT_PASSWORD_IS_REQUIRED = new("CURRENT_PASSWORD_IS_REQUIRED", "Current password is required");
+    public static Notification NEW_PASSWORD_IS_REQUIRED = new("NEW_PASSWORD_IS_REQUIRED", "New password is required");
+    public static Notification CONFIRM_NEW_PASSWORD_IS_REQUIRED = new("CONFIRM_NEW_PASSWORD_IS_REQUIRED", "Confirm new password is required");
+    public static Notification NEW_PASSOWRD_MUST_BE_EQUAL_TO_CONFIRM_NEW_PASSWORD = new("NEW_PASSOWRD_MUST_BE_EQUAL_TO_CONFIRM_NEW_PASSWORD", "New password must be equal to confirm new password");
 }

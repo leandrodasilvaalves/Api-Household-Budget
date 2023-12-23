@@ -28,11 +28,11 @@ public class DatabaseCreatorService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await CreateDatabaseAsync(stoppingToken);
+        await CreateDatabaseAsync();
         await CreateRootUser(stoppingToken);
     }
 
-    private Task CreateDatabaseAsync(CancellationToken stoppingToken)
+    private Task CreateDatabaseAsync()
     {
         _database.EnsureDatabaseIsCreated();
         _logger.LogInformation("Database creator was executed successfully.");
@@ -43,7 +43,9 @@ public class DatabaseCreatorService : BackgroundService
     {
         using (var scope = _serviceScopeFactory.CreateScope())
         {
-            var mediator = scope.ServiceProvider.GetService<IMediator>();
+            var mediator = scope.ServiceProvider.GetService<IMediator>()
+                ?? throw new ArgumentNullException(nameof(IMediator));
+
             if (_configuration.GetValue<bool>("Identity:RootUser:Enabled") is true)
             {
                 var request = _configuration.GetSection("Identity:RootUser:Request").Get<CreateAdminUserRequest>();

@@ -46,9 +46,3 @@ public class CreateAdminUserRequest : Request, IRequest<CreateAdminUserResponse>
     public static CreateAdminUserRequest DefaultAdminUser() 
         => new("root user", "root", "root@localhost", "passWord@123");
 }
-
-public class CreateAdminUserException : Exception
-{
-    public CreateAdminUserException(CreateAdminUserResponse reponse)
-        : base(System.Text.Json.JsonSerializer.Serialize(reponse.Errors)) { }
-}

@@ -11,6 +11,11 @@ namespace Household.Budget;
 [ExcludeFromCodeCoverage]
 public static class FluntValidationExtensions
 {
+    public static Contract<T> AreEquals<T>(this Contract<T> contract, string value, string comparer, Notification notification)
+    {
+        return contract.AreEquals(value, comparer, notification.Key, notification.Message);
+    }
+
     public static Contract<T> IsNotNullOrEmpty<T>(this Contract<T> contract, string val, Notification notification)
     {
         return contract.IsNotNullOrEmpty(val, notification.Key, notification.Message);
