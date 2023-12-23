@@ -1,4 +1,5 @@
 using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
 using Raven.Client.Documents;
@@ -21,16 +22,23 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         await session.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<List<T>> GetAllAsync(CancellationToken cancellationToken = default)
+    public Task<List<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
     {
-        var session =_context.Store.OpenAsyncSession();
-        return session.Query<T>().ToListAsync(cancellationToken);
+        int skip = pageSize * (pageNumber - 1);
+        int take = pageSize;
+
+        var session = _context.Store.OpenAsyncSession();
+        return session.Query<T>().Skip(skip).Take(take)
+            .Where(x => x.Owner == ModelOwner.SYSTEM || x.UserId == userId && x.Status == ModelStatus.ACTIVE)
+            .ToListAsync(cancellationToken);
     }
 
-    public Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public Task<T> GetByIdAsync(string id, string userId, CancellationToken cancellationToken = default)
     {
         var session = _context.Store.OpenAsyncSession();
-        return session.Query<T>().Where(x => x.Id == $"{id}").FirstOrDefaultAsync(cancellationToken);
+        return session.Query<T>()
+            .Where(x => x.Id == id && (x.Owner == ModelOwner.SYSTEM || x.UserId == userId) && x.Status == ModelStatus.ACTIVE)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task UpdateAsync(T model, CancellationToken cancellationToken = default)

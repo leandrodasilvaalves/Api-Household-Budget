@@ -23,9 +23,9 @@ public class CategoriesController : CustomControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync([FromBody] ListCategoriesRequest request)
     {
-        var categories = await _mediator.Send(new ListCategoriesRequest(), HttpContext.RequestAborted);
+        var categories = await _mediator.Send(request, HttpContext.RequestAborted);
         return Ok(categories);
     }
 

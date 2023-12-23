@@ -15,7 +15,7 @@ public class ListCategoriesHandler : IRequestHandler<ListCategoriesRequest, List
 
     public async Task<ListCategoriesResponse> Handle(ListCategoriesRequest request, CancellationToken cancellationToken)
     {
-        var categories = await _categoryRepository.GetAllAsync(cancellationToken);
+        var categories = await _categoryRepository.GetAllAsync(request.PageSize, request.PageNumber, request.UserId, cancellationToken);
         return new ListCategoriesResponse(categories);
     }
 }

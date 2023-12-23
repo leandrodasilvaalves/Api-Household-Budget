@@ -6,7 +6,7 @@ using Flunt.Validations;
 using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Enums;
 
-namespace Household.Budget;
+namespace Household.Budget.Contracts.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class FluntValidationExtensions
@@ -31,9 +31,9 @@ public static class FluntValidationExtensions
         return contract.IsLowerOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }
 
-    public static Contract<T> IsValidModelTypeForUser<T>(this Contract<T> contract, ModelType modelType, IEnumerable<string> userClaims, Notification notification)
+    public static Contract<T> IsValidModelTypeForUser<T>(this Contract<T> contract, ModelOwner ownerType, IEnumerable<string> userClaims, Notification notification)
     {
-        if (modelType == ModelType.SYSTEM)
+        if (ownerType == ModelOwner.SYSTEM)
         {
             if (userClaims?.Contains(IdentityClaims.ADMIN_WRITER) is false)
             {

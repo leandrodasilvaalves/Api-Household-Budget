@@ -1,4 +1,5 @@
 using Flunt.Validations;
+using Household.Budget.Contracts.Extensions;
 
 namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 

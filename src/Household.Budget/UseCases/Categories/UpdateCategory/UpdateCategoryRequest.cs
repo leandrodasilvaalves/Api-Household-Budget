@@ -10,16 +10,16 @@ public class UpdateCategoryRequest : IRequest<UpdateCategoryResponse>
     public Guid Id { get; private set; }
     public string? Name { get; set; }
     public ModelStatus Status { get; set; }
-    public ModelType Type { get; set; }
+    public ModelOwner Owner { get; set; }
     public Guid UserId { get; set; }
 
     public Category ToModel() => new()
     {
         Id = $"{Id}",
         Name = Name,
-        Type = Type,
+        Owner = Owner,
         Status = Status,
-        UserId = UserId,
+        UserId = $"{UserId}",
         UpdatedAt = DateTime.UtcNow,
     };
 

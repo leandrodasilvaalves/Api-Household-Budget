@@ -1,6 +1,6 @@
 namespace Household.Budget.Contracts.Enums
 {
-    public enum ModelType
+    public enum ModelOwner
     {
         USER,
         SYSTEM,
