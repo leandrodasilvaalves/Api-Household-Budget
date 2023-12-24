@@ -29,7 +29,9 @@ public class Repository<T> : IRepository<T> where T : BaseModel
 
         var session = _context.Store.OpenAsyncSession();
         return session.Query<T>().Skip(skip).Take(take)
-            .Where(x => x.Owner == ModelOwner.SYSTEM || x.UserId == userId && x.Status == ModelStatus.ACTIVE)
+            .Where(x => x.Status == ModelStatus.ACTIVE &&
+                  (x.Owner == ModelOwner.SYSTEM || x.UserId == userId))
+            .OrderByDescending(x => x.UpdatedAt)
             .ToListAsync(cancellationToken);
     }
 
@@ -37,7 +39,8 @@ public class Repository<T> : IRepository<T> where T : BaseModel
     {
         var session = _context.Store.OpenAsyncSession();
         return session.Query<T>()
-            .Where(x => x.Id == id && (x.Owner == ModelOwner.SYSTEM || x.UserId == userId) && x.Status == ModelStatus.ACTIVE)
+            .Where(x => x.Id == id && x.Status == ModelStatus.ACTIVE &&
+                  (x.Owner == ModelOwner.SYSTEM || x.UserId == userId))
             .FirstOrDefaultAsync(cancellationToken);
     }
 

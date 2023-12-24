@@ -26,7 +26,17 @@ public static class FluntValidationExtensions
         return contract.IsGreaterOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }
 
+    public static Contract<T> IsGreaterThan<T>(this Contract<T> contract, int val, int comparer, Notification notification)
+    {
+        return contract.IsGreaterThan(val, comparer, notification.Key, notification.Message);
+    }
+
     public static Contract<T> IsLowerOrEqualsThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
+    {
+        return contract.IsLowerOrEqualsThan(val, comparer, notification.Key, notification.Message);
+    }
+
+    public static Contract<T> IsLowerOrEqualsThan<T>(this Contract<T> contract, int val, int comparer, Notification notification)
     {
         return contract.IsLowerOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }

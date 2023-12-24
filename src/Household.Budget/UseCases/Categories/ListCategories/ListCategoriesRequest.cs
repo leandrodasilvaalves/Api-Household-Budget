@@ -4,17 +4,9 @@ namespace Household.Budget.UseCases.Categories.ListCategories;
 
 public class ListCategoriesRequest : Request, IRequest<ListCategoriesResponse>
 {
-    public ListCategoriesRequest(int pageSize = 20, int pageNumber = 1)
-    {
-        PageSize = pageSize;
-        PageNumber = pageNumber;
-    }
-
-    public int PageSize { get; set; }
-    public int PageNumber { get; set; }
+    public int PageSize { get; set; } = 20;
+    public int PageNumber { get; set; } = 1;
 
     public override void Validate()
-    {
-        throw new NotImplementedException();
-    }
+        => AddNotifications(new ListCategoriesRequestContract(this));
 }

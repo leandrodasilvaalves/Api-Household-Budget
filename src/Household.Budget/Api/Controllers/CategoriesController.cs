@@ -1,4 +1,5 @@
-using Household.Budget.Api.Config;
+using System.Net;
+
 using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.Categories.CreateCategories;
 using Household.Budget.UseCases.Categories.GetCategoryById;
@@ -23,30 +24,30 @@ public class CategoriesController : CustomControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromBody] ListCategoriesRequest request)
+    public async Task<IActionResult> GetAllAsync([FromQuery] ListCategoriesRequest request)
     {
-        var categories = await _mediator.Send(request, HttpContext.RequestAborted);
-        return Ok(categories);
+        var response = await _mediator.Send(request, HttpContext.RequestAborted);
+        return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NoContent);
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetCategoryByIdRequest request)
     {
-        var category = await _mediator.Send(request, HttpContext.RequestAborted);
-        return Ok(category);
+        var response = await _mediator.Send(request, HttpContext.RequestAborted);
+        return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NotFound);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request)
     {
         var result = await _mediator.Send(request, HttpContext.RequestAborted);
-        return result.IsSuccess ? Created(default(Uri), result) : BadRequest(result);
+        return result.ToActionResult(HttpStatusCode.Created);
     }
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateCategoryRequest request)
     {
         var result = await _mediator.Send(request.WithId(id), HttpContext.RequestAborted);
-        return Ok(result);
+        return result.ToActionResult(HttpStatusCode.OK);
     }
 }

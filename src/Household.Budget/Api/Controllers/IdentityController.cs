@@ -1,3 +1,5 @@
+using System.Net;
+
 using Household.Budget.UseCases.Identity.RegisterUser;
 
 using MediatR;
@@ -16,20 +18,20 @@ public class IdentityController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest request)
     {
         var result = await _mediator.Send(request);
-        return result.IsSuccess ? Created(default(Uri), result) : BadRequest(result);
+        return result.ToActionResult(HttpStatusCode.Created);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest request)
     {
         var result = await _mediator.Send(request);
-        return result.IsSuccess ? Ok(result) : BadRequest(result);
+        return result.ToActionResult(HttpStatusCode.OK);
     }
 
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePasswordAysnc([FromBody]ChangeUserPasswordRequest request)
     {
         var result = await _mediator.Send(request);
-        return result.IsSuccess ? Ok(result) : BadRequest(result);
+        return result.ToActionResult(HttpStatusCode.OK);
     }
 }

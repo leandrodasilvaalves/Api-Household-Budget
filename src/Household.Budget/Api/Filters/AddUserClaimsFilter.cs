@@ -1,7 +1,6 @@
 ﻿using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Http.Responses;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Household.Budget.Api.Controllers.Filters;
@@ -10,7 +9,7 @@ public class AddUserClaimsFilter : IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {
-        if (context.ActionArguments.TryGetValue("request", out var request) && request is Request requestObject)
+        if (context.ActionArguments.TryGetValue("request", out var outValue) && outValue is Request request)
         {
             var userId = context.HttpContext.User.Claims
               .FirstOrDefault(c => c.Type == IdentityClaims.USER_ID)?.Value ?? "";
@@ -19,12 +18,12 @@ public class AddUserClaimsFilter : IActionFilter
                 .Where(c => c.Type != IdentityClaims.USER_ID)
                 .Select(c => c.Value) ?? [];
 
-            requestObject.UserId = userId;
-            requestObject.UserClaims = userClaims;
-            requestObject.Validate();
-            if(requestObject.IsValid is false)
+            request.UserId = userId;
+            request.UserClaims = userClaims;
+            request.Validate();
+            if(request.IsValid is false)
             {
-                context.Result = new BadRequestObjectResult(new Response<Request>(requestObject.Notifications));
+                context.Result = new Response<Request>(request.Notifications).ToActionResult();
                 return;
             }
         }
