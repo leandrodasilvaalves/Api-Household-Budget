@@ -3,6 +3,7 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
 using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 
 namespace Household.Budget.Infra.Data.Repositories;
 
@@ -22,17 +23,21 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         await session.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<List<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
+    public async Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
     {
         int skip = pageSize * (pageNumber - 1);
         int take = pageSize;
 
         var session = _context.Store.OpenAsyncSession();
-        return session.Query<T>().Skip(skip).Take(take)
+        var items = await session.Query<T>()
+            .Statistics(out QueryStatistics statistics)
+            .Skip(skip).Take(take)
             .Where(x => x.Status == ModelStatus.ACTIVE &&
                   (x.Owner == ModelOwner.SYSTEM || x.UserId == userId))
             .OrderByDescending(x => x.UpdatedAt)
             .ToListAsync(cancellationToken);
+
+        return new PagedListResult<T>(items, statistics.TotalResults, pageSize, pageNumber);
     }
 
     public Task<T> GetByIdAsync(string id, string userId, CancellationToken cancellationToken = default)
