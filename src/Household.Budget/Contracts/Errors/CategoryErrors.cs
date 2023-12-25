@@ -5,7 +5,7 @@ using Flunt.Notifications;
 namespace Household.Budget.Contracts.Errors;
 
 [ExcludeFromCodeCoverage]
-public class CategoryKnownErrors
+public class CategoryErrors
 {
     public static Notification CATEGORY_NAME_IS_REQUIRED = new("CATEGORY_NAME_IS_REQUIRED", "Category name is required");
     public static Notification CATEGORY_NAME_MIN_LENGTH = new("CATEGORY_NAME_MIN_LENGTH", "Category name must have at least 3 characters");

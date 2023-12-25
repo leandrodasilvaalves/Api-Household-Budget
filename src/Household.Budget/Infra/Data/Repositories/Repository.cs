@@ -7,7 +7,7 @@ using Raven.Client.Documents.Session;
 
 namespace Household.Budget.Infra.Data.Repositories;
 
-public class Repository<T> : IRepository<T> where T : BaseModel
+public class Repository<T> : IRepository<T> where T : Model
 {
     private readonly IRavenDbContext _context;
 

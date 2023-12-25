@@ -8,7 +8,7 @@ public class LoginUserRequestContract : Contract<LoginUserRequest>
     public LoginUserRequestContract(LoginUserRequest request)
     {   
         Requires()
-            .IsNotNullOrEmpty(request.UserName, IdentityKnownErrors.USER_NAME_IS_REQUIRED)
-            .IsNotNullOrEmpty(request.Password, IdentityKnownErrors.PASSWORD_IS_REQUIRED);
+            .IsNotNullOrEmpty(request.UserName, IdentityErrors.USER_NAME_IS_REQUIRED)
+            .IsNotNullOrEmpty(request.Password, IdentityErrors.PASSWORD_IS_REQUIRED);
     }
 }

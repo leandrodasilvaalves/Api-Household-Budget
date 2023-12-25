@@ -43,9 +43,9 @@ public class UpdateCategoryRequestContract : Contract<UpdateCategoryRequest>
     public UpdateCategoryRequestContract(UpdateCategoryRequest request)
     {
         Requires()
-            .IsNotNullOrEmpty(request.Name, CategoryKnownErrors.CATEGORY_NAME_IS_REQUIRED)
-            .IsGreaterOrEqualsThan(request.Name, 3, CategoryKnownErrors.CATEGORY_NAME_MIN_LENGTH)
-            .IsLowerOrEqualsThan(request.Name, 25, CategoryKnownErrors.CATEGORY_NAME_MAX_LENGTH)
-            .IsValidModelTypeForUser(request.Owner, request.UserClaims ?? [], CategoryKnownErrors.CATEGORY_OWNER_FORBIDDEN_FOR_USER);
+            .IsNotNullOrEmpty(request.Name, CategoryErrors.CATEGORY_NAME_IS_REQUIRED)
+            .IsGreaterOrEqualsThan(request.Name, 3, CategoryErrors.CATEGORY_NAME_MIN_LENGTH)
+            .IsLowerOrEqualsThan(request.Name, 25, CategoryErrors.CATEGORY_NAME_MAX_LENGTH)
+            .IsValidModelTypeForUser(request.Owner, request.UserClaims ?? [], CategoryErrors.CATEGORY_OWNER_FORBIDDEN_FOR_USER);
     }
 }

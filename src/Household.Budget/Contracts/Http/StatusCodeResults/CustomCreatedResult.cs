@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Household.Budget.Contracts.Http.StatusCodeResults
 {
-    [DefaultStatusCode(201)]
-    public class CustomCreatedResult : ObjectResult
+    public class CustomCreatedResult : CreatedResult
     {
-        public CustomCreatedResult(object? value) : base(value)
-        {}
+        public CustomCreatedResult(object? value)
+            : base(default(string), value) { }
     }
 
 }

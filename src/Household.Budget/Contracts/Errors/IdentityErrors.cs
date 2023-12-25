@@ -5,7 +5,7 @@ using Flunt.Notifications;
 namespace Household.Budget;
 
 [ExcludeFromCodeCoverage]
-public partial class IdentityKnownErrors
+public partial class IdentityErrors
 {
     public static Notification USER_ID_IS_REQUIRED = new("USER_ID_IS_REQUIRED", "The x-user-id header is required");
     public static Notification FULL_NAME_ID_IS_REQUIRED = new("FULL_NAME_ID_IS_REQUIRED", "Full name is required");

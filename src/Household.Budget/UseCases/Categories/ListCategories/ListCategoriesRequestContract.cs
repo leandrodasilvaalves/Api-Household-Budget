@@ -10,6 +10,6 @@ public class ListCategoriesRequestContract : Contract<ListCategoriesRequest>
     public ListCategoriesRequestContract(ListCategoriesRequest request)
     {
         Requires()
-            .IsLowerOrEqualsThan(50, request.PageSize, CategoryKnownErrors.CATEGORY_PAGE_SIZE_MAX);
+            .IsLowerOrEqualsThan(50, request.PageSize, CategoryErrors.CATEGORY_PAGE_SIZE_MAX);
     }
 }

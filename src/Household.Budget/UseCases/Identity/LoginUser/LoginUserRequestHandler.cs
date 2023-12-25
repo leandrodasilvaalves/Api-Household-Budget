@@ -36,19 +36,19 @@ public class LoginUserRequestHandler : IRequestHandler<LoginUserRequest, LoginUs
         Notification notification;
         if (result.IsLockedOut)
         {
-            notification = IdentityKnownErrors.USER_IS_LOCKED_OUT;
+            notification = IdentityErrors.USER_IS_LOCKED_OUT;
         }
         else if (result.IsNotAllowed)
         {
-            notification = IdentityKnownErrors.USER_IS_NOT_ALLOWED;
+            notification = IdentityErrors.USER_IS_NOT_ALLOWED;
         }
         else if (result.RequiresTwoFactor)
         {
-            notification = IdentityKnownErrors.TWO_FACTOR_IS_REQUIRED;
+            notification = IdentityErrors.TWO_FACTOR_IS_REQUIRED;
         }
         else
         {
-            notification = IdentityKnownErrors.BAD_USER_NAME_OR_PASSWORD;
+            notification = IdentityErrors.BAD_USER_NAME_OR_PASSWORD;
         }
         return new LoginUserResponse(notification);
     }

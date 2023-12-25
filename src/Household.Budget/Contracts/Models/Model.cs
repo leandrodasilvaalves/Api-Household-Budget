@@ -2,7 +2,7 @@ using Household.Budget.Contracts.Enums;
 
 namespace Household.Budget.Contracts.Models;
 
-public class BaseModel
+public abstract class Model
 {
     public string? Id { get; set; }
     public string? UserId { get; set; }

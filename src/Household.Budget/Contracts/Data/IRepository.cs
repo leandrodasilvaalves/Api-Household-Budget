@@ -2,7 +2,7 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.Contracts.Data;
 
-public interface IRepository<T> where T : BaseModel
+public interface IRepository<T> where T : Model
 {
     Task CreateAsync(T model, CancellationToken cancellationToken = default);
     Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default);

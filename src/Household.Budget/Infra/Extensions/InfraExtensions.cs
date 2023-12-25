@@ -23,6 +23,7 @@ namespace Household.Budget.Infra.Extensions
             services.AddSingleton<IDatabaseCreator, RavenDbContext>();
             services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
             services.AddHostedService<DatabaseCreatorService>();
         }
 
