@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 using Household.Budget.Api.Config;
 using Household.Budget.Api.Controllers.Filters;
+using Household.Budget.Api.Middlewares;
 using Household.Budget.Infra.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ builder.Services.ConfigureJwt(builder.Configuration);
 
 var app = builder.Build();
 
+app.UserExceptionHandling();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();

@@ -7,10 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{642E8A35-133
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Household.Budget", "src\Household.Budget\Household.Budget.csproj", "{AE5E65DF-6213-4248-9BDE-EAD7DEF863CB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{316173A1-D6FE-4C01-B159-0754F621371B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Household.Budget.Tests", "test\Household.Budget.Tests\Household.Budget.Tests.csproj", "{215139EC-C0B0-4929-95CC-C7A3C0EB098E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,17 +17,12 @@ Global
 		{AE5E65DF-6213-4248-9BDE-EAD7DEF863CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE5E65DF-6213-4248-9BDE-EAD7DEF863CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE5E65DF-6213-4248-9BDE-EAD7DEF863CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{215139EC-C0B0-4929-95CC-C7A3C0EB098E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{215139EC-C0B0-4929-95CC-C7A3C0EB098E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{215139EC-C0B0-4929-95CC-C7A3C0EB098E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{215139EC-C0B0-4929-95CC-C7A3C0EB098E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AE5E65DF-6213-4248-9BDE-EAD7DEF863CB} = {642E8A35-133D-483F-BECB-C3D9A636C6C3}
-		{215139EC-C0B0-4929-95CC-C7A3C0EB098E} = {316173A1-D6FE-4C01-B159-0754F621371B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F090BF7-270A-4783-88F8-5001AF26FB23}

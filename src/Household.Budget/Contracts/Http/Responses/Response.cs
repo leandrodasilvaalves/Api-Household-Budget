@@ -28,5 +28,5 @@ public class Response<T> where T : class
         _ => new InternalServerErrorResult(UnexpectedError())
     };
 
-    private static Response<T> UnexpectedError() => new(CommonErrors.UNEXPECTED_ERROR);
+    public static Response<T> UnexpectedError() => new(CommonErrors.UNEXPECTED_ERROR);
 }

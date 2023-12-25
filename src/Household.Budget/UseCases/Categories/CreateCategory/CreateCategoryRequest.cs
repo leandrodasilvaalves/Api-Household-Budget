@@ -7,15 +7,20 @@ namespace Household.Budget.UseCases.Categories.CreateCategories;
 
 public class CreateCategoryRequest : Request, IRequest<CreateCategoryResponse>
 {
-    public CreateCategoryRequest(string name, ModelOwner owner = default)
+    public CreateCategoryRequest(string name,
+                                 ModelOwner owner = default,
+                                 CategoryType type = default)
     {
         Name = name;
         Owner = owner;
+        Type = type;
     }
 
     public string Name { get; }
 
     public ModelOwner Owner { get; }
+
+    public CategoryType Type { get; }
 
     public override void Validate() =>
         AddNotifications(new CreateCategoryRequestContract(this));
@@ -26,6 +31,7 @@ public class CreateCategoryRequest : Request, IRequest<CreateCategoryResponse>
         Name = Name,
         Owner = Owner,
         Status = ModelStatus.ACTIVE,
+        Type = Type,
         UserId = UserId,
         CreatedAt = DateTime.UtcNow,
         UpdatedAt = DateTime.UtcNow,
