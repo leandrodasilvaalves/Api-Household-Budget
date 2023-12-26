@@ -3,11 +3,11 @@ using Flunt.Validations;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Extensions;
 
-namespace Household.Budget.UseCases.Categories.ListCategories;
+namespace Household.Budget.UseCases.Subcategories.ListSubcategories;
 
-public class ListCategoriesRequestContract : Contract<ListCategoriesRequest>
+public class ListSubcategoriesRequestContract : Contract<ListSubcategoriesRequest>
 {
-    public ListCategoriesRequestContract(ListCategoriesRequest request)
+    public ListSubcategoriesRequestContract(ListSubcategoriesRequest request)
     {
         Requires()
             .IsLowerOrEqualsThan(50, request.PageSize, CommonErrors.MAX_PAGE_SIZE);

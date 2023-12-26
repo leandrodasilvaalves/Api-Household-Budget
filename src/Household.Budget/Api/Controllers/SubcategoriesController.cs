@@ -2,6 +2,7 @@ using System.Net;
 
 using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
+using Household.Budget.UseCases.Subcategories.ListSubcategories;
 
 using MediatR;
 
@@ -18,6 +19,13 @@ namespace Household.Budget.Api.Controllers
         public SubcategoriesController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
+        [HttpGet("{id:guid}/subcategories")]
+        public async Task<IActionResult> GetAllAsync([FromQuery] ListSubcategoriesRequest request)
+        {
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
+            return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NoContent);
         }
 
         [HttpPost("{id:guid}/subcategories")]
