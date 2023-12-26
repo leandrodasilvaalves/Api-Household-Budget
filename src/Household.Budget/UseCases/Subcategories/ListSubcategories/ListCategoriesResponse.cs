@@ -1,5 +1,6 @@
 ﻿using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Http.Responses;
+using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.UseCases.Subcategories.ListSubcategories;
 

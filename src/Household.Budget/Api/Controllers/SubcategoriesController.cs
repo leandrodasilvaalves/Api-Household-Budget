@@ -2,6 +2,7 @@ using System.Net;
 
 using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.Categories.GetSubcategoryById;
+using Household.Budget.UseCases.Categories.UpdateSubcategory;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
 using Household.Budget.UseCases.Subcategories.ListSubcategories;
 
@@ -41,6 +42,13 @@ namespace Household.Budget.Api.Controllers
         {
             var result = await _mediator.Send(request, HttpContext.RequestAborted);
             return result.ToActionResult(HttpStatusCode.Created);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateSubcategoryRequest request)
+        {
+            var result = await _mediator.Send(request.WithId(id), HttpContext.RequestAborted);
+            return result.ToActionResult(HttpStatusCode.OK);
         }
     }
 }

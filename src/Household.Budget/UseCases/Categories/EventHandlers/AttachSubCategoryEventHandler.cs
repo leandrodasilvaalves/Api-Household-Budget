@@ -3,13 +3,13 @@ using Household.Budget.Contracts.Events;
 
 using MediatR;
 
-namespace Household.Budget.UseCases.Categories.AttachSubcategory;
+namespace Household.Budget.UseCases.Categories.EventHandlers;
 
-public class AttachSubCategoryHandler : INotificationHandler<SubCategoryWasCreated>
+public class AttachSubCategoryEventHandler : INotificationHandler<SubCategoryWasCreated>
 {
     private readonly ICategoryRepository _repository;
 
-    public AttachSubCategoryHandler(ICategoryRepository repository)
+    public AttachSubCategoryEventHandler(ICategoryRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }

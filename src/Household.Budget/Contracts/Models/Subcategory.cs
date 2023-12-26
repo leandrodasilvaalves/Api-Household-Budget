@@ -1,6 +1,4 @@
-﻿using Household.Budget.Contracts.Models;
-
-namespace Household.Budget;
+﻿namespace Household.Budget.Contracts.Models;
 
 public class Subcategory : Model
 {

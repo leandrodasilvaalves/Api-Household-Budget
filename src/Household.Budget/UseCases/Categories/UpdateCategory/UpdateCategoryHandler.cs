@@ -6,17 +6,17 @@ namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
 public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryRequest, UpdateCategoryResponse>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryRepository _repository;
 
-    public UpdateCategoryHandler(ICategoryRepository categoryRepository)
+    public UpdateCategoryHandler(ICategoryRepository repository)
     {
-        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
     public async Task<UpdateCategoryResponse> Handle(UpdateCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = request.ToModel();
-        await _categoryRepository.UpdateAsync(category, cancellationToken);
+        await _repository.UpdateAsync(category, cancellationToken);
         return new UpdateCategoryResponse(category);
     }
 }
