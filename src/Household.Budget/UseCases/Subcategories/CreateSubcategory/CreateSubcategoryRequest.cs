@@ -5,20 +5,14 @@ using Household.Budget.Contracts.Models;
 using MediatR;
 
 namespace Household.Budget.UseCases.Subcategories.CreateSubcategory;
-public class CreateSubcategoryRequest(string name) : Request, IRequest<CreateSubcategoryResponse>
+public class CreateSubcategoryRequest(string name, Guid categoryId) : Request, IRequest<CreateSubcategoryResponse>
 {
     public string Name { get; } = name;
 
-    public Guid CategoryId { get; private set; }
+    public Guid CategoryId { get; } = categoryId;
 
     public override void Validate()
         => AddNotifications(new CreateSubcategoryRequestContract(this));
-
-    public CreateSubcategoryRequest WithCategoryId(Guid id)
-    {
-        CategoryId = id;
-        return this;
-    }
 
     public Subcategory ToModel(Category category) => new()
     {

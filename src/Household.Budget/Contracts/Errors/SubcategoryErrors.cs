@@ -12,4 +12,5 @@ public class SubcategoryErrors
     public static Notification SUBCATEGORY_NAME_MAX_LENGTH = new("SUBCATEGORY_NAME_MAX_LENGTH", "Subcategory name must be a maximum of 25 characters");
     public static Notification SUBCATEGORY_NOT_FOUND = new("SUBCATEGORY_NOT_FOUND", "Requested Subcategory not found");
     public static Notification SUBCATEGORY_PAGE_SIZE_MAX = new("SUBCATEGORY_PAGE_SIZE_MAX", "Page size cannot be greater than 50");
+    public static Notification SUBCATEGORY_CATEGORY_ID_IS_REQUIRED = new("SUBCATEGORY_CATEGORY_ID_IS_REQUIRED", "Category Id is required");
 }

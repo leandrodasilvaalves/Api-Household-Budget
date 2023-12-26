@@ -12,6 +12,7 @@ public class CreateSubcategoryRequestContract : Contract<CreateSubcategoryReques
         Requires()
             .IsNotNullOrEmpty(request.Name, SubcategoryErrors.SUBCATEGORY_NAME_IS_REQUIRED)
             .IsGreaterOrEqualsThan(request.Name, 3, SubcategoryErrors.SUBCATEGORY_NAME_MIN_LENGTH)
-            .IsLowerOrEqualsThan(request.Name, 25, SubcategoryErrors.SUBCATEGORY_NAME_MAX_LENGTH);
+            .IsLowerOrEqualsThan(request.Name, 25, SubcategoryErrors.SUBCATEGORY_NAME_MAX_LENGTH)
+            .IsNotDefault(request.CategoryId, SubcategoryErrors.SUBCATEGORY_CATEGORY_ID_IS_REQUIRED);
     }
 }

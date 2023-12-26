@@ -7,8 +7,7 @@ namespace Household.Budget.UseCases.Categories.GetSubcategoryById;
 public class GetSubcategoryByIdRequest : Request, IRequest<GetSubcategoryByIdResponse>
 {
     [FromRoute]
-    public Guid CategoryId { get; set; }
-    public Guid SubcategoryId { get; set; }
+    public Guid Id { get; set; }
 
     public override void Validate()
     {

@@ -62,5 +62,14 @@ public static class FluntValidationExtensions
     {
         return contract.IsEmail(val, notification.Key, notification.Message);
     }
+
+    public static Contract<T> IsNotDefault<T>(this Contract<T> contract, Guid value, Notification notification)
+    {
+        if (value == default)
+        {
+            contract.AddNotification(notification);
+        }
+        return contract;
+    }
 }
 
