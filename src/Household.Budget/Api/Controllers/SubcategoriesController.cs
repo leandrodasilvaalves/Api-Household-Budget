@@ -1,6 +1,7 @@
 using System.Net;
 
 using Household.Budget.Contracts.Http.Controllers;
+using Household.Budget.UseCases.Categories.GetSubcategoryById;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
 using Household.Budget.UseCases.Subcategories.ListSubcategories;
 
@@ -26,6 +27,13 @@ namespace Household.Budget.Api.Controllers
         {
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NoContent);
+        }
+
+        [HttpGet("{categoryId:guid}/subcategories/{subcategoryId:guid}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] GetSubcategoryByIdRequest request)
+        {
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
+            return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NotFound);
         }
 
         [HttpPost("{id:guid}/subcategories")]
