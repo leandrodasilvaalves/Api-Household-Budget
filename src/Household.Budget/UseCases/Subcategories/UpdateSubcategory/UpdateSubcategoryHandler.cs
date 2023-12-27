@@ -1,4 +1,5 @@
 ﻿using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
 
@@ -23,15 +24,31 @@ public class UpdateSubcategoryHandler : IRequestHandler<UpdateSubcategoryRequest
 
     public async Task<UpdateSubcategoryResponse> Handle(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
-        if(category is null)
+        var category = _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
+        var subcategory = _subcategoryRepository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        Task.WaitAll([category, subcategory], cancellationToken);
+
+        if (category.Result is null)
         {
             return new UpdateSubcategoryResponse(CategoryErrors.CATEGORY_NOT_FOUND);
         }
+        if (subcategory.Result is null)
+        {
+            return new UpdateSubcategoryResponse(SubcategoryErrors.SUBCATEGORY_NOT_FOUND);
+        }
 
-        var subcategory = request.ToModel(category);
-        await _subcategoryRepository.UpdateAsync(subcategory, cancellationToken);
-        await _mediator.Publish(new SubCategoryWasUpdated(subcategory));
-        return new UpdateSubcategoryResponse(subcategory);
+        var updatedSubcategory = request.ToModel(category.Result);
+        await _subcategoryRepository.UpdateAsync(updatedSubcategory, cancellationToken);
+        if (updatedSubcategory.Status == ModelStatus.EXCLUDED)
+        {
+            await _mediator.Publish(new SubCategoryWasExcluded(updatedSubcategory), cancellationToken);
+        }
+        if (category.Result.Id != subcategory.Result.Category.Id && updatedSubcategory.Status == ModelStatus.ACTIVE)
+        {
+            var oldCategoryId = subcategory.Result.Category.Id ?? "";
+            await _mediator.Publish(new SubcategoryChangedCategory(updatedSubcategory, oldCategoryId), cancellationToken);
+        }
+
+        return new UpdateSubcategoryResponse(updatedSubcategory);
     }
 }
