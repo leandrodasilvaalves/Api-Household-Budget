@@ -19,8 +19,10 @@ public class DetachSubcategoryEventHandler : INotificationHandler<SubCategoryWas
         var subcategory = notification.Data;
         var category = await _repository.GetByIdAsync(
             subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
-
-        category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
-        await _repository.UpdateAsync(category, cancellationToken);
+        if (category is not null)
+        {
+            category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
+            await _repository.UpdateAsync(category, cancellationToken);
+        }
     }
 }

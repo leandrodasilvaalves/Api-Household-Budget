@@ -1,5 +1,6 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -14,20 +15,34 @@ namespace Household.Budget.UseCases.Categories.EventHandlers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task Handle(SubcategoryChangedCategory notification, CancellationToken cancellationToken)
+        public Task Handle(SubcategoryChangedCategory notification, CancellationToken cancellationToken)
         {
             var subcategory = notification.Data;
 
-            var newCategory = await _repository.GetByIdAsync(
-                subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
+            var taskNewCategory = HandleNewCategory(subcategory, cancellationToken);
+            var taskOlCategory = HandleOldCategory(subcategory, notification.OldCategoryId, cancellationToken);
+            Task.WaitAll([taskNewCategory, taskOlCategory], cancellationToken);
+            return Task.CompletedTask;
+        }
 
-            newCategory.Subcategories.Add(new(subcategory.Id, subcategory.Name));
-            await _repository.UpdateAsync(newCategory, cancellationToken);
+        public async Task HandleNewCategory(Subcategory subcategory, CancellationToken cancellationToken)
+        {
+            var category = await _repository.GetByIdAsync(subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
+            if (category is not null)
+            {
+                category.Subcategories.Add(new(subcategory.Id, subcategory.Name));
+                await _repository.UpdateAsync(category, cancellationToken);
+            }
+        }
 
-            var oldCategory = await _repository.GetByIdAsync(
-                notification.OldCategoryId ?? "", subcategory.UserId ?? "", cancellationToken);
-            oldCategory.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
-            await _repository.UpdateAsync(oldCategory, cancellationToken);
+        public async Task HandleOldCategory(Subcategory subcategory, string oldCategoryId, CancellationToken cancellationToken)
+        {
+            var category = await _repository.GetByIdAsync(oldCategoryId ?? "", subcategory.UserId ?? "", cancellationToken);
+            if (category is not null)
+            {
+                category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
+                await _repository.UpdateAsync(category, cancellationToken);
+            }
         }
     }
 }

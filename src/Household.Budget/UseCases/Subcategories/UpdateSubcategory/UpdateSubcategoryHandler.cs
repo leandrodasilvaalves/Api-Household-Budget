@@ -2,6 +2,7 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
+using Household.Budget.Contracts.Models;
 
 using MediatR;
 
@@ -24,31 +25,40 @@ public class UpdateSubcategoryHandler : IRequestHandler<UpdateSubcategoryRequest
 
     public async Task<UpdateSubcategoryResponse> Handle(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
     {
-        var category = _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
-        var subcategory = _subcategoryRepository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
-        Task.WaitAll([category, subcategory], cancellationToken);
+        var categoryTask = _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
+        var subcategoryTask = _subcategoryRepository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        Task.WaitAll([categoryTask, subcategoryTask], cancellationToken);
 
-        if (category.Result is null)
+        var category = categoryTask.Result;
+        var oldSubcategory = subcategoryTask.Result;
+
+        if (category is null)
         {
             return new UpdateSubcategoryResponse(CategoryErrors.CATEGORY_NOT_FOUND);
         }
-        if (subcategory.Result is null)
+        if (oldSubcategory is null)
         {
             return new UpdateSubcategoryResponse(SubcategoryErrors.SUBCATEGORY_NOT_FOUND);
         }
 
-        var updatedSubcategory = request.ToModel(category.Result);
+        var updatedSubcategory = request.ToModel(category);
         await _subcategoryRepository.UpdateAsync(updatedSubcategory, cancellationToken);
-        if (updatedSubcategory.Status == ModelStatus.EXCLUDED)
-        {
-            await _mediator.Publish(new SubCategoryWasExcluded(updatedSubcategory), cancellationToken);
-        }
-        if (category.Result.Id != subcategory.Result.Category.Id && updatedSubcategory.Status == ModelStatus.ACTIVE)
-        {
-            var oldCategoryId = subcategory.Result.Category.Id ?? "";
-            await _mediator.Publish(new SubcategoryChangedCategory(updatedSubcategory, oldCategoryId), cancellationToken);
-        }
+        await PublishEventsAsync(updatedSubcategory, oldSubcategory, category, cancellationToken);
 
         return new UpdateSubcategoryResponse(updatedSubcategory);
+    }
+
+    private Task PublishEventsAsync(Subcategory updatedSubcategory, Subcategory oldSubcategory, Category category, CancellationToken cancellationToken)
+    {
+        if (updatedSubcategory.Status == ModelStatus.EXCLUDED)
+        {
+            _mediator.Publish(new SubCategoryWasExcluded(updatedSubcategory), cancellationToken);
+        }
+        if (category.Id != oldSubcategory.Category.Id && updatedSubcategory.Status == ModelStatus.ACTIVE)
+        {
+            var oldCategoryId = oldSubcategory.Category.Id ?? "";
+            _mediator.Publish(new SubcategoryChangedCategory(updatedSubcategory, oldCategoryId), cancellationToken);
+        }
+        return Task.CompletedTask;
     }
 }
