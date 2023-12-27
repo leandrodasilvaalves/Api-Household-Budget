@@ -35,9 +35,9 @@ namespace Household.Budget.UseCases.Categories.EventHandlers
             }
         }
 
-        public async Task HandleOldCategory(Subcategory subcategory, string oldCategoryId, CancellationToken cancellationToken)
+        public async Task HandleOldCategory(Subcategory subcategory, string categoryId, CancellationToken cancellationToken)
         {
-            var category = await _repository.GetByIdAsync(oldCategoryId ?? "", subcategory.UserId ?? "", cancellationToken);
+            var category = await _repository.GetByIdAsync(categoryId ?? "", subcategory.UserId ?? "", cancellationToken);
             if (category is not null)
             {
                 category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
