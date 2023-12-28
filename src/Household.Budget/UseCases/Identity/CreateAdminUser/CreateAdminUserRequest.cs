@@ -38,7 +38,7 @@ public class CreateAdminUserRequest : Request, IRequest<CreateAdminUserResponse>
         return model;
     }
 
-    public CreateAdminUserResponseViewModel ToViewModel() => new(this);
+    public CreateAdminUserResponseViewModel ToViewModel(string userId) => new(userId, this);
 
     public override void Validate() =>
         AddNotifications(new CreateAdminUserRequestContract(this));

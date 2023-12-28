@@ -1,7 +1,7 @@
-﻿
-using System.Text.Json;
+﻿using System.Text.Json;
 
 using Household.Budget.Contracts.Data;
+using Household.Budget.UseCases.Categories.ImportCategorySeed;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 using MediatR;
@@ -26,33 +26,57 @@ public class DatabaseCreatorService : BackgroundService
         _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
     }
 
+    private string RootUserId { get; set; } = "";
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await CreateDatabaseAsync();
-        await CreateRootUser(stoppingToken);
+        await CreateDatabaseAsync(stoppingToken);
+        await CreateRootUserAsync(stoppingToken);
+        await ImportCategoriesDataSeedAsync(stoppingToken);
     }
 
-    private Task CreateDatabaseAsync()
+    private async Task CreateDatabaseAsync(CancellationToken stoppingToken)
     {
-        _database.EnsureDatabaseIsCreated();
+        await _database.EnsureDatabaseIsCreatedAsync(stoppingToken);
         _logger.LogInformation("Database creator was executed successfully.");
-        return Task.CompletedTask;
     }
 
-    private async Task CreateRootUser(CancellationToken stoppingToken)
+    private async Task CreateRootUserAsync(CancellationToken stoppingToken)
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        var mediator = scope.ServiceProvider.GetService<IMediator>()
-            ?? throw new ArgumentNullException(nameof(IMediator));
-
         if (_configuration.GetValue<bool>("Identity:RootUser:Enabled") is true)
         {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var mediator = scope.ServiceProvider.GetService<IMediator>()
+                ?? throw new ArgumentNullException(nameof(IMediator));
+
             var request = _configuration.GetSection("Identity:RootUser:Request").Get<CreateAdminUserRequest>();
             var response = await mediator.Send(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
             if (response.IsSuccess)
+            {
+                RootUserId = response.Data?.Id ?? "";
                 _logger.LogInformation("Root user was created successfully.");
+            }
             else
                 _logger.LogError("Root user wasn't created. Causes: {0}", JsonSerializer.Serialize(response));
+        }
+    }
+
+    private async Task ImportCategoriesDataSeedAsync(CancellationToken stoppingToken)
+    {
+        if (_configuration.GetValue<bool>("Seed:Categories:Enabled") is true)
+        {
+            if(string.IsNullOrWhiteSpace(RootUserId))
+                throw new InvalidOperationException("Root user was not created. Please, create it first.");
+
+            using var scope = _serviceScopeFactory.CreateScope();
+            var mediator = scope.ServiceProvider.GetService<IMediator>()
+                ?? throw new ArgumentNullException(nameof(IMediator));
+
+            var categories = _configuration.GetSection("Seed:Categories:Data").Get<List<ImportCategorySeedRequest>>() ?? [];
+            var tasks = new List<Task>();
+            categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(RootUserId), stoppingToken)));
+            await Task.WhenAll(tasks);
+            _logger.LogInformation("Categories data seed was imported successfully.");
         }
     }
 }

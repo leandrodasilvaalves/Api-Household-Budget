@@ -2,5 +2,5 @@ namespace Household.Budget.Contracts.Data;
 
 public interface IDatabaseCreator
 {
-    void EnsureDatabaseIsCreated();
+    Task EnsureDatabaseIsCreatedAsync(CancellationToken cancellationToken);
 }

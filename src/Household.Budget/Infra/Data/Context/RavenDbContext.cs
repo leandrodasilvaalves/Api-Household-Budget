@@ -29,18 +29,18 @@ public class RavenDbContext : IRavenDbContext, IDatabaseCreator
 
     public IDocumentStore Store { get; }
 
-    public void EnsureDatabaseIsCreated()
+    public async Task EnsureDatabaseIsCreatedAsync(CancellationToken cancellationToken)
     {
         try
         {
-            Store.Maintenance.ForDatabase(_config.DatabaseName)
-                .Send(new GetStatisticsOperation());
+            await Store.Maintenance.ForDatabase(_config.DatabaseName)
+                 .SendAsync(new GetStatisticsOperation(), cancellationToken);
         }
         catch
         {
-            Store.Maintenance.Server.Send(
+            await Store.Maintenance.Server.SendAsync(
                 new CreateDatabaseOperation(
-                new DatabaseRecord(_config.DatabaseName)));
+                new DatabaseRecord(_config.DatabaseName)), cancellationToken);
         }
     }
 }

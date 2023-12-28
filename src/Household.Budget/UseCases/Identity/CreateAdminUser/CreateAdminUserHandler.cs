@@ -24,7 +24,7 @@ public class CreateAdminUserHandler : IRequestHandler<CreateAdminUserRequest, Cr
         var result = await _userManager.CreateAsync(appUser, request.Password);
 
         return result.Succeeded ?
-            new CreateAdminUserResponse(request.ToViewModel()) :
+            new CreateAdminUserResponse(request.ToViewModel(appUser.Id ?? "")) :
             new CreateAdminUserResponse(result.Errors.Select(e =>
                 new Notification($"IDENTITY_{e.Code.ToUpperSnakeCase()}", e.Description)));
     }

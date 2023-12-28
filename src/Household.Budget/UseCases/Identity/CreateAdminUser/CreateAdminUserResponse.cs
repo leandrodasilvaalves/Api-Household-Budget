@@ -10,8 +10,9 @@ public class CreateAdminUserResponse : Response<CreateAdminUserResponseViewModel
     public CreateAdminUserResponse(IEnumerable<Notification> errors) : base(errors) { }
 }
 
-public class CreateAdminUserResponseViewModel(CreateAdminUserRequest request)
+public class CreateAdminUserResponseViewModel(string id, CreateAdminUserRequest request)
 {
+    public string Id { get; set; } = id;
     public string UserName { get; set; } = request.UserName;
     public string Email { get; set; } = request.Email;
 }
