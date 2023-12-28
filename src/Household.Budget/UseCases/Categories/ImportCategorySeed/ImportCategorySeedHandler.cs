@@ -10,10 +10,12 @@ namespace Household.Budget.UseCases.Categories.ImportCategorySeed;
 public class ImportCategorySeedHandler : IRequestHandler<ImportCategorySeedRequest>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<ImportCategorySeedHandler> _logger;
 
-    public ImportCategorySeedHandler(IMediator mediator)
+    public ImportCategorySeedHandler(IMediator mediator, ILogger<ImportCategorySeedHandler> logger)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task Handle(ImportCategorySeedRequest request, CancellationToken cancellationToken)
@@ -25,12 +27,16 @@ public class ImportCategorySeedHandler : IRequestHandler<ImportCategorySeedReque
         };
 
         var category = await _mediator.Send(createCategoryRequest);
-        request.SubCategories.ForEach(sub =>
+
+        var subcategoriesTasks = new List<Task>();
+        request.SubCategories.ForEach(subcategory =>
         {
             if (Guid.TryParse(category.Data?.Id, out var categoryId))
             {
-                _mediator.Send(new CreateSubcategoryRequest(sub.Name, categoryId));
+               subcategoriesTasks.Add(_mediator.Send(new CreateSubcategoryRequest(subcategory.Name, categoryId), cancellationToken));
             }
         });
+        await Task.WhenAll(subcategoriesTasks);
+        _logger.LogInformation("Category has been imported: {0}", category.Data?.Name);
     }
 }

@@ -65,16 +65,19 @@ public class DatabaseCreatorService : BackgroundService
     {
         if (_configuration.GetValue<bool>("Seed:Categories:Enabled") is true)
         {
-            if(string.IsNullOrWhiteSpace(RootUserId))
+            if (string.IsNullOrWhiteSpace(RootUserId))
                 throw new InvalidOperationException("Root user was not created. Please, create it first.");
 
             using var scope = _serviceScopeFactory.CreateScope();
             var mediator = scope.ServiceProvider.GetService<IMediator>()
                 ?? throw new ArgumentNullException(nameof(IMediator));
 
+            _logger.LogInformation("Categories import has been initialized");
+
             var categories = _configuration.GetSection("Seed:Categories:Data").Get<List<ImportCategorySeedRequest>>() ?? [];
             var tasks = new List<Task>();
             categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(RootUserId), stoppingToken)));
+
             await Task.WhenAll(tasks);
             _logger.LogInformation("Categories data seed was imported successfully.");
         }
