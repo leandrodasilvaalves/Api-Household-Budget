@@ -26,17 +26,17 @@ public class ImportCategorySeedHandler : IRequestHandler<ImportCategorySeedReque
             UserClaims = [IdentityClaims.ADMIN_WRITER]
         };
 
-        var category = await _mediator.Send(createCategoryRequest);
-
-        var subcategoriesTasks = new List<Task>();
-        request.SubCategories.ForEach(subcategory =>
+        var categoryResponse = await _mediator.Send(createCategoryRequest);
+        if (categoryResponse.IsSuccess)
         {
-            if (Guid.TryParse(category.Data?.Id, out var categoryId))
-            {
-               subcategoriesTasks.Add(_mediator.Send(new CreateSubcategoryRequest(subcategory.Name, categoryId), cancellationToken));
-            }
-        });
-        await Task.WhenAll(subcategoriesTasks);
-        _logger.LogInformation("Category has been imported: {0}", category.Data?.Name);
+            var categoryId = Guid.Parse(categoryResponse.Data?.Id ?? "");
+            var subcategoriesTasks = new List<Task>();
+            request.SubCategories.ForEach(subcategory =>
+                subcategoriesTasks.Add(_mediator.Send(
+                    new CreateSubcategoryRequest(subcategory.Name, categoryId), cancellationToken)));
+
+            await Task.WhenAll(subcategoriesTasks);
+            _logger.LogInformation("Category has been imported: {0}", categoryResponse.Data?.Name);
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace Household.Budget.UseCases.Categories.EventHandlers;
 public class AttachSubCategoryEventHandler : INotificationHandler<SubCategoryWasCreated>
 {
     private readonly ICategoryRepository _repository;
+    private static readonly SemaphoreSlim Semaphore = new(1, 1);
 
     public AttachSubCategoryEventHandler(ICategoryRepository repository)
     {
@@ -16,6 +17,8 @@ public class AttachSubCategoryEventHandler : INotificationHandler<SubCategoryWas
 
     public async Task Handle(SubCategoryWasCreated notification, CancellationToken cancellationToken)
     {
+        await Semaphore.WaitAsync(cancellationToken);
+
         var subcategory = notification.Data;
         var category = await _repository.GetByIdAsync($"{subcategory.Category.Id}",
             subcategory.UserId ?? "", cancellationToken);
@@ -25,5 +28,7 @@ public class AttachSubCategoryEventHandler : INotificationHandler<SubCategoryWas
             category.Subcategories.Add(new(subcategory.Id, subcategory.Name));
             await _repository.UpdateAsync(category, cancellationToken);
         }
+        
+        Semaphore.Release();
     }
 }

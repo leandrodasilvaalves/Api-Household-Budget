@@ -76,7 +76,7 @@ public class DatabaseCreatorService : BackgroundService
 
             var categories = _configuration.GetSection("Seed:Categories:Data").Get<List<ImportCategorySeedRequest>>() ?? [];
             var tasks = new List<Task>();
-            categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(RootUserId), stoppingToken)));
+            categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(RootUserId), stoppingToken)));            
 
             await Task.WhenAll(tasks);
             _logger.LogInformation("Categories data seed was imported successfully.");

@@ -4,15 +4,13 @@ using MediatR;
 
 namespace Household.Budget.UseCases.Categories.ImportCategorySeed;
 
-public class ImportCategorySeedRequest(string name,
-                                       CategoryType type,
-                                       List<ImportSucategorySeedRequest> subCategories) : IRequest
+public class ImportCategorySeedRequest : IRequest
 {
-    public string Name { get; } = name;
-    public CategoryType Type { get; } = type;
-    public List<ImportSucategorySeedRequest> SubCategories { get; } = subCategories;
+    public string Name { get; set; } = "";
+    public CategoryType Type { get; set; } = default;
+    public List<ImportSucategorySeedRequest> SubCategories { get; set; } = [];
 
-    public string RootUserId { get; private set; } = "root";
+    public string RootUserId { get; set; } = "";
     public ImportCategorySeedRequest WithRootUserId(string rootUserId)
     {
         RootUserId = rootUserId;
@@ -20,7 +18,7 @@ public class ImportCategorySeedRequest(string name,
     }
 }
 
-public class ImportSucategorySeedRequest(string name)
+public class ImportSucategorySeedRequest
 {
-    public string Name { get; } = name;
+    public string Name { get; set; } = "";
 }
