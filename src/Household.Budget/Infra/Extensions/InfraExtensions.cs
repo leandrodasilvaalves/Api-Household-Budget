@@ -7,35 +7,55 @@ using Household.Budget.Infra.Data.Repositories;
 using Raven.DependencyInjection;
 using Raven.Identity;
 
-namespace Household.Budget.Infra.Extensions
+namespace Household.Budget.Infra.Extensions;
+
+public static class InfraExtensions
 {
-    public static class InfraExtensions
+    public static void AddInfra(this IServiceCollection services, IConfiguration config)
     {
-        public static void AddInfra(this IServiceCollection services, IConfiguration config)
-        {
-            services.AddRavenDb(config);
-            services.AddIdentityProvider(config);
-        }
+        services.AddRavenDb(config);
+        services.AddIdentityProvider(config);
+    }
 
-        public static IServiceCollection AddRavenDb(this IServiceCollection services, IConfiguration config)
-        {
-            services.Configure<RavenConfig>(config.GetSection(RavenConfig.SectionName));
-            services.AddSingleton<IRavenDbContext, RavenDbContext>();
-            services.AddSingleton<IDatabaseCreator, RavenDbContext>();
-            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
-            services.AddSingleton<ICategoryRepository, CategoryRepository>();
-            services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
-            services.AddHostedService<DatabaseCreatorService>();
-            return services;
-        }
+    public static IServiceCollection AddRavenDb(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<RavenConfig>(config.GetSection(RavenConfig.SectionName));
+        services.AddSingleton<IRavenDbContext, RavenDbContext>();
+        services.AddSingleton<IDatabaseCreator, RavenDbContext>();
+        services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+        services.AddSingleton<ICategoryRepository, CategoryRepository>();
+        services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
+        services.AddHostedService<DatabaseCreatorService>();
+        return services;
+    }
 
-        public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
-        {
-            services
-                .AddRavenDbDocStore()
-                .AddRavenDbAsyncSession()
-                .AddIdentity<AppIdentityUser, IdentityRole>()
-                .AddRavenDbIdentityStores<AppIdentityUser, IdentityRole>();
-        }
+    public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
+    {
+        services
+            .AddRavenDbDocStore()
+            .AddRavenDbAsyncSession()
+            .AddIdentity<AppIdentityUser, IdentityRole>()
+            .AddRavenDbIdentityStores<AppIdentityUser, IdentityRole>();
+    }
+
+
+    private static void AddRavenDb(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<RavenConfig>(config.GetSection(RavenConfig.SectionName));
+        services.AddSingleton<IRavenDbContext, RavenDbContext>();
+        services.AddSingleton<IDatabaseCreator, RavenDbContext>();
+        services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+        services.AddSingleton<ICategoryRepository, CategoryRepository>();
+        services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
+        services.AddHostedService<DatabaseCreatorService>();
+    }
+
+    public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
+    {
+        services
+            .AddRavenDbDocStore()
+            .AddRavenDbAsyncSession()
+            .AddIdentity<AppIdentityUser, IdentityRole>()
+            .AddRavenDbIdentityStores<AppIdentityUser, IdentityRole>();
     }
 }

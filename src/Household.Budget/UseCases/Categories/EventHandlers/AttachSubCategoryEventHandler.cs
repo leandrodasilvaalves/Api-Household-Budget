@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Household.Budget.UseCases.Categories.EventHandlers;
 
-public class AttachSubCategoryEventHandler : INotificationHandler<SubCategoryWasCreated>
+public class AttachSubCategoryEventHandler : INotificationHandler<SubcategoryWasCreated>
 {
     private readonly ICategoryRepository _repository;
     private static readonly SemaphoreSlim Semaphore = new(1, 1);
@@ -15,7 +15,7 @@ public class AttachSubCategoryEventHandler : INotificationHandler<SubCategoryWas
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task Handle(SubCategoryWasCreated notification, CancellationToken cancellationToken)
+    public async Task Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken)
     {
         await Semaphore.WaitAsync(cancellationToken);
 

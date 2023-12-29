@@ -2,9 +2,9 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.Contracts.Events;
 
-public class SubCategoryWasCreated : IEvent<Subcategory>
+public class SubcategoryWasCreated : IEvent<Subcategory>
 {
-    public SubCategoryWasCreated(Subcategory data)
+    public SubcategoryWasCreated(Subcategory data)
     {
         Data = data;
         SendedAt = DateTime.UtcNow;

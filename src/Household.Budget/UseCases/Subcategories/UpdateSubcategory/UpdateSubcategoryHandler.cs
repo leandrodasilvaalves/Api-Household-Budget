@@ -4,6 +4,8 @@ using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
 using Household.Budget.Contracts.Models;
 
+using MassTransit;
+
 using MediatR;
 
 namespace Household.Budget.UseCases.Categories.UpdateSubcategory;
@@ -12,15 +14,16 @@ public class UpdateSubcategoryHandler : IRequestHandler<UpdateSubcategoryRequest
 {
     private readonly ISubcategoryRepository _subcategoryRepository;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IMediator _mediator;
+    private readonly IBus _bus;
 
     public UpdateSubcategoryHandler(ISubcategoryRepository subcategoryRepository,
                                     ICategoryRepository categoryRepository,
-                                    IMediator mediator)
+                                    IMediator mediator,
+                                    IBus bus)
     {
         _subcategoryRepository = subcategoryRepository ?? throw new ArgumentNullException(nameof(subcategoryRepository));
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
     public async Task<UpdateSubcategoryResponse> Handle(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
@@ -52,12 +55,12 @@ public class UpdateSubcategoryHandler : IRequestHandler<UpdateSubcategoryRequest
     {
         if (updatedSubcategory.Status == ModelStatus.EXCLUDED)
         {
-            _mediator.Publish(new SubCategoryWasExcluded(updatedSubcategory), cancellationToken);
+            _bus.Publish(new SubCategoryWasExcluded(updatedSubcategory), cancellationToken);
         }
         if (category.Id != oldSubcategory.Category.Id && updatedSubcategory.Status == ModelStatus.ACTIVE)
         {
             var oldCategoryId = oldSubcategory.Category.Id ?? "";
-            _mediator.Publish(new SubcategoryChangedCategory(updatedSubcategory, oldCategoryId), cancellationToken);
+            _bus.Publish(new SubcategoryChangedCategory(updatedSubcategory, oldCategoryId), cancellationToken);
         }
         return Task.CompletedTask;
     }

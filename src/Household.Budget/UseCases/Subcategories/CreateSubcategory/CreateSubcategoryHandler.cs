@@ -2,6 +2,8 @@ using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
 
+using MassTransit;
+
 using MediatR;
 
 namespace Household.Budget.UseCases.Subcategories.CreateSubcategory;
@@ -10,15 +12,15 @@ public class CreateSubcategoryHandler : IRequestHandler<CreateSubcategoryRequest
 {
     private readonly ISubcategoryRepository _subcategoryRepository;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IMediator _mediator;
+    private readonly IBus _bus;
 
     public CreateSubcategoryHandler(ISubcategoryRepository subcategoryRepository,
                                     ICategoryRepository categoryRepository,
-                                    IMediator mediator)
+                                    IBus bus)
     {
         _subcategoryRepository = subcategoryRepository ?? throw new ArgumentNullException(nameof(subcategoryRepository));
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
-        _mediator = mediator;
+        _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
     public async Task<CreateSubcategoryResponse> Handle(CreateSubcategoryRequest request, CancellationToken cancellationToken)
@@ -30,7 +32,7 @@ public class CreateSubcategoryHandler : IRequestHandler<CreateSubcategoryRequest
         }
         var subcategory = request.ToModel(category);
         await _subcategoryRepository.CreateAsync(subcategory, cancellationToken);
-        await _mediator.Publish(new SubCategoryWasCreated(subcategory), cancellationToken);
+        await _bus.Publish(new SubcategoryWasCreated(subcategory), cancellationToken);
         return new CreateSubcategoryResponse(subcategory);
     }
 }

@@ -4,6 +4,8 @@ using Household.Budget.Contracts.Data;
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 
+using MassTransit;
+
 using MediatR;
 
 namespace Household.Budget.Api.HostedServices;
@@ -14,16 +16,19 @@ public class DatabaseCreatorService : BackgroundService
     private readonly ILogger<DatabaseCreatorService> _logger;
     private readonly IConfiguration _configuration;
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly IBus _bus;
 
     public DatabaseCreatorService(IDatabaseCreator database,
                                   ILogger<DatabaseCreatorService> logger,
                                   IConfiguration configuration,
-                                  IServiceScopeFactory serviceScopeFactory)
+                                  IServiceScopeFactory serviceScopeFactory,
+                                  IBus bus)
     {
         _database = database ?? throw new ArgumentNullException(nameof(database));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+        _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -66,16 +71,13 @@ public class DatabaseCreatorService : BackgroundService
             if (string.IsNullOrWhiteSpace(rootUserId))
                 throw new InvalidOperationException("Root user was not found. Please, create it first.");
 
-            using var scope = _serviceScopeFactory.CreateScope();
-            var mediator = scope.ServiceProvider.GetService<IMediator>()
-                ?? throw new ArgumentNullException(nameof(IMediator));
-
             _logger.LogInformation("Categories import has been initialized");
 
             var categories = _configuration.GetSection("Seed:Categories:Data").Get<List<ImportCategorySeedRequest>>() ?? [];
-            var tasks = new List<Task>();
-            categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(rootUserId), stoppingToken)));            
 
+            var tasks = new List<Task>();
+            var sendEndpoint = await _bus.GetPublishSendEndpoint<ImportCategorySeedRequest>();            
+            categories.ForEach(request => tasks.Add(sendEndpoint.Send(request.WithRootUserId(RootUserId), stoppingToken)));
             await Task.WhenAll(tasks);
             _logger.LogInformation("Categories data seed was imported successfully.");
         }
