@@ -7,11 +7,13 @@ namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 
 public class CreateAdminUserRequest : Request, IRequest<CreateAdminUserResponse>
 {
-    public CreateAdminUserRequest(string fullName,
+    public CreateAdminUserRequest(string userId,
+                                  string fullName,
                                   string userName,
                                   string email,
                                   string password)
     {
+        UserId = userId;
         FullName = fullName;
         UserName = userName;
         Email = email;
@@ -27,6 +29,7 @@ public class CreateAdminUserRequest : Request, IRequest<CreateAdminUserResponse>
     {
         AppIdentityUser model = new()
         {
+            Id = UserId,
             FullName = FullName,
             UserName = UserName,
             Email = Email,
@@ -43,6 +46,6 @@ public class CreateAdminUserRequest : Request, IRequest<CreateAdminUserResponse>
     public override void Validate() =>
         AddNotifications(new CreateAdminUserRequestContract(this));
 
-    public static CreateAdminUserRequest DefaultAdminUser() 
-        => new("root user", "root", "root@localhost", "passWord@123");
+    public static CreateAdminUserRequest DefaultAdminUser()
+        => new($"{Guid.NewGuid()}", "root user", "root", "root@localhost", "passWord@123");
 }

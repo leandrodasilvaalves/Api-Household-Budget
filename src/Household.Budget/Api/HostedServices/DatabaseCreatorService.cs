@@ -26,8 +26,6 @@ public class DatabaseCreatorService : BackgroundService
         _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
     }
 
-    private string RootUserId { get; set; } = "";
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await CreateDatabaseAsync(stoppingToken);
@@ -53,7 +51,6 @@ public class DatabaseCreatorService : BackgroundService
             var response = await mediator.Send(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
             if (response.IsSuccess)
             {
-                RootUserId = response.Data?.Id ?? "";
                 _logger.LogInformation("Root user was created successfully.");
             }
             else
@@ -65,8 +62,9 @@ public class DatabaseCreatorService : BackgroundService
     {
         if (_configuration.GetValue<bool>("Seed:Categories:Enabled") is true)
         {
-            if (string.IsNullOrWhiteSpace(RootUserId))
-                throw new InvalidOperationException("Root user was not created. Please, create it first.");
+            var rootUserId = _configuration.GetSection("Identity:RootUser:Request:UserId").Get<string>();
+            if (string.IsNullOrWhiteSpace(rootUserId))
+                throw new InvalidOperationException("Root user was not found. Please, create it first.");
 
             using var scope = _serviceScopeFactory.CreateScope();
             var mediator = scope.ServiceProvider.GetService<IMediator>()
@@ -76,7 +74,7 @@ public class DatabaseCreatorService : BackgroundService
 
             var categories = _configuration.GetSection("Seed:Categories:Data").Get<List<ImportCategorySeedRequest>>() ?? [];
             var tasks = new List<Task>();
-            categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(RootUserId), stoppingToken)));            
+            categories.ForEach(request => tasks.Add(mediator.Send(request.WithRootUserId(rootUserId), stoppingToken)));            
 
             await Task.WhenAll(tasks);
             _logger.LogInformation("Categories data seed was imported successfully.");

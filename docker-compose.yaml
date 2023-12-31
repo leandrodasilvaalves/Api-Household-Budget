@@ -1,6 +1,21 @@
 version: "3.4"
 
 services:
+  api:    
+    container_name: household.buget
+    image: household.buget
+    build:
+      context: ./src/Household.Budget
+      dockerfile: Dockerfile
+    ports:
+      - 5215:80
+      - 7086:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNET_ENV}
+    depends_on:
+      ravendb:
+        condition: service_healthy
+
   ravendb:
     container_name: ${PREFIX_CONTAINERS}.ravendb
     image: ravendb/ravendb
@@ -16,3 +31,9 @@ services:
       - Hostname='ravendb'
     ports:
       - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/admin/stats"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
