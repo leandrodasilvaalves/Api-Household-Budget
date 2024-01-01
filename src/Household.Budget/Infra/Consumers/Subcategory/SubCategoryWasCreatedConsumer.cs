@@ -13,5 +13,5 @@ public class SubcategoryWasCreatedConsumer : IConsumer<SubcategoryWasCreated>
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
     public Task Consume(ConsumeContext<SubcategoryWasCreated> context) =>
-        _handler.Handle(context.Message, CancellationToken.None);
+        _handler.Handle(context.Message, context.CancellationToken);
 }

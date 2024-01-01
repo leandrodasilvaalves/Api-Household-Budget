@@ -13,5 +13,5 @@ public class SubCategoryWasExcludedConsumer : IConsumer<SubCategoryWasExcluded>
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
     public Task Consume(ConsumeContext<SubCategoryWasExcluded> context) =>
-        _handler.Handle(context.Message, CancellationToken.None);
+        _handler.Handle(context.Message, context.CancellationToken);
 }

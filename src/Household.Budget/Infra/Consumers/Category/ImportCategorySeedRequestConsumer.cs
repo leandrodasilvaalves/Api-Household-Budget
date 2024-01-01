@@ -11,6 +11,6 @@ public class ImportCategorySeedRequestConsumer : IConsumer<ImportCategorySeedReq
     public ImportCategorySeedRequestConsumer(IImportCategorySeedHandler handler) =>
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
-    public Task Consume(ConsumeContext<ImportCategorySeedRequest> context) =>
-        _handler.Handle(context.Message, CancellationToken.None);
+    public Task Consume(ConsumeContext<ImportCategorySeedRequest> context) => 
+        _handler.Handle(context.Message, context.CancellationToken);
 }
