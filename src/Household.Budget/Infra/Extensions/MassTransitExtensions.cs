@@ -45,14 +45,6 @@ public static class MassTransitExtensions
 
                 cfg.ConfigureEndpoints(context);
             });
-
-            services.AddMediator(cfg =>
-            {
-                cfg.AddConsumer<SubcategoryWasCreatedConsumer>();
-                cfg.AddConsumer<SubCategoryWasExcludedConsumer>();
-                cfg.AddConsumer<SubcategoryChangedCategoryConsumer>();
-                cfg.AddConsumer<ImportCategorySeedRequestConsumer>();
-            });
         });
     }
 }

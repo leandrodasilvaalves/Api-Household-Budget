@@ -23,7 +23,6 @@ builder.Services.AddControllers(options => options.Filters.Add<AddUserClaimsFilt
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.ConfigureIdentity(builder.Configuration);

@@ -3,13 +3,16 @@ using Flunt.Notifications;
 using Household.Budget.Contracts.Extensions;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 
-public class CreateAdminUserHandler : IRequestHandler<CreateAdminUserRequest, CreateAdminUserResponse>
+public interface ICreateAdminUserHandler
+{
+    Task<CreateAdminUserResponse> Handle(CreateAdminUserRequest request, CancellationToken cancellationToken);
+}
+
+public class CreateAdminUserHandler : ICreateAdminUserHandler
 {
     private readonly UserManager<AppIdentityUser> _userManager;
 

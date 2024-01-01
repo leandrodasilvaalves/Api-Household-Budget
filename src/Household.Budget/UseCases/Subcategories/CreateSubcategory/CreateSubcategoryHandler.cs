@@ -4,11 +4,14 @@ using Household.Budget.Contracts.Events;
 
 using MassTransit;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Subcategories.CreateSubcategory;
 
-public class CreateSubcategoryHandler : IRequestHandler<CreateSubcategoryRequest, CreateSubcategoryResponse>
+public interface ICreateSubcategoryHandler
+{
+    Task<CreateSubcategoryResponse> Handle(CreateSubcategoryRequest request, CancellationToken cancellationToken);
+}
+
+public class CreateSubcategoryHandler : ICreateSubcategoryHandler
 {
     private readonly ISubcategoryRepository _subcategoryRepository;
     private readonly ICategoryRepository _categoryRepository;

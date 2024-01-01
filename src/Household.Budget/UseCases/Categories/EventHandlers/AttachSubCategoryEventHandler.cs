@@ -1,11 +1,15 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
 
-using MediatR;
 
 namespace Household.Budget.UseCases.Categories.EventHandlers;
 
-public class AttachSubCategoryEventHandler : INotificationHandler<SubcategoryWasCreated>
+public interface IAttachSubCategoryEventHandler
+{
+    Task Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken);
+}
+
+public class AttachSubCategoryEventHandler : IAttachSubCategoryEventHandler
 {
     private readonly ICategoryRepository _repository;
     private static readonly SemaphoreSlim Semaphore = new(1, 1);

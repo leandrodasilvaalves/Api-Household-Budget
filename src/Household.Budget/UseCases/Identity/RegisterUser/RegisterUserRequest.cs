@@ -1,11 +1,9 @@
 ﻿using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Identity.RegisterUser;
 
-public class RegisterUserRequest : Request, IRequest<RegisterUserResponse>
+public class RegisterUserRequest : Request
 {
     public RegisterUserRequest(string fullName,
                                string userName,

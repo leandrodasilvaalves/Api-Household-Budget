@@ -1,16 +1,15 @@
 using Household.Budget.Contracts.Events;
+using Household.Budget.UseCases.Categories.EventHandlers;
 
 using MassTransit;
-
-using MediatR;
 
 namespace Household.Budget.Infra.Consumers;
 
 public class SubcategoryWasCreatedConsumer : IConsumer<SubcategoryWasCreated>
 {
-    private readonly INotificationHandler<SubcategoryWasCreated> _handler;
+    private readonly IAttachSubCategoryEventHandler _handler;
 
-    public SubcategoryWasCreatedConsumer(INotificationHandler<SubcategoryWasCreated> handler) =>
+    public SubcategoryWasCreatedConsumer(IAttachSubCategoryEventHandler handler) =>
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
     public Task Consume(ConsumeContext<SubcategoryWasCreated> context) =>

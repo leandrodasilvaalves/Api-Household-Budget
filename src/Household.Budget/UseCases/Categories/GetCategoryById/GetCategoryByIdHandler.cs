@@ -1,10 +1,14 @@
 ﻿using Household.Budget.Contracts.Data;
 
-using MediatR;
 
 namespace Household.Budget.UseCases.Categories.GetCategoryById;
 
-public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdRequest, GetCategoryByIdResponse>
+public interface IGetCategoryByIdHandler
+{
+    Task<GetCategoryByIdResponse> Handle(GetCategoryByIdRequest request, CancellationToken cancellationToken);
+}
+
+public class GetCategoryByIdHandler : IGetCategoryByIdHandler
 {
     private readonly ICategoryRepository _categoryRepository;
 

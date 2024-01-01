@@ -2,32 +2,36 @@
 
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget.UseCases.Identity.LoginUser;
 
-public class LoginUserRequestHandler : IRequestHandler<LoginUserRequest, LoginUserResponse>
+public interface ILoginUserRequestHandler
+{
+    Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken);
+}
+
+
+public class LoginUserRequestHandler : ILoginUserRequestHandler
 {
     private readonly SignInManager<AppIdentityUser> _signInManager;
-    private readonly IMediator _mediator;
+    private readonly IGenerateAccessTokenRequestHandler _tokenHandler;
 
-    public LoginUserRequestHandler(SignInManager<AppIdentityUser> signInManager, IMediator mediator)
+    public LoginUserRequestHandler(SignInManager<AppIdentityUser> signInManager, IGenerateAccessTokenRequestHandler tokenHandler)
     {
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _tokenHandler = tokenHandler ?? throw new ArgumentNullException(nameof(tokenHandler));
     }
 
     public async Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken)
     {
         var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, true, false);
-        return result.Succeeded ? await GenerateJwtToken(request) : ReturnLoginUserResponseError(result);
+        return result.Succeeded ? await GenerateJwtToken(request, cancellationToken) : ReturnLoginUserResponseError(result);
     }
 
-    private async Task<LoginUserResponse> GenerateJwtToken(LoginUserRequest request)
+    private async Task<LoginUserResponse> GenerateJwtToken(LoginUserRequest request, CancellationToken cancellationToken)
     {
-        var accessTokenResponse = await _mediator.Send(new GenerateAccessTokenRequest(request.UserName));
+        var accessTokenResponse = await _tokenHandler.Handle(new GenerateAccessTokenRequest(request.UserName), cancellationToken);
         return new LoginUserResponse(accessTokenResponse);
     }
 

@@ -2,22 +2,26 @@
 
 using Household.Budget.Contracts.Extensions;
 using Household.Budget.Contracts.Models;
-
-using MediatR;
+using Household.Budget.UseCases.Identity.LoginUser;
 
 using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget;
 
-public class ChangeUserPasswordHandler : IRequestHandler<ChangeUserPasswordRequest, ChangeUserPasswordResponse>
+public interface IChangeUserPasswordHandler
+{
+    public Task<ChangeUserPasswordResponse> Handle(ChangeUserPasswordRequest request, CancellationToken cancellationToken);
+}
+
+public class ChangeUserPasswordHandler : IChangeUserPasswordHandler
 {
     private readonly UserManager<AppIdentityUser> _userManager;
-    private readonly IMediator _mediator;
+    private readonly ILoginUserRequestHandler _loginHandler;
 
-    public ChangeUserPasswordHandler(UserManager<AppIdentityUser> userManager, IMediator mediator)
+    public ChangeUserPasswordHandler(UserManager<AppIdentityUser> userManager, ILoginUserRequestHandler loginHandler)
     {
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _loginHandler = loginHandler ?? throw new ArgumentNullException(nameof(loginHandler));
     }
 
     public async Task<ChangeUserPasswordResponse> Handle(ChangeUserPasswordRequest request, CancellationToken cancellationToken)
@@ -27,7 +31,7 @@ public class ChangeUserPasswordHandler : IRequestHandler<ChangeUserPasswordReque
         // TODO: Atualizar packages relacionados a Identity e Raven e tentar utilizar o metodo correto futuramente
         // var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-        var loginResult = await _mediator.Send(new LoginUserRequest { UserName = user.UserName, Password = request.CurrentPassword });
+        var loginResult = await _loginHandler.Handle(new LoginUserRequest { UserName = user.UserName, Password = request.CurrentPassword }, cancellationToken);
         if (loginResult.IsSuccess)
         {
             await _userManager.DeleteAsync(user);

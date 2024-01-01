@@ -1,11 +1,9 @@
 ﻿using Household.Budget.Contracts.Models;
-
-using MediatR;
 using Household.Budget.Contracts.Constants;
 
 namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 
-public class CreateAdminUserRequest : Request, IRequest<CreateAdminUserResponse>
+public class CreateAdminUserRequest : Request
 {
     public CreateAdminUserRequest(string userId,
                                   string fullName,

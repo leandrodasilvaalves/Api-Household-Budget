@@ -6,8 +6,6 @@ using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 using MassTransit;
 
-using MediatR;
-
 namespace Household.Budget.Api.HostedServices;
 
 public class DatabaseCreatorService : BackgroundService
@@ -49,11 +47,11 @@ public class DatabaseCreatorService : BackgroundService
         if (_configuration.GetValue<bool>("Identity:RootUser:Enabled") is true)
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            var mediator = scope.ServiceProvider.GetService<IMediator>()
-                ?? throw new ArgumentNullException(nameof(IMediator));
+            var handler = scope.ServiceProvider.GetService<ICreateAdminUserHandler>()
+                ?? throw new ArgumentNullException(nameof(ICreateAdminUserHandler));
 
             var request = _configuration.GetSection("Identity:RootUser:Request").Get<CreateAdminUserRequest>();
-            var response = await mediator.Send(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
+            var response = await handler.Handle(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
             if (response.IsSuccess)
             {
                 _logger.LogInformation("Root user was created successfully.");

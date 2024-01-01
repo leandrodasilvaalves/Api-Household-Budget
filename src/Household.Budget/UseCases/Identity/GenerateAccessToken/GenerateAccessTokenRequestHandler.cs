@@ -5,15 +5,18 @@ using Household.Budget.Api.Config;
 using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Household.Budget;
 
-public class GenerateAccessTokenRequestHandler : IRequestHandler<GenerateAccessTokenRequest, GenerateAccessTokenResponse>
+public interface IGenerateAccessTokenRequestHandler
+{
+    Task<GenerateAccessTokenResponse> Handle(GenerateAccessTokenRequest request, CancellationToken cancellationToken);
+}
+
+public class GenerateAccessTokenRequestHandler : IGenerateAccessTokenRequestHandler
 {
   private readonly UserManager<AppIdentityUser> _userManager;
   private readonly JwtSettings _settings;

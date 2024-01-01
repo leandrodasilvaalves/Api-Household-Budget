@@ -1,16 +1,15 @@
 using Household.Budget.Contracts.Events;
+using Household.Budget.UseCases.Categories.EventHandlers;
 
 using MassTransit;
-
-using MediatR;
 
 namespace Household.Budget.Infra.Consumers;
 
 public class SubcategoryChangedCategoryConsumer : IConsumer<SubcategoryChangedCategory>
 {
-    private readonly INotificationHandler<SubcategoryChangedCategory> _handler;
+    private readonly ISubcategoryChangeCategoryEventHandler _handler;
 
-    public SubcategoryChangedCategoryConsumer(INotificationHandler<SubcategoryChangedCategory> handler) => 
+    public SubcategoryChangedCategoryConsumer(ISubcategoryChangeCategoryEventHandler handler) => 
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
     public Task Consume(ConsumeContext<SubcategoryChangedCategory> context) => 

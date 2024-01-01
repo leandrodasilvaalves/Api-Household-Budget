@@ -6,11 +6,14 @@ using Household.Budget.Contracts.Models;
 
 using MassTransit;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Categories.UpdateSubcategory;
 
-public class UpdateSubcategoryHandler : IRequestHandler<UpdateSubcategoryRequest, UpdateSubcategoryResponse>
+public interface IUpdateSubcategoryHandler
+{
+    Task<UpdateSubcategoryResponse> Handle(UpdateSubcategoryRequest request, CancellationToken cancellationToken);
+}
+
+public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
 {
     private readonly ISubcategoryRepository _subcategoryRepository;
     private readonly ICategoryRepository _categoryRepository;
@@ -18,7 +21,6 @@ public class UpdateSubcategoryHandler : IRequestHandler<UpdateSubcategoryRequest
 
     public UpdateSubcategoryHandler(ISubcategoryRepository subcategoryRepository,
                                     ICategoryRepository categoryRepository,
-                                    IMediator mediator,
                                     IBus bus)
     {
         _subcategoryRepository = subcategoryRepository ?? throw new ArgumentNullException(nameof(subcategoryRepository));

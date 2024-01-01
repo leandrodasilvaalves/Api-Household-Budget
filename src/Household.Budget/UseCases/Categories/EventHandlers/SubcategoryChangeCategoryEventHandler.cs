@@ -2,11 +2,14 @@ using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Categories.EventHandlers
 {
-    public class SubcategoryChangeCategoryEventHandler : INotificationHandler<SubcategoryChangedCategory>
+    public interface ISubcategoryChangeCategoryEventHandler
+    {
+        Task Handle(SubcategoryChangedCategory notification, CancellationToken cancellationToken);
+    }
+
+    public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryEventHandler
     {
         private readonly ICategoryRepository _repository;
 
@@ -25,7 +28,7 @@ namespace Household.Budget.UseCases.Categories.EventHandlers
             return Task.CompletedTask;
         }
 
-        public async Task HandleNewCategory(Subcategory subcategory, CancellationToken cancellationToken)
+        private async Task HandleNewCategory(Subcategory subcategory, CancellationToken cancellationToken)
         {
             var category = await _repository.GetByIdAsync(subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
             if (category is not null)
@@ -35,7 +38,7 @@ namespace Household.Budget.UseCases.Categories.EventHandlers
             }
         }
 
-        public async Task HandleOldCategory(Subcategory subcategory, string categoryId, CancellationToken cancellationToken)
+        private async Task HandleOldCategory(Subcategory subcategory, string categoryId, CancellationToken cancellationToken)
         {
             var category = await _repository.GetByIdAsync(categoryId ?? "", subcategory.UserId ?? "", cancellationToken);
             if (category is not null)

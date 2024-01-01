@@ -1,10 +1,15 @@
 using Household.Budget.Contracts.Data;
 
-using MediatR;
 
 namespace Household.Budget.UseCases.Categories.CreateCategories;
 
-public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, CreateCategoryResponse>
+
+public interface ICreateCategoryHandler
+{
+    Task<CreateCategoryResponse> Handle(CreateCategoryRequest request, CancellationToken cancellationToken);
+}
+
+public class CreateCategoryHandler : ICreateCategoryHandler
 {
     private readonly ICategoryRepository _repository;
 

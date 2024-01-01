@@ -3,13 +3,16 @@ using Flunt.Notifications;
 using Household.Budget.Contracts.Extensions;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget.UseCases.Identity.RegisterUser;
 
-public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, RegisterUserResponse>
+public interface IRegisterUserHandler
+{
+    Task<RegisterUserResponse> Handle(RegisterUserRequest request, CancellationToken cancellationToken);
+}
+
+public class RegisterUserHandler : IRegisterUserHandler
 {
     private readonly UserManager<AppIdentityUser> _userManager;
 

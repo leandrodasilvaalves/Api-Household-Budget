@@ -1,11 +1,9 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
-public class UpdateCategoryRequest : Request, IRequest<UpdateCategoryResponse>
+public class UpdateCategoryRequest : Request
 {
     public Guid Id { get; private set; }
     public string Name { get; set; } = "";

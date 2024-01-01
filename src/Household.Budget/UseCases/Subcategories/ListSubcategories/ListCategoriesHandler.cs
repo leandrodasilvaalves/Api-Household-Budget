@@ -1,10 +1,13 @@
 ﻿using Household.Budget.Contracts.Data;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Subcategories.ListSubcategories;
 
-public class ListSubcategoriesHandler : IRequestHandler<ListSubcategoriesRequest, ListSubcategoriesResponse>
+public interface IListSubcategoriesHandler
+{
+    Task<ListSubcategoriesResponse> Handle(ListSubcategoriesRequest request, CancellationToken cancellationToken);
+}
+
+public class ListSubcategoriesHandler : IListSubcategoriesHandler
 {
     private readonly ISubcategoryRepository _repository;
 
