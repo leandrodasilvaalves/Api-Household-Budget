@@ -2,7 +2,7 @@ using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
 using Household.Budget.Contracts.Models;
 
-namespace Household.Budget.UseCases.Categories.EventHandlers;
+namespace Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCategory;
 
 public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryEventHandler
 {

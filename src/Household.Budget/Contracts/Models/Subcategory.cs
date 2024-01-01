@@ -1,4 +1,6 @@
-﻿namespace Household.Budget.Contracts.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Household.Budget.Contracts.Models;
 
 public class Subcategory : Model
 {
@@ -6,8 +8,15 @@ public class Subcategory : Model
     public CategoryBranch Category { get; set; }
 }
 
-public readonly struct CategoryBranch(string? id, string? name)
+public readonly struct CategoryBranch
 {
-    public string? Id { get; } = id;
-    public string? Name { get; } = name;
+    [JsonConstructor]
+    public CategoryBranch(string? id, string? name)
+    {
+        Id = id;
+        Name = name;
+    }
+
+    public string? Id { get; }
+    public string? Name { get; }
 }

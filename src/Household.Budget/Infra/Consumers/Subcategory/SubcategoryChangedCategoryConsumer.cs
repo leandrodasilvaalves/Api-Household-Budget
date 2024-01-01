@@ -1,5 +1,5 @@
 using Household.Budget.Contracts.Events;
-using Household.Budget.UseCases.Categories.EventHandlers;
+using Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCategory;
 
 using MassTransit;
 

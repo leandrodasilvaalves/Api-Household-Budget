@@ -1,5 +1,7 @@
 using Household.Budget.UseCases.Categories.CreateCategories;
-using Household.Budget.UseCases.Categories.EventHandlers;
+using Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
+using Household.Budget.UseCases.Categories.EventHandlers.DetachSubcategory;
+using Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCategory;
 using Household.Budget.UseCases.Categories.GetCategoryById;
 using Household.Budget.UseCases.Categories.GetSubcategoryById;
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
@@ -25,17 +27,17 @@ public static class UseCasesExtensions
 
     private static void AddIdentity(this IServiceCollection services)
     {
-        services.AddSingleton<IChangeUserPasswordHandler, ChangeUserPasswordHandler>();
-        services.AddSingleton<ICreateAdminUserHandler, CreateAdminUserHandler>();
-        services.AddSingleton<IGenerateAccessTokenRequestHandler, GenerateAccessTokenRequestHandler>();
-        services.AddSingleton<ILoginUserRequestHandler, LoginUserRequestHandler>();
-        services.AddSingleton<IRegisterUserHandler, RegisterUserHandler>();
+        services.AddScoped<IChangeUserPasswordHandler, ChangeUserPasswordHandler>();
+        services.AddScoped<ICreateAdminUserHandler, CreateAdminUserHandler>();
+        services.AddScoped<IGenerateAccessTokenRequestHandler, GenerateAccessTokenRequestHandler>();
+        services.AddScoped<ILoginUserRequestHandler, LoginUserRequestHandler>();
+        services.AddScoped<IRegisterUserHandler, RegisterUserHandler>();
     }
 
     private static void AddCategories(this IServiceCollection services)
     {
         services.AddSingleton<ISubcategoryChangeCategoryEventHandler, SubcategoryChangeCategoryEventHandler>();
-        services.AddSingleton<IAttachSubCategoryEventHandler, AttachSubCategoryEventHandler>();
+        services.AddSingleton<IAttachSubcategoryEventHandler, AttachSubcategoryEventHandler>();
         services.AddSingleton<IDetachSubcategoryEventHandler, DetachSubcategoryEventHandler>();
         services.AddSingleton<ICreateCategoryHandler, CreateCategoryHandler>();
         services.AddSingleton<IGetCategoryByIdHandler, GetCategoryByIdHandler>();

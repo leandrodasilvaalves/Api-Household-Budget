@@ -2,14 +2,14 @@ using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
 
 
-namespace Household.Budget.UseCases.Categories.EventHandlers;
+namespace Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
 
-public class AttachSubCategoryEventHandler : IAttachSubCategoryEventHandler
+public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
 {
     private readonly ICategoryRepository _repository;
     private static readonly SemaphoreSlim Semaphore = new(1, 1);
 
-    public AttachSubCategoryEventHandler(ICategoryRepository repository)
+    public AttachSubcategoryEventHandler(ICategoryRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }

@@ -2,7 +2,7 @@ using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
 
 
-namespace Household.Budget.UseCases.Categories.EventHandlers;
+namespace Household.Budget.UseCases.Categories.EventHandlers.DetachSubcategory;
 
 public class DetachSubcategoryEventHandler : IDetachSubcategoryEventHandler
 {
