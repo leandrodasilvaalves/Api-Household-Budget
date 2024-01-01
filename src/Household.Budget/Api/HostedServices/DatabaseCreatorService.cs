@@ -6,7 +6,7 @@ using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 using MediatR;
 
-namespace Household.Budget;
+namespace Household.Budget.Api.HostedServices;
 
 public class DatabaseCreatorService : BackgroundService
 {

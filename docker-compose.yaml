@@ -12,9 +12,16 @@ services:
       - 7086:443
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNET_ENV}
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
       ravendb:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/hc"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 2s
 
   ravendb:
     container_name: ${PREFIX_CONTAINERS}.ravendb

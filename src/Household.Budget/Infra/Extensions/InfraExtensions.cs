@@ -1,3 +1,4 @@
+using Household.Budget.Api.HostedServices;
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Models;
 using Household.Budget.Infra.Data.Context;
@@ -16,7 +17,7 @@ namespace Household.Budget.Infra.Extensions
             services.AddIdentityProvider(config);
         }
 
-        private static void AddRavenDb(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddRavenDb(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<RavenConfig>(config.GetSection(RavenConfig.SectionName));
             services.AddSingleton<IRavenDbContext, RavenDbContext>();
@@ -25,6 +26,7 @@ namespace Household.Budget.Infra.Extensions
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
             services.AddHostedService<DatabaseCreatorService>();
+            return services;
         }
 
         public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
