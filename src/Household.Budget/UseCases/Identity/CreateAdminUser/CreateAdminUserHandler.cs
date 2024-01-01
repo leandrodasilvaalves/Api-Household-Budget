@@ -7,11 +7,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 
-public interface ICreateAdminUserHandler
-{
-    Task<CreateAdminUserResponse> Handle(CreateAdminUserRequest request, CancellationToken cancellationToken);
-}
-
 public class CreateAdminUserHandler : ICreateAdminUserHandler
 {
     private readonly UserManager<AppIdentityUser> _userManager;

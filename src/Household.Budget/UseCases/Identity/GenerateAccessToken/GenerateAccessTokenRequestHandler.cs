@@ -11,11 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Household.Budget;
 
-public interface IGenerateAccessTokenRequestHandler
-{
-    Task<GenerateAccessTokenResponse> Handle(GenerateAccessTokenRequest request, CancellationToken cancellationToken);
-}
-
 public class GenerateAccessTokenRequestHandler : IGenerateAccessTokenRequestHandler
 {
   private readonly UserManager<AppIdentityUser> _userManager;

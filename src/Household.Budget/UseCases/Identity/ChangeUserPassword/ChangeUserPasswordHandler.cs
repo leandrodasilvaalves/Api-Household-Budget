@@ -8,11 +8,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget;
 
-public interface IChangeUserPasswordHandler
-{
-    public Task<ChangeUserPasswordResponse> Handle(ChangeUserPasswordRequest request, CancellationToken cancellationToken);
-}
-
 public class ChangeUserPasswordHandler : IChangeUserPasswordHandler
 {
     private readonly UserManager<AppIdentityUser> _userManager;

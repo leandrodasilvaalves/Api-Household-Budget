@@ -4,11 +4,6 @@ using Household.Budget.Contracts.Events;
 
 namespace Household.Budget.UseCases.Categories.EventHandlers;
 
-public interface IAttachSubCategoryEventHandler
-{
-    Task Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken);
-}
-
 public class AttachSubCategoryEventHandler : IAttachSubCategoryEventHandler
 {
     private readonly ICategoryRepository _repository;

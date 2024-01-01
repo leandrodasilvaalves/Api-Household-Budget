@@ -2,11 +2,6 @@
 
 namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
-public interface IUpdateCategoryHandler
-{
-    Task<UpdateCategoryResponse> Handle(UpdateCategoryRequest request, CancellationToken cancellationToken);
-}
-
 public class UpdateCategoryHandler : IUpdateCategoryHandler
 {
     private readonly ICategoryRepository _repository;

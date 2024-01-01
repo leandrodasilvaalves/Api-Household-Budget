@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 using Household.Budget.Api.Config;
 using Household.Budget.Api.Controllers.Filters;
+using Household.Budget.Api.Extensions;
 using Household.Budget.Api.HealthCheck;
 using Household.Budget.Api.Middlewares;
 using Household.Budget.Infra.Extensions;
@@ -25,6 +26,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfra(builder.Configuration);
+builder.Services.AddUseCases();
 builder.Services.ConfigureIdentity(builder.Configuration);
 builder.Services.ConfigureJwt(builder.Configuration);
 

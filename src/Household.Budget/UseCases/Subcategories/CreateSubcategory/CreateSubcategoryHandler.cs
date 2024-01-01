@@ -6,11 +6,6 @@ using MassTransit;
 
 namespace Household.Budget.UseCases.Subcategories.CreateSubcategory;
 
-public interface ICreateSubcategoryHandler
-{
-    Task<CreateSubcategoryResponse> Handle(CreateSubcategoryRequest request, CancellationToken cancellationToken);
-}
-
 public class CreateSubcategoryHandler : ICreateSubcategoryHandler
 {
     private readonly ISubcategoryRepository _subcategoryRepository;

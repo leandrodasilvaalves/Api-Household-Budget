@@ -3,11 +3,6 @@
 
 namespace Household.Budget.UseCases.Categories.GetCategoryById;
 
-public interface IGetCategoryByIdHandler
-{
-    Task<GetCategoryByIdResponse> Handle(GetCategoryByIdRequest request, CancellationToken cancellationToken);
-}
-
 public class GetCategoryByIdHandler : IGetCategoryByIdHandler
 {
     private readonly ICategoryRepository _categoryRepository;

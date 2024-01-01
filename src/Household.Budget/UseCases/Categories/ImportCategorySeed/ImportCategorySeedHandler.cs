@@ -7,11 +7,6 @@ using MassTransit;
 
 namespace Household.Budget.UseCases.Categories.ImportCategorySeed;
 
-public interface IImportCategorySeedHandler
-{
-    Task Handle(ImportCategorySeedRequest request, CancellationToken cancellationToken);
-}
-
 public class ImportCategorySeedHandler : IImportCategorySeedHandler
 {
     private readonly IBus _bus;

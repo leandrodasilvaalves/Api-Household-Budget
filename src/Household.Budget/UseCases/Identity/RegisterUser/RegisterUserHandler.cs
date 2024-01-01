@@ -7,11 +7,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Household.Budget.UseCases.Identity.RegisterUser;
 
-public interface IRegisterUserHandler
-{
-    Task<RegisterUserResponse> Handle(RegisterUserRequest request, CancellationToken cancellationToken);
-}
-
 public class RegisterUserHandler : IRegisterUserHandler
 {
     private readonly UserManager<AppIdentityUser> _userManager;

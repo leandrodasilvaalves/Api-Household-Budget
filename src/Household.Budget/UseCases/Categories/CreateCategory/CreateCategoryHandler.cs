@@ -3,12 +3,6 @@ using Household.Budget.Contracts.Data;
 
 namespace Household.Budget.UseCases.Categories.CreateCategories;
 
-
-public interface ICreateCategoryHandler
-{
-    Task<CreateCategoryResponse> Handle(CreateCategoryRequest request, CancellationToken cancellationToken);
-}
-
 public class CreateCategoryHandler : ICreateCategoryHandler
 {
     private readonly ICategoryRepository _repository;
