@@ -15,6 +15,7 @@ public static class InfraExtensions
     {
         services.AddRavenDb(config);
         services.AddIdentityProvider(config);
+        services.AddMassTransit(config);
     }
 
     public static IServiceCollection AddRavenDb(this IServiceCollection services, IConfiguration config)
