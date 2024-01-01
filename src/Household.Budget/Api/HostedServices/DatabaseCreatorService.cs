@@ -77,7 +77,7 @@ public class DatabaseCreatorService : BackgroundService
 
             var tasks = new List<Task>();
             var sendEndpoint = await _bus.GetPublishSendEndpoint<ImportCategorySeedRequest>();            
-            categories.ForEach(request => tasks.Add(sendEndpoint.Send(request.WithRootUserId(RootUserId), stoppingToken)));
+            categories.ForEach(request => tasks.Add(sendEndpoint.Send(request.WithRootUserId(rootUserId), stoppingToken)));
             await Task.WhenAll(tasks);
             _logger.LogInformation("Categories data seed was imported successfully.");
         }

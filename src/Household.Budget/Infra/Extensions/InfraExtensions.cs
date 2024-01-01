@@ -37,25 +37,4 @@ public static class InfraExtensions
             .AddIdentity<AppIdentityUser, IdentityRole>()
             .AddRavenDbIdentityStores<AppIdentityUser, IdentityRole>();
     }
-
-
-    private static void AddRavenDb(this IServiceCollection services, IConfiguration config)
-    {
-        services.Configure<RavenConfig>(config.GetSection(RavenConfig.SectionName));
-        services.AddSingleton<IRavenDbContext, RavenDbContext>();
-        services.AddSingleton<IDatabaseCreator, RavenDbContext>();
-        services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
-        services.AddSingleton<ICategoryRepository, CategoryRepository>();
-        services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
-        services.AddHostedService<DatabaseCreatorService>();
-    }
-
-    public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
-    {
-        services
-            .AddRavenDbDocStore()
-            .AddRavenDbAsyncSession()
-            .AddIdentity<AppIdentityUser, IdentityRole>()
-            .AddRavenDbIdentityStores<AppIdentityUser, IdentityRole>();
-    }
 }
