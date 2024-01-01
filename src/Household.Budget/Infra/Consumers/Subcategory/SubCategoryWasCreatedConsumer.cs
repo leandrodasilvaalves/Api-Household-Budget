@@ -1,4 +1,5 @@
 using Household.Budget.Contracts.Events;
+using Household.Budget.Contracts.Exceptions;
 using Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
 
 using MassTransit;
@@ -12,6 +13,10 @@ public class SubcategoryWasCreatedConsumer : IConsumer<SubcategoryWasCreated>
     public SubcategoryWasCreatedConsumer(IAttachSubcategoryEventHandler handler) =>
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
-    public Task Consume(ConsumeContext<SubcategoryWasCreated> context) =>
-        _handler.Handle(context.Message, context.CancellationToken);
+    public async Task Consume(ConsumeContext<SubcategoryWasCreated> context)
+    {
+        var response = await _handler.Handle(context.Message, context.CancellationToken);
+        if (response.IsSuccess == false)
+            throw new AttachSubcategoryExecption(response);
+    }
 }

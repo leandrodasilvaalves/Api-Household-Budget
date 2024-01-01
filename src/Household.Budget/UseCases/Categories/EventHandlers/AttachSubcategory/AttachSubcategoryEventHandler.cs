@@ -1,4 +1,5 @@
 using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
 
 
@@ -14,7 +15,7 @@ public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken)
+    public async Task<SubcategoryWasCreatedEventResponse> Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken)
     {
         await Semaphore.WaitAsync(cancellationToken);
 
@@ -26,8 +27,12 @@ public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
         {
             category.Subcategories.Add(new(subcategory.Id, subcategory.Name));
             await _repository.UpdateAsync(category, cancellationToken);
+            Semaphore.Release();
+            return new SubcategoryWasCreatedEventResponse(subcategory);
+            //TODO: melhorar design de código
         }
-        
+
         Semaphore.Release();
+        return new SubcategoryWasCreatedEventResponse(CategoryErrors.CATEGORY_NOT_FOUND);
     }
 }

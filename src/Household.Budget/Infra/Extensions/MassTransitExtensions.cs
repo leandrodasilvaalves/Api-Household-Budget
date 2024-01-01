@@ -33,18 +33,27 @@ public static class MassTransitExtensions
 
                 cfg.ReceiveEndpoint("subcategories.notifications", endpoint =>
                 {
-                    endpoint.ConfigureConsumer<SubcategoryWasCreatedConsumer>(context);
-                    endpoint.ConfigureConsumer<SubCategoryWasExcludedConsumer>(context);
-                    endpoint.ConfigureConsumer<SubcategoryChangedCategoryConsumer>(context);
+                    endpoint.CustomConfigureConsumer<SubcategoryWasCreatedConsumer>(context);
+                    endpoint.CustomConfigureConsumer<SubCategoryWasExcludedConsumer>(context);
+                    endpoint.CustomConfigureConsumer<SubcategoryChangedCategoryConsumer>(context);
                 });
 
                 cfg.ReceiveEndpoint("subcategories.requests", endpoint =>
                 {
-                    endpoint.ConfigureConsumer<ImportCategorySeedRequestConsumer>(context);
+                    endpoint.CustomConfigureConsumer<ImportCategorySeedRequestConsumer>(context);
                 });
 
                 cfg.ConfigureEndpoints(context);
             });
+        });
+    }
+
+    private static void CustomConfigureConsumer<T>(this IRabbitMqReceiveEndpointConfigurator endpoint,
+                                                   IBusRegistrationContext context) where T : class, IConsumer
+    {
+        endpoint.ConfigureConsumer<T>(context, consumer =>
+        {
+            consumer.UseMessageRetry(retry => retry.Interval(5, TimeSpan.FromSeconds(2)));
         });
     }
 }
