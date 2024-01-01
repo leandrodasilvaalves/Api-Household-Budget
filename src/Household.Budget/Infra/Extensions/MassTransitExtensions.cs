@@ -2,6 +2,7 @@ using System.Security.Authentication;
 
 using Household.Budget.Infra.Consumers;
 using Household.Budget.Infra.Consumers.Category;
+using Household.Budget.Infra.Consumers.Subcategory;
 
 using MassTransit;
 
@@ -18,6 +19,7 @@ public static class MassTransitExtensions
             bus.AddConsumer<SubCategoryWasExcludedConsumer>();
             bus.AddConsumer<SubcategoryChangedCategoryConsumer>();
             bus.AddConsumer<ImportCategorySeedRequestConsumer>();
+            bus.AddConsumer<CreateSubcategorySeedRequestConsumer>();
 
             bus.UsingRabbitMq((context, cfg) =>
             {
@@ -41,6 +43,7 @@ public static class MassTransitExtensions
                 cfg.ReceiveEndpoint("subcategories.requests", endpoint =>
                 {
                     endpoint.CustomConfigureConsumer<ImportCategorySeedRequestConsumer>(context);
+                    endpoint.CustomConfigureConsumer<CreateSubcategorySeedRequestConsumer>(context);
                 });
 
                 cfg.ConfigureEndpoints(context);

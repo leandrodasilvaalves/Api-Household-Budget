@@ -13,16 +13,13 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
     private readonly IBus _bus;
     private readonly ILogger<ImportCategorySeedHandler> _logger;
     private readonly ICreateCategoryHandler _createCategoryHandler;
-    private readonly ICreateSubcategoryHandler _createSubcategoryHandler;
 
     public ImportCategorySeedHandler(IBus bus, ILogger<ImportCategorySeedHandler> logger,
-                                     ICreateCategoryHandler createCategoryHandler,
-                                     ICreateSubcategoryHandler createSubcategoryHandler)
+                                     ICreateCategoryHandler createCategoryHandler)
     {
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _createCategoryHandler = createCategoryHandler ?? throw new ArgumentNullException(nameof(createCategoryHandler));
-        _createSubcategoryHandler = createSubcategoryHandler ?? throw new ArgumentNullException(nameof(createSubcategoryHandler));
     }
 
     public async Task Handle(ImportCategorySeedRequest request, CancellationToken cancellationToken)
@@ -37,15 +34,13 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
         if (categoryResponse.IsSuccess)
         {
             var categoryId = Guid.Parse(categoryResponse.Data?.Id ?? "");
-            var subcategoriesTasks = new List<Task>();
+            var sendEndpoint = await _bus.GetPublishSendEndpoint<CreateSubcategoryRequest>();
+            request.SubCategories.ForEach(subcategory => 
+                sendEndpoint.Send(new CreateSubcategoryRequest(subcategory.Name, categoryId), cancellationToken));
             
-            request.SubCategories.ForEach(subcategory =>
-                subcategoriesTasks.Add(
-                    _createSubcategoryHandler.Handle(
-                        new CreateSubcategoryRequest(subcategory.Name, categoryId), cancellationToken)));
-
-            await Task.WhenAll(subcategoriesTasks);
             _logger.LogInformation("Category has been imported: {0}", categoryResponse.Data?.Name);
+
+            //TODO: Incluir response para fluxo de resiliencia
         }
     }
 }
