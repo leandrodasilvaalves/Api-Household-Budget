@@ -20,6 +20,7 @@ public class ImportCategoriesDataSeedTests
 {
     private INetwork? Network { get; set; }
     private IContainer? RavenDb { get; set; }
+    private IContainer? RabbitMQ { get; set; }
     private IContainer? ApiContainer { get; set; }
     private IFutureDockerImage? ApiImage { get; set; }
     private List<ImportCategorySeedRequest> CategoriesConfig { get; set; } = [];
@@ -50,6 +51,7 @@ public class ImportCategoriesDataSeedTests
     {
         await CreateNetwork();
         await CreateRavenDbContainerAsync();
+        await CreateRabbitContainerAsync();
         await CreateApiImageAsync();
         await CreateApiContainerAsync();
         ReadAppSettingsJson();
@@ -62,7 +64,27 @@ public class ImportCategoriesDataSeedTests
             .WithCleanUp(true)
             .Build();
 
-        await Network.CreateAsync()
+        await Network
+            .CreateAsync()
+            .ConfigureAwait(false);
+    }
+
+    private async Task CreateRabbitContainerAsync()
+    {
+        RabbitMQ = new ContainerBuilder()
+            .WithName("rabbit")
+            .WithImage("rabbitmq:3-management")
+            .WithPortBinding(5672, 5672)
+            .WithPortBinding(15672, 15672)
+            .WithNetwork(Network)
+            .WithWaitStrategy(
+                Wait.ForUnixContainer()
+                .UntilPortIsAvailable(15672))
+            .WithCleanUp(true)
+            .Build();
+
+        await RabbitMQ
+            .StartAsync()
             .ConfigureAwait(false);
     }
 
@@ -86,7 +108,7 @@ public class ImportCategoriesDataSeedTests
             .WithNetwork(Network)
             .WithWaitStrategy(
                 Wait.ForUnixContainer().
-                    UntilHttpRequestIsSucceeded(request =>                    
+                    UntilHttpRequestIsSucceeded(request =>
                         request
                         .ForPort(8080)
                         .ForPath("/admin/stats")
@@ -94,7 +116,8 @@ public class ImportCategoriesDataSeedTests
             .WithCleanUp(true)
             .Build();
 
-        await RavenDb.StartAsync()
+        await RavenDb
+            .StartAsync()
             .ConfigureAwait(false);
     }
 
@@ -107,8 +130,9 @@ public class ImportCategoriesDataSeedTests
             .WithCleanUp(true)
             .Build();
 
-        await ApiImage.CreateAsync()
-         .ConfigureAwait(false);
+        await ApiImage
+            .CreateAsync()
+            .ConfigureAwait(false);
     }
 
     private async Task CreateApiContainerAsync()
@@ -119,12 +143,13 @@ public class ImportCategoriesDataSeedTests
             .WithPortBinding(5215, 80)
             .WithNetwork(Network)
             .WithEnvironment("RavenSettings__DatabaseName", "Household.Budget.Test")
-            .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Docker")            
+            .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Docker")
             .WithCleanUp(true)
             .Build();
 
-        await ApiContainer.StartAsync()
-           .ConfigureAwait(false);
+        await ApiContainer
+            .StartAsync()
+            .ConfigureAwait(false);
     }
 
     private void ReadAppSettingsJson()
