@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-using Household.Budget.Api.Config;
+using Household.Budget.Api.Extensions;
 using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Models;
 

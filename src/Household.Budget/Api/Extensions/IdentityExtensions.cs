@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Household.Budget.Api.Config;
+namespace Household.Budget.Api.Extensions;
 
-public static class IdentityConfig
+public static class IdentityExtensions
 {
     public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration config)
     {

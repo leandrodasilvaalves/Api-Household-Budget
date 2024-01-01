@@ -10,7 +10,7 @@ namespace Household.Budget.Api.HealthCheck
     {
         private readonly RavenConfig _ravenConfig;
 
-        public RavenDbHealthCheck(ConfigurationManager configuration)
+        public RavenDbHealthCheck(IConfiguration configuration)
         {
             if (configuration is null)
             {

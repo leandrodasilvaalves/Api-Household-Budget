@@ -1,4 +1,3 @@
-using Household.Budget.Api.HostedServices;
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Models;
 using Household.Budget.Infra.Data.Context;
@@ -26,7 +25,6 @@ public static class InfraExtensions
         services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
         services.AddSingleton<ICategoryRepository, CategoryRepository>();
         services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
-        services.AddHostedService<DatabaseCreatorService>();
         return services;
     }
 

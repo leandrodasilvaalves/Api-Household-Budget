@@ -3,9 +3,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Household.Budget.Api.Config;
+namespace Household.Budget.Api.Extensions;
 
-public static class JwtConfig
+public static class JwtExtensions
 {
     public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration config)
     {
