@@ -1,8 +1,7 @@
 using System.Net;
 
+using Household.Budget.UseCases.Identity.LoginUser;
 using Household.Budget.UseCases.Identity.RegisterUser;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,28 +9,29 @@ namespace Household.Budget.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/identity")]
-public class IdentityController(IMediator mediator) : ControllerBase
+public class IdentityController : ControllerBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest request)
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest request,
+                                                   [FromServices] IRegisterUserHandler handler)
     {
-        var result = await _mediator.Send(request);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.Created);
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest request)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest request,
+                                                [FromServices] ILoginUserRequestHandler handler)
     {
-        var result = await _mediator.Send(request);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.OK);
     }
 
     [HttpPut("change-password")]
-    public async Task<IActionResult> ChangePasswordAysnc([FromBody]ChangeUserPasswordRequest request)
+    public async Task<IActionResult> ChangePasswordAysnc([FromBody] ChangeUserPasswordRequest request,
+                                                         [FromServices] IChangeUserPasswordHandler handler)
     {
-        var result = await _mediator.Send(request);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.OK);
     }
 }

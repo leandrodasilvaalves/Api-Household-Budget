@@ -1,10 +1,8 @@
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 namespace Household.Budget;
 
-public class ChangeUserPasswordRequest : Request, IRequest<ChangeUserPasswordResponse>
+public class ChangeUserPasswordRequest : Request
 {
     public ChangeUserPasswordRequest(string currentPassword,
                                      string newPassword,

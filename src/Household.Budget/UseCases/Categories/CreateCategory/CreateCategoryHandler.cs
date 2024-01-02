@@ -1,10 +1,9 @@
 using Household.Budget.Contracts.Data;
 
-using MediatR;
 
 namespace Household.Budget.UseCases.Categories.CreateCategories;
 
-public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, CreateCategoryResponse>
+public class CreateCategoryHandler : ICreateCategoryHandler
 {
     private readonly ICategoryRepository _repository;
 
@@ -13,7 +12,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest, Crea
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<CreateCategoryResponse> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<CreateCategoryResponse> HandleAsync(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = request.ToModel();
         await _repository.CreateAsync(category, cancellationToken);

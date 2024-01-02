@@ -16,6 +16,8 @@ services:
     depends_on:
       ravendb:
         condition: service_healthy
+      rabbit:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/hc"]
       interval: 10s
@@ -42,5 +44,17 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/admin/stats"]
       interval: 10s
       timeout: 5s
+      retries: 3
+      start_period: 5s
+      
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: ${PREFIX_CONTAINERS}.rabbit
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
       retries: 3
       start_period: 5s

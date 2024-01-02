@@ -1,11 +1,9 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Categories.CreateCategories;
 
-public class CreateCategoryRequest : Request, IRequest<CreateCategoryResponse>
+public class CreateCategoryRequest : Request
 {
     public CreateCategoryRequest(string name,
                                  ModelOwner owner = default,

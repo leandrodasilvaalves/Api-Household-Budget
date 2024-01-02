@@ -1,8 +1,6 @@
-using MediatR;
-
 namespace Household.Budget.Contracts.Events;
 
-public interface IEvent<TData> : INotification
+public interface IEvent<TData>
 {
     public string Name { get; }
     public TData Data { get; }

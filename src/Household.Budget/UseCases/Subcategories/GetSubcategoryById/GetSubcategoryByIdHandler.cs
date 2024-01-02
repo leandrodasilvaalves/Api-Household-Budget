@@ -1,10 +1,8 @@
 ﻿using Household.Budget.Contracts.Data;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Categories.GetSubcategoryById;
 
-public class GetSubcategoryByIdHandler : IRequestHandler<GetSubcategoryByIdRequest, GetSubcategoryByIdResponse>
+public class GetSubcategoryByIdHandler : IGetSubcategoryByIdHandler
 {
     private readonly ISubcategoryRepository _repository;
 
@@ -13,7 +11,7 @@ public class GetSubcategoryByIdHandler : IRequestHandler<GetSubcategoryByIdReque
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<GetSubcategoryByIdResponse> Handle(GetSubcategoryByIdRequest request, CancellationToken cancellationToken)
+    public async Task<GetSubcategoryByIdResponse> HandleAsync(GetSubcategoryByIdRequest request, CancellationToken cancellationToken)
     {
         var subcategory = await _repository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
         return new GetSubcategoryByIdResponse(subcategory);

@@ -1,10 +1,8 @@
 using Household.Budget.Contracts.Enums;
 
-using MediatR;
-
 namespace Household.Budget.UseCases.Categories.ImportCategorySeed;
 
-public class ImportCategorySeedRequest : IRequest
+public class ImportCategorySeedRequest
 {
     public string Name { get; set; } = "";
     public CategoryType Type { get; set; } = default;

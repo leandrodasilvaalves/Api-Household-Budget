@@ -1,11 +1,8 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 
-
-using MediatR;
-
 namespace Household.Budget.UseCases.Subcategories.CreateSubcategory;
-public class CreateSubcategoryRequest(string name, Guid categoryId) : Request, IRequest<CreateSubcategoryResponse>
+public class CreateSubcategoryRequest(string name, Guid categoryId) : Request
 {
     public string Name { get; } = name;
 

@@ -1,11 +1,10 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
 
-using MediatR;
 
-namespace Household.Budget.UseCases.Categories.EventHandlers;
+namespace Household.Budget.UseCases.Categories.EventHandlers.DetachSubcategory;
 
-public class DetachSubcategoryEventHandler : INotificationHandler<SubCategoryWasExcluded>
+public class DetachSubcategoryEventHandler : IDetachSubcategoryEventHandler
 {
     private readonly ICategoryRepository _repository;
 
@@ -14,7 +13,7 @@ public class DetachSubcategoryEventHandler : INotificationHandler<SubCategoryWas
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task Handle(SubCategoryWasExcluded notification, CancellationToken cancellationToken)
+    public async Task HandleAsync(SubCategoryWasExcluded notification, CancellationToken cancellationToken)
     {
         var subcategory = notification.Data;
         var category = await _repository.GetByIdAsync(
