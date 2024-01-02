@@ -15,7 +15,7 @@ public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<SubcategoryWasCreatedEventResponse> Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken)
+    public async Task<SubcategoryWasCreatedEventResponse> HandleAsync(SubcategoryWasCreated notification, CancellationToken cancellationToken)
     {
         await Semaphore.WaitAsync(cancellationToken);
         var subcategory = notification.Data;

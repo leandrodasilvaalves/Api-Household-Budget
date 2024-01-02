@@ -13,7 +13,7 @@ public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryE
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public Task Handle(SubcategoryChangedCategory notification, CancellationToken cancellationToken)
+    public Task HandleAsync(SubcategoryChangedCategory notification, CancellationToken cancellationToken)
     {
         var subcategory = notification.Data;
 

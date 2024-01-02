@@ -12,7 +12,7 @@ public class GetCategoryByIdHandler : IGetCategoryByIdHandler
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
     }
 
-    public async Task<GetCategoryByIdResponse> Handle(GetCategoryByIdRequest request, CancellationToken cancellationToken)
+    public async Task<GetCategoryByIdResponse> HandleAsync(GetCategoryByIdRequest request, CancellationToken cancellationToken)
     {
         var category = await _categoryRepository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
         return new GetCategoryByIdResponse(category);

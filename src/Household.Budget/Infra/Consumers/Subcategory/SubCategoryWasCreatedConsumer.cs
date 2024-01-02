@@ -15,7 +15,7 @@ public class SubcategoryWasCreatedConsumer : IConsumer<SubcategoryWasCreated>
 
     public async Task Consume(ConsumeContext<SubcategoryWasCreated> context)
     {
-        var response = await _handler.Handle(context.Message, context.CancellationToken);
+        var response = await _handler.HandleAsync(context.Message, context.CancellationToken);
         if (response.IsSuccess == false)
             throw new AttachSubcategoryExecption(response);
     }

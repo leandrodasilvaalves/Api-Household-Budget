@@ -13,5 +13,5 @@ public class SubcategoryChangedCategoryConsumer : IConsumer<SubcategoryChangedCa
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
     public Task Consume(ConsumeContext<SubcategoryChangedCategory> context) => 
-        _handler.Handle(context.Message, context.CancellationToken);
+        _handler.HandleAsync(context.Message, context.CancellationToken);
 }

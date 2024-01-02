@@ -18,7 +18,7 @@ public class LoginUserRequestHandler : ILoginUserRequestHandler
         _tokenHandler = tokenHandler ?? throw new ArgumentNullException(nameof(tokenHandler));
     }
 
-    public async Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken)
+    public async Task<LoginUserResponse> HandleAsync(LoginUserRequest request, CancellationToken cancellationToken)
     {
         var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, true, false);
         return result.Succeeded ? await GenerateJwtToken(request, cancellationToken) : ReturnLoginUserResponseError(result);
@@ -26,7 +26,7 @@ public class LoginUserRequestHandler : ILoginUserRequestHandler
 
     private async Task<LoginUserResponse> GenerateJwtToken(LoginUserRequest request, CancellationToken cancellationToken)
     {
-        var accessTokenResponse = await _tokenHandler.Handle(new GenerateAccessTokenRequest(request.UserName), cancellationToken);
+        var accessTokenResponse = await _tokenHandler.HandleAsync(new GenerateAccessTokenRequest(request.UserName), cancellationToken);
         return new LoginUserResponse(accessTokenResponse);
     }
 

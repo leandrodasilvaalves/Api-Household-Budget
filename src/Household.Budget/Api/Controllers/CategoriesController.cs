@@ -18,7 +18,7 @@ public class CategoriesController : CustomControllerBase
     public async Task<IActionResult> GetAllAsync([FromQuery] ListCategoriesRequest request,
                                                  [FromServices] IListCategoriesHandler handler)
     {
-        var response = await handler.Handle(request, HttpContext.RequestAborted);
+        var response = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NoContent);
     }
 
@@ -26,7 +26,7 @@ public class CategoriesController : CustomControllerBase
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetCategoryByIdRequest request,
                                                   [FromServices] IGetCategoryByIdHandler handler)
     {
-        var response = await handler.Handle(request, HttpContext.RequestAborted);
+        var response = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NotFound);
     }
 
@@ -34,7 +34,7 @@ public class CategoriesController : CustomControllerBase
     public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request,
                                                  [FromServices] ICreateCategoryHandler handler)
     {
-        var result = await handler.Handle(request, HttpContext.RequestAborted);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.Created);
     }
 
@@ -42,7 +42,7 @@ public class CategoriesController : CustomControllerBase
     public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateCategoryRequest request,
                                                  [FromServices] IUpdateCategoryHandler handler)
     {
-        var result = await handler.Handle(request.WithId(id), HttpContext.RequestAborted);
+        var result = await handler.HandleAsync(request.WithId(id), HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.OK);
     }
 }

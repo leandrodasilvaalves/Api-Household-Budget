@@ -18,7 +18,7 @@ namespace Household.Budget.Api.Controllers
         public async Task<IActionResult> GetAllAsync([FromQuery] ListSubcategoriesRequest request,
                                                      [FromServices] IListSubcategoriesHandler handler)
         {
-            var response = await handler.Handle(request, HttpContext.RequestAborted);
+            var response = await handler.HandleAsync(request, HttpContext.RequestAborted);
             return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NoContent);
         }
 
@@ -26,7 +26,7 @@ namespace Household.Budget.Api.Controllers
         public async Task<IActionResult> GetByIdAsync([FromRoute] GetSubcategoryByIdRequest request,
                                                       [FromServices] IGetSubcategoryByIdHandler handler)
         {
-            var response = await handler.Handle(request, HttpContext.RequestAborted);
+            var response = await handler.HandleAsync(request, HttpContext.RequestAborted);
             return response.ToActionResult(HttpStatusCode.OK, HttpStatusCode.NotFound);
         }
 
@@ -34,7 +34,7 @@ namespace Household.Budget.Api.Controllers
         public async Task<IActionResult> CreateAsync([FromBody] CreateSubcategoryRequest request,
                                                      [FromServices] ICreateSubcategoryHandler handler)
         {
-            var result = await handler.Handle(request, HttpContext.RequestAborted);
+            var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
             return result.ToActionResult(HttpStatusCode.Created);
         }
 
@@ -42,7 +42,7 @@ namespace Household.Budget.Api.Controllers
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateSubcategoryRequest request,
                                                      [FromServices] IUpdateSubcategoryHandler handler)
         {
-            var result = await handler.Handle(request.WithId(id), HttpContext.RequestAborted);
+            var result = await handler.HandleAsync(request.WithId(id), HttpContext.RequestAborted);
             return result.ToActionResult(HttpStatusCode.OK);
         }
     }

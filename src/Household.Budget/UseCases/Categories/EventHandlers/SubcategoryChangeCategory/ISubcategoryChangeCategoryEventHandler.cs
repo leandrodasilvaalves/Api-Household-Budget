@@ -4,5 +4,5 @@ namespace Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCa
 
 public interface ISubcategoryChangeCategoryEventHandler
 {
-    Task Handle(SubcategoryChangedCategory notification, CancellationToken cancellationToken);
+    Task HandleAsync(SubcategoryChangedCategory notification, CancellationToken cancellationToken);
 }

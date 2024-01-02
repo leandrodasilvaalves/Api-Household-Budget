@@ -12,7 +12,7 @@ public class CreateCategoryHandler : ICreateCategoryHandler
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<CreateCategoryResponse> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<CreateCategoryResponse> HandleAsync(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = request.ToModel();
         await _repository.CreateAsync(category, cancellationToken);

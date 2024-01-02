@@ -11,7 +11,7 @@ public class ListCategoriesHandler : IListCategoriesHandler
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
     }
 
-    public async Task<ListCategoriesResponse> Handle(ListCategoriesRequest request, CancellationToken cancellationToken)
+    public async Task<ListCategoriesResponse> HandleAsync(ListCategoriesRequest request, CancellationToken cancellationToken)
     {
         var result = await _categoryRepository.GetAllAsync(request.PageSize, request.PageNumber, request.UserId, cancellationToken);
         return new ListCategoriesResponse(result);

@@ -11,7 +11,7 @@ public class UpdateCategoryHandler : IUpdateCategoryHandler
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<UpdateCategoryResponse> Handle(UpdateCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<UpdateCategoryResponse> HandleAsync(UpdateCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = request.ToModel();
         await _repository.UpdateAsync(category, cancellationToken);

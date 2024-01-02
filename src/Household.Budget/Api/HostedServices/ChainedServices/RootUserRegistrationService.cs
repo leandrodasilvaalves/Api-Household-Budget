@@ -32,7 +32,7 @@ public class RootUserRegistrationService : IBackgroundService
                 ?? throw new ArgumentNullException(nameof(ICreateAdminUserHandler));
 
             var request = _configuration.GetSection("Identity:RootUser:Request").Get<CreateAdminUserRequest>();
-            var response = await handler.Handle(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
+            var response = await handler.HandleAsync(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
             if (response.IsSuccess)
             {
                 _logger.LogInformation("Root user was created successfully.");

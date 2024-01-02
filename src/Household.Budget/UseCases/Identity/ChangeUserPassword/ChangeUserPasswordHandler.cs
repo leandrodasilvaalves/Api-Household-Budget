@@ -19,14 +19,14 @@ public class ChangeUserPasswordHandler : IChangeUserPasswordHandler
         _loginHandler = loginHandler ?? throw new ArgumentNullException(nameof(loginHandler));
     }
 
-    public async Task<ChangeUserPasswordResponse> Handle(ChangeUserPasswordRequest request, CancellationToken cancellationToken)
+    public async Task<ChangeUserPasswordResponse> HandleAsync(ChangeUserPasswordRequest request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(request.UserId) ?? new();
         // Fiz desta forma porque o método "ChangePasswordAsync" não está atualizando a senha
         // TODO: Atualizar packages relacionados a Identity e Raven e tentar utilizar o metodo correto futuramente
         // var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-        var loginResult = await _loginHandler.Handle(new LoginUserRequest { UserName = user.UserName, Password = request.CurrentPassword }, cancellationToken);
+        var loginResult = await _loginHandler.HandleAsync(new LoginUserRequest { UserName = user.UserName, Password = request.CurrentPassword }, cancellationToken);
         if (loginResult.IsSuccess)
         {
             await _userManager.DeleteAsync(user);

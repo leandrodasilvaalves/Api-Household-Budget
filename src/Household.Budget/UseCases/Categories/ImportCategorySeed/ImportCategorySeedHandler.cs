@@ -22,7 +22,7 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
         _createCategoryHandler = createCategoryHandler ?? throw new ArgumentNullException(nameof(createCategoryHandler));
     }
 
-    public async Task<ImportCategorySeedResponse> Handle(ImportCategorySeedRequest request, CancellationToken cancellationToken)
+    public async Task<ImportCategorySeedResponse> HandleAsync(ImportCategorySeedRequest request, CancellationToken cancellationToken)
     {
         var createCategoryRequest = new CreateCategoryRequest(request.Name, ModelOwner.SYSTEM, request.Type)
         {
@@ -30,7 +30,7 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
             UserClaims = [IdentityClaims.ADMIN_WRITER]
         };
 
-        var categoryResponse = await _createCategoryHandler.Handle(createCategoryRequest, cancellationToken);
+        var categoryResponse = await _createCategoryHandler.HandleAsync(createCategoryRequest, cancellationToken);
         if (categoryResponse.IsSuccess)
         {
             var categoryId = Guid.Parse(categoryResponse.Data?.Id ?? "");

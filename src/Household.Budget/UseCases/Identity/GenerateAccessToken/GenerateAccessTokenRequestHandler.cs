@@ -25,7 +25,7 @@ public class GenerateAccessTokenRequestHandler : IGenerateAccessTokenRequestHand
     _settings = settings.CurrentValue;
   }
 
-  public async Task<GenerateAccessTokenResponse> Handle(GenerateAccessTokenRequest request, CancellationToken cancellationToken)
+  public async Task<GenerateAccessTokenResponse> HandleAsync(GenerateAccessTokenRequest request, CancellationToken cancellationToken)
   {
     var tokenHandler = new JwtSecurityTokenHandler();
     var token = tokenHandler.CreateToken(new SecurityTokenDescriptor

@@ -16,7 +16,7 @@ public class RegisterUserHandler : IRegisterUserHandler
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     }
 
-    public async Task<RegisterUserResponse> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
+    public async Task<RegisterUserResponse> HandleAsync(RegisterUserRequest request, CancellationToken cancellationToken)
     {
         var appUser = request.ToModel();
         var result = await _userManager.CreateAsync(appUser, request.Password);

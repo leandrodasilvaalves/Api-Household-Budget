@@ -15,7 +15,7 @@ public class IdentityController : ControllerBase
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest request,
                                                    [FromServices] IRegisterUserHandler handler)
     {
-        var result = await handler.Handle(request, HttpContext.RequestAborted);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.Created);
     }
 
@@ -23,7 +23,7 @@ public class IdentityController : ControllerBase
     public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest request,
                                                 [FromServices] ILoginUserRequestHandler handler)
     {
-        var result = await handler.Handle(request, HttpContext.RequestAborted);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.OK);
     }
 
@@ -31,7 +31,7 @@ public class IdentityController : ControllerBase
     public async Task<IActionResult> ChangePasswordAysnc([FromBody] ChangeUserPasswordRequest request,
                                                          [FromServices] IChangeUserPasswordHandler handler)
     {
-        var result = await handler.Handle(request, HttpContext.RequestAborted);
+        var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return result.ToActionResult(HttpStatusCode.OK);
     }
 }

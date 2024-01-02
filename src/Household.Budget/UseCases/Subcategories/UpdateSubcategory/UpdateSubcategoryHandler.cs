@@ -23,7 +23,7 @@ public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
-    public async Task<UpdateSubcategoryResponse> Handle(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
+    public async Task<UpdateSubcategoryResponse> HandleAsync(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
     {
         var categoryTask = _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
         var subcategoryTask = _subcategoryRepository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);

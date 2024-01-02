@@ -21,7 +21,7 @@ public class CreateSubcategoryHandler : ICreateSubcategoryHandler
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
-    public async Task<CreateSubcategoryResponse> Handle(CreateSubcategoryRequest request, CancellationToken cancellationToken)
+    public async Task<CreateSubcategoryResponse> HandleAsync(CreateSubcategoryRequest request, CancellationToken cancellationToken)
     {
         var category = await _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
         if (category is null)

@@ -16,7 +16,7 @@ public class CreateAdminUserHandler : ICreateAdminUserHandler
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     }
 
-    public async Task<CreateAdminUserResponse> Handle(CreateAdminUserRequest request, CancellationToken cancellationToken)
+    public async Task<CreateAdminUserResponse> HandleAsync(CreateAdminUserRequest request, CancellationToken cancellationToken)
     {
         var appUser = request.ToModel();
         var result = await _userManager.CreateAsync(appUser, request.Password);

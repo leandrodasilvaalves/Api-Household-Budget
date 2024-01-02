@@ -14,7 +14,7 @@ namespace Household.Budget.Infra.Consumers.Subcategory
         }
 
         public Task Consume(ConsumeContext<CreateSubcategoryRequest> context) =>
-            _createSubcategoryHandler.Handle(context.Message, context.CancellationToken);
+            _createSubcategoryHandler.HandleAsync(context.Message, context.CancellationToken);
             //TODO: lancar exception em caso de erro
     }
 }
