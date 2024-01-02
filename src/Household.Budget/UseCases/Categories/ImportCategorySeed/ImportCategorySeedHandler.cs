@@ -22,7 +22,7 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
         _createCategoryHandler = createCategoryHandler ?? throw new ArgumentNullException(nameof(createCategoryHandler));
     }
 
-    public async Task Handle(ImportCategorySeedRequest request, CancellationToken cancellationToken)
+    public async Task<ImportCategorySeedResponse> Handle(ImportCategorySeedRequest request, CancellationToken cancellationToken)
     {
         var createCategoryRequest = new CreateCategoryRequest(request.Name, ModelOwner.SYSTEM, request.Type)
         {
@@ -35,12 +35,13 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
         {
             var categoryId = Guid.Parse(categoryResponse.Data?.Id ?? "");
             var sendEndpoint = await _bus.GetPublishSendEndpoint<CreateSubcategoryRequest>();
-            request.SubCategories.ForEach(subcategory => 
+            request.SubCategories.ForEach(subcategory =>
                 sendEndpoint.Send(new CreateSubcategoryRequest(subcategory.Name, categoryId), cancellationToken));
-            
+
             _logger.LogInformation("Category has been imported: {0}", categoryResponse.Data?.Name);
 
-            //TODO: Incluir response para fluxo de resiliencia
+            return new ImportCategorySeedResponse(request);
         }
+        return new ImportCategorySeedResponse(categoryResponse?.Errors ?? []);
     }
 }

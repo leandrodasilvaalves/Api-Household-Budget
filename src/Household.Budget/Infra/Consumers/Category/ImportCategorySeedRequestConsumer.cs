@@ -1,3 +1,4 @@
+using Household.Budget.Contracts.Exceptions;
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
 
 using MassTransit;
@@ -11,6 +12,10 @@ public class ImportCategorySeedRequestConsumer : IConsumer<ImportCategorySeedReq
     public ImportCategorySeedRequestConsumer(IImportCategorySeedHandler handler) =>
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
-    public Task Consume(ConsumeContext<ImportCategorySeedRequest> context) => 
-        _handler.Handle(context.Message, context.CancellationToken);
+    public async Task Consume(ConsumeContext<ImportCategorySeedRequest> context)
+    {
+        var response = await _handler.Handle(context.Message, context.CancellationToken);
+        if (response.IsSuccess is false)
+            throw new ImportCategorySeedException(response);
+    }
 }

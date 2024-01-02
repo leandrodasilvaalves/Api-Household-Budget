@@ -35,7 +35,7 @@ public class ImportCategoriesDataSeedService : IBackgroundService
             var sendEndpoint = await _bus.GetPublishSendEndpoint<ImportCategorySeedRequest>();
             categories.ForEach(request => tasks.Add(sendEndpoint.Send(request.WithRootUserId(rootUserId), stoppingToken)));
             await Task.WhenAll(tasks);
-            _logger.LogInformation("Categories data seed was imported successfully.");
+            _logger.LogInformation("All categories data seed was sended to import process.");
         }
     }
 }
