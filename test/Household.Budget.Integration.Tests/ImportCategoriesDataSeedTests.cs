@@ -144,6 +144,13 @@ public class ImportCategoriesDataSeedTests
             .WithNetwork(Network)
             .WithEnvironment("RavenSettings__DatabaseName", "Household.Budget.Test")
             .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Docker")
+            .WithWaitStrategy(
+                Wait.ForUnixContainer()
+                    .UntilHttpRequestIsSucceeded(request =>
+                        request
+                            .ForPort(5215)
+                            .ForPath("/hc/ready")
+                            .ForStatusCode(HttpStatusCode.OK)))
             .WithCleanUp(true)
             .Build();
 
