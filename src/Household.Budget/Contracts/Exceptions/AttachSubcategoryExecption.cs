@@ -4,8 +4,7 @@ using Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
 
 namespace Household.Budget.Contracts.Exceptions;
 
-public class AttachSubcategoryExecption : Exception
+public class AttachSubcategoryExecption : AbstractConsumersExceptions<SubcategoryWasCreatedEventResponse>
 {
-    public AttachSubcategoryExecption(SubcategoryWasCreatedEventResponse response)
-        : base(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true })) { }
+    public AttachSubcategoryExecption(SubcategoryWasCreatedEventResponse response) : base(response) { }
 }
