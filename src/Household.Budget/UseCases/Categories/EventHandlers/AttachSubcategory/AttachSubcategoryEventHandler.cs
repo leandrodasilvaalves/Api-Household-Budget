@@ -18,7 +18,6 @@ public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
     public async Task<SubcategoryWasCreatedEventResponse> Handle(SubcategoryWasCreated notification, CancellationToken cancellationToken)
     {
         await Semaphore.WaitAsync(cancellationToken);
-
         var subcategory = notification.Data;
         var category = await _repository.GetByIdAsync($"{subcategory.Category.Id}",
             subcategory.UserId ?? "", cancellationToken);
@@ -31,7 +30,6 @@ public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
             return new SubcategoryWasCreatedEventResponse(subcategory);
             //TODO: melhorar design de código
         }
-
         Semaphore.Release();
         return new SubcategoryWasCreatedEventResponse(CategoryErrors.CATEGORY_NOT_FOUND);
     }

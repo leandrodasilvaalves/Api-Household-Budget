@@ -28,7 +28,7 @@ namespace Household.Budget.Api.HealthCheck
                 using var httpClient = new HttpClient();
                 using var request = new HttpRequestMessage(HttpMethod.Get, uri);
                 var response = await httpClient.SendAsync(request, cancellationToken);
-                
+
                 return response.StatusCode == HttpStatusCode.OK
                   ? HealthCheckResult.Healthy("RavenDb is up and running.")
                   : HealthCheckResult.Unhealthy();

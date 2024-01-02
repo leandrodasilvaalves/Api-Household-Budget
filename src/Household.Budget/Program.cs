@@ -22,6 +22,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHealthChecks("/hc");
+app.UseHealthCheck();
 
 app.Run();

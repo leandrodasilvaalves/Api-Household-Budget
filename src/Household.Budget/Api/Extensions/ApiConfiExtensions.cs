@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Household.Budget.Api.Controllers.Filters;
 using Household.Budget.Api.HealthCheck;
 
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Household.Budget.Api.Extensions;
@@ -26,5 +27,13 @@ public static class ApiConfiExtensions
     {
         services.AddHealthChecks()
            .AddCheck("RavenDb", new RavenDbHealthCheck(config));
+    }
+
+    public static void UseHealthCheck(this WebApplication app)
+    {
+        app.MapHealthChecks("/hc", new HealthCheckOptions
+        {
+            ResponseWriter = HealthCheckJsonResponse.WriteResponse
+        });
     }
 }
