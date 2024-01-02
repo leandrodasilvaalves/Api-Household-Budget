@@ -5,6 +5,7 @@ using Household.Budget.Infra.Consumers.Category;
 using Household.Budget.Infra.Consumers.Subcategory;
 
 using MassTransit;
+using Household.Budget.Infra.Consumers.Observers;
 
 namespace Household.Budget.Infra.Extensions;
 
@@ -48,6 +49,7 @@ public static class MassTransitExtensions
 
                 cfg.ConfigureEndpoints(context);
             });
+            services.AddConsumeObserver<ConsumeObserver>();
         });
     }
 

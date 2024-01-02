@@ -20,19 +20,27 @@ public static class ApiConfiExtensions
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
-        services.AddEndpointsApiExplorer();
+        services.AddEndpointsApiExplorer();        
     }
 
-    public static void ConfigureHealthChecks(this IServiceCollection services, IConfiguration config)
+    public static void ConfigureHealthChecks(this IServiceCollection services)
     {
+        services.AddSingleton<ImportSeedHealthCheck>();
         services.AddHealthChecks()
-           .AddCheck("RavenDb", new RavenDbHealthCheck(config));
+           .AddCheck<RavenDbHealthCheck>("RavenDb")
+           .AddCheck<ImportSeedHealthCheck>("ImportSeed", tags: new[] { "ready" });
     }
 
     public static void UseHealthCheck(this WebApplication app)
     {
-        app.MapHealthChecks("/hc", new HealthCheckOptions
+        app.MapHealthChecks("/hc/live", new HealthCheckOptions
         {
+            ResponseWriter = HealthCheckJsonResponse.WriteResponse
+        });
+
+        app.MapHealthChecks("/hc/ready", new HealthCheckOptions
+        {
+            Predicate = healthCheck => healthCheck.Tags.Contains("ready") is true,
             ResponseWriter = HealthCheckJsonResponse.WriteResponse
         });
     }

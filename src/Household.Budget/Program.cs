@@ -4,7 +4,7 @@ using Household.Budget.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureHealthChecks(builder.Configuration);
+builder.Services.ConfigureHealthChecks();
 builder.Services.ConfigureApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfra(builder.Configuration);

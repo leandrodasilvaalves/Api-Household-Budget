@@ -16,8 +16,9 @@ namespace Household.Budget.Infra.Consumers.Subcategory
 
         public async Task Consume(ConsumeContext<CreateSubcategoryRequest> context)
         {
-            var response = await  _createSubcategoryHandler.HandleAsync(context.Message, context.CancellationToken);
-            if(response.IsSuccess is false)
+            var response = await _createSubcategoryHandler.HandleAsync(context.Message, context.CancellationToken);
+
+            if (response.IsSuccess is false)
                 throw new CreateSubcategoryException(response);
         }
     }

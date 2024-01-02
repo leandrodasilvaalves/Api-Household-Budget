@@ -15,4 +15,4 @@ EXPOSE 443
 
 COPY --from=build-env /app/build .
 CMD ["dotnet", "Household.Budget.dll"]
-HEALTHCHECK CMD curl --fail http://localhost:80/hc || exit
+HEALTHCHECK CMD curl --fail http://localhost:80/hc/live || exit
