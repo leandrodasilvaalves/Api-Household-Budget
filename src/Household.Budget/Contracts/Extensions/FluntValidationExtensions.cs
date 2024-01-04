@@ -21,12 +21,27 @@ public static class FluntValidationExtensions
         return contract.IsNotNullOrEmpty(val, notification.Key, notification.Message);
     }
 
+    public static Contract<T> IsNotNull<T>(this Contract<T> contract, DateTime? val, Notification notification)
+    {
+        return contract.IsNotNull(val, notification.Key, notification.Message);
+    }
+
+    public static Contract<T> IsNotNull<T>(this Contract<T> contract, Enum? val, Notification notification)
+    {
+        return contract.IsNotNull(val, notification.Key, notification.Message);
+    }
+
     public static Contract<T> IsGreaterOrEqualsThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
     {
         return contract.IsGreaterOrEqualsThan(val, comparer, notification.Key, notification.Message);
     }
 
     public static Contract<T> IsGreaterThan<T>(this Contract<T> contract, int val, int comparer, Notification notification)
+    {
+        return contract.IsGreaterThan(val, comparer, notification.Key, notification.Message);
+    }
+
+    public static Contract<T> IsGreaterThan<T>(this Contract<T> contract, float val, float comparer, Notification notification)
     {
         return contract.IsGreaterThan(val, comparer, notification.Key, notification.Message);
     }
@@ -66,6 +81,24 @@ public static class FluntValidationExtensions
     public static Contract<T> IsNotDefault<T>(this Contract<T> contract, Guid value, Notification notification)
     {
         if (value == default)
+        {
+            contract.AddNotification(notification);
+        }
+        return contract;
+    }
+
+    public static Contract<T> IsRequiredWhen<T, P>(this Contract<T> contract, P property, Func<bool> condition, Notification notification)
+    {
+        if(condition() && property is null)
+        {
+            contract.AddNotification(notification);
+        }
+        return contract;
+    }
+
+    public static Contract<T> IsNotAllowedWhen<T, P>(this Contract<T> contract, P property, Func<bool> condition, Notification notification)
+    {
+        if(condition() && property is not null)
         {
             contract.AddNotification(notification);
         }

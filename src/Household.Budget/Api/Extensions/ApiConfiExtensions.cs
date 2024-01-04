@@ -13,7 +13,7 @@ public static class ApiConfiExtensions
     public static void ConfigureApi(this IServiceCollection services)
     {
         services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
-        services.AddControllers(options => options.Filters.Add<AddUserClaimsFilter>())
+        services.AddControllers(options => options.Filters.Add<GlobalApiRequestFilter>())
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;

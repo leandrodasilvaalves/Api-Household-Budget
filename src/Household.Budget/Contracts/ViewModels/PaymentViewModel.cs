@@ -4,7 +4,7 @@ namespace Household.Budget.Contracts.ViewModels;
 
 public class PaymentViewModel
 {
-    public float TotalPurchase { get; set; }
+    public float Total { get; set; }
     public PaymentType Type { get; set; }
     public CreditCardViewModel? CreditCard { get; set; }
 
@@ -12,7 +12,7 @@ public class PaymentViewModel
     {
         if (Type == PaymentType.CREDIT_CARD)
         {
-            CreditCard?.ProcessPurchase(TotalPurchase);
+            CreditCard?.ProcessPurchase(Total);
         }
         return this;
     }

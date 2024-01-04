@@ -9,7 +9,9 @@ public class GetCategoryByIdRequest : Request
 
     public override void Validate()
     {
-        //TODO: corrigir. Está quebrando o  SPI
-        // throw new NotImplementedException();
+        if(Id == default)
+        {
+            AddNotification("CATEGORY_ID_IS_REQUIRED", "Category id is required");
+        }
     }
 }

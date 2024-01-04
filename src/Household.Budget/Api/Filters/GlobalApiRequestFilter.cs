@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Household.Budget.Api.Controllers.Filters;
 
-public class AddUserClaimsFilter : IActionFilter
+public class GlobalApiRequestFilter : IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {

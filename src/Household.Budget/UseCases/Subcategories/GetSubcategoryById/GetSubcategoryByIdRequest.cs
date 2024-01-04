@@ -9,7 +9,9 @@ public class GetSubcategoryByIdRequest : Request
 
     public override void Validate()
     {
-        //TODO: corrigir. Está quebrando o  SPI
-        // throw new NotImplementedException();
+        if(Id == default)
+        {
+            AddNotification("SUBCATEGORY_ID_IS_REQUIRED", "Subcategory id is required");
+        }
     }
 }

@@ -1,4 +1,3 @@
-
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
 using Household.Budget.Contracts.ViewModels;
@@ -10,7 +9,7 @@ public class CreateTransactionRequest : Request
     public string Description { get; set; } = "";
     public CategoryViewModel Category { get; set; } = new();
     public PaymentViewModel Payment { get; set; } = new();
-    public DateTime PurchaseDate { get; set; }
+    public DateTime TransactionDate { get; set; }
     public List<string> Tags { get; set; } = [];
 
     public Transaction ToModel() => new()
@@ -20,7 +19,7 @@ public class CreateTransactionRequest : Request
         Description = Description,
         Category = Category,
         Payment = Payment.Process(),
-        PurchaseDate = PurchaseDate,
+        TransactionDate = TransactionDate,
         Tags = Tags,
         Status = ModelStatus.ACTIVE,
         Owner = ModelOwner.USER,
@@ -28,8 +27,6 @@ public class CreateTransactionRequest : Request
         UpdatedAt = DateTime.Now,
     };
 
-    public override void Validate()
-    {
-        // throw new NotImplementedException();
-    }
+    public override void Validate() =>
+        AddNotifications(new CreateTransactionRequestContract(this));
 }
