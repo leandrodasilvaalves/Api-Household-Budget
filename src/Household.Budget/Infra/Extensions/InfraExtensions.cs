@@ -25,6 +25,7 @@ public static class InfraExtensions
         services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
         services.AddSingleton<ICategoryRepository, CategoryRepository>();
         services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
+        services.AddSingleton<ITransactionRepository, TransactionRepository>();
         return services;
     }
 
