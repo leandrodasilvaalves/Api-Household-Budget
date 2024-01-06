@@ -2,17 +2,14 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.Contracts.Events;
 
-public class SubcategoryWasCreated : IEvent<Subcategory>
+public class SubcategoryWasCreated : Event<Subcategory>
 {
     public SubcategoryWasCreated(Subcategory data)
     {
-        Data = data;
-        SendedAt = DateTime.UtcNow;
+        Data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
-    public string Name => "SUBCATEGORY_WAS_CREATED";
+    public override string Name => "SUBCATEGORY_WAS_CREATED";
 
-    public Subcategory Data { get; }
-
-    public DateTime SendedAt { get; }
+    public override Subcategory Data { get; }
 }

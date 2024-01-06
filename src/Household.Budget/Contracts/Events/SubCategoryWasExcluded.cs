@@ -2,17 +2,13 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.Contracts.Events;
 
-public class SubCategoryWasExcluded : IEvent<Subcategory>
+public class SubCategoryWasExcluded : Event<Subcategory>
 {
-    public SubCategoryWasExcluded(Subcategory data)
-    {
-        Data = data;
-        SendedAt = DateTime.UtcNow;
-    }
+    public SubCategoryWasExcluded(Subcategory data) => 
+        Data = data ?? throw new ArgumentNullException(nameof(data));
 
-    public string Name => "SUBCATEGORY_WAS_EXCLUDED";
+    public override string Name => "SUBCATEGORY_WAS_EXCLUDED";
 
-    public Subcategory Data { get; }
+    public override Subcategory Data { get; }
 
-    public DateTime SendedAt { get; }
 }
