@@ -95,4 +95,9 @@ public static class FluntValidationExtensions
     {
         return contract.IsTrue(value ?? false, notification.Key, notification.Message);
     }
+
+    public static Contract<T> IsBetween<T>(this Contract<T> contract, int val, int start, int end, Notification notification)
+    {
+        return contract.IsBetween(val, start, end, notification.Key, notification.Message);
+    }
 }

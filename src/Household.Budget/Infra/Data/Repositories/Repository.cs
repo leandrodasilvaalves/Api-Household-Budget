@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
@@ -23,17 +25,28 @@ public class Repository<T> : IRepository<T> where T : Model
         await session.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
+    public Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
+    {
+
+        Expression<Func<T, bool>> predicate = x => x.Status == ModelStatus.ACTIVE &&
+                           (x.Owner == ModelOwner.SYSTEM || x.UserId == userId);
+
+        return GetAllAsync(pageSize, pageNumber, userId, predicate, cancellationToken);
+    }
+
+    protected async Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default)
     {
         int skip = pageSize * (pageNumber - 1);
         int take = pageSize;
+
+        predicate ??= x => x.Status == ModelStatus.ACTIVE &&
+                           (x.Owner == ModelOwner.SYSTEM || x.UserId == userId);
 
         var session = _context.Store.OpenAsyncSession();
         var items = await session.Query<T>()
             .Statistics(out QueryStatistics statistics)
             .Skip(skip).Take(take)
-            .Where(x => x.Status == ModelStatus.ACTIVE &&
-                  (x.Owner == ModelOwner.SYSTEM || x.UserId == userId))
+            .Where(predicate)
             .OrderByDescending(x => x.UpdatedAt)
             .ToListAsync(cancellationToken);
 

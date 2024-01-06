@@ -7,7 +7,7 @@ namespace Household.Budget.Contracts.Data
             Items = items;
             TotalResult = totalResult;
             CurrentPage = currentPage;
-            PageSize = Items?.Count ?? pageSize;
+            PageSize = Items?.Count ?? 0;
             TotalPages = CalculateTotalPages(pageSize);
         }
 

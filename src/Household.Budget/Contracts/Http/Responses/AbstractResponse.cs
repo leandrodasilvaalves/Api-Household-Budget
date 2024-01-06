@@ -16,7 +16,7 @@ public abstract class AbstractResponse<T> where T : class
     protected AbstractResponse(Notification notification) => Errors = new List<Notification> { notification };
     public bool IsSuccess => (Errors is null || Errors?.Count() == 0) && Data is { };
     public T? Data { get; }
-    public IEnumerable<Notification>? Errors { get; private set; } = [];
+    public IEnumerable<Notification>? Errors { get; private set; }
 
     public IActionResult ToActionResult(params HttpStatusCode[] statusCodes) => IsSuccess switch
     {

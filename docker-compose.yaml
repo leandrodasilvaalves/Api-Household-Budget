@@ -13,6 +13,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNET_ENV}
       - ASPNETCORE_URLS=http://+:80
+      - Seed__Categories__Enabled=true
     depends_on:
       ravendb:
         condition: service_healthy

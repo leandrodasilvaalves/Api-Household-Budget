@@ -15,6 +15,7 @@ using Household.Budget.UseCases.Subcategories.CreateSubcategory;
 using Household.Budget.UseCases.Subcategories.ListSubcategories;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.GetTransactionById;
+using Household.Budget.UseCases.Transactions.ListTransactions;
 
 namespace Household.Budget.Api.Extensions;
 
@@ -60,5 +61,6 @@ public static class UseCasesExtensions
     {
         services.AddSingleton<ICreateTransactionHandler, CreateTransactionHandler>();
         services.AddSingleton<IGetTransacationByIdHandler, GetTransacationByIdHandler>();
+        services.AddSingleton<IListTransactionHandler, ListTransactionHandler>();
     }
 }
