@@ -23,7 +23,7 @@ public class GlobalApiRequestFilter : IActionFilter
             request.Validate();
             if(request.IsValid is false)
             {
-                context.Result = new Response<Request>(request.Notifications).ToActionResult();
+                context.Result = new Response(request.Notifications).ToActionResult();
                 return;
             }
         }

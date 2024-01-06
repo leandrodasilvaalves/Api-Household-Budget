@@ -4,7 +4,7 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.UseCases.Categories.ListCategories;
 
-public class ListCategoriesResponse : Response<PagedListResult<Category>>
+public class ListCategoriesResponse : AbstractResponse<PagedListResult<Category>>
 {
     public ListCategoriesResponse(PagedListResult<Category> data) : base(data) { }
 }

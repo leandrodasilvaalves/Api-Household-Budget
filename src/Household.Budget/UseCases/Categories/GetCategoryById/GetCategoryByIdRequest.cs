@@ -11,7 +11,7 @@ public class GetCategoryByIdRequest : Request
     {
         if(Id == default)
         {
-            AddNotification("CATEGORY_ID_IS_REQUIRED", "Category id is required");
+            AddNotification("CATEGORY_ID_IS_REQUIRED", "Category Id is required");
         }
     }
 }

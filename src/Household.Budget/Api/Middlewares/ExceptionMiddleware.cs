@@ -24,7 +24,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
                 
             httpCotnext.Response.StatusCode = 500;
             httpCotnext.Response.ContentType = "application/json; charset=utf-8";
-            await httpCotnext.Response.WriteAsync(JsonSerializer.Serialize(Response<object>.UnexpectedError(), _jsonOptions));
+            await httpCotnext.Response.WriteAsync(JsonSerializer.Serialize(AbstractResponse<object>.UnexpectedError(), _jsonOptions));
         }
     }
 }

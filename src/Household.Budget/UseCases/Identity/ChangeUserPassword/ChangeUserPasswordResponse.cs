@@ -5,12 +5,15 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget;
 
-public class ChangeUserPasswordResponse : Response<ChangeUserPasswordViewModel>
+public class ChangeUserPasswordResponse : AbstractResponse<ChangeUserPasswordViewModel>
 {
     public ChangeUserPasswordResponse(ChangeUserPasswordViewModel data) : base(data) { }
 
     public ChangeUserPasswordResponse(IEnumerable<Notification> errors) : base(errors) { }
     public ChangeUserPasswordResponse(Notification notification) : base(notification) { }
+
+    protected override Response NotFoundError() =>
+        new (IdentityErrors.BAD_USER_NAME_OR_PASSWORD);
 }
 
 

@@ -11,7 +11,7 @@ public class GetSubcategoryByIdRequest : Request
     {
         if(Id == default)
         {
-            AddNotification("SUBCATEGORY_ID_IS_REQUIRED", "Subcategory id is required");
+            AddNotification("SUBCATEGORY_ID_IS_REQUIRED", "Subcategory Id is required");
         }
     }
 }

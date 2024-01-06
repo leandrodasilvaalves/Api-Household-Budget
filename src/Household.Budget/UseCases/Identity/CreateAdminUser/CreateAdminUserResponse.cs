@@ -4,7 +4,7 @@ using Household.Budget.Contracts.Http.Responses;
 
 namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 
-public class CreateAdminUserResponse : Response<CreateAdminUserResponseViewModel>
+public class CreateAdminUserResponse : AbstractResponse<CreateAdminUserResponseViewModel>
 {
     public CreateAdminUserResponse(CreateAdminUserResponseViewModel response) : base(response) { }
     public CreateAdminUserResponse(IEnumerable<Notification> errors) : base(errors) { }

@@ -6,7 +6,7 @@ using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.UseCases.Transactions.CreateTransaction;
 
-public class CreateTransactionResponse : Response<Transaction>
+public class CreateTransactionResponse : AbstractResponse<Transaction>
 {
     public CreateTransactionResponse(Transaction data) : base(data) { }
 

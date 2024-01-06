@@ -7,14 +7,18 @@ namespace Household.Budget.Contracts.Data
             Items = items;
             TotalResult = totalResult;
             CurrentPage = currentPage;
-            PageSize = pageSize;
+            PageSize = Items?.Count ?? pageSize;
+            TotalPages = CalculateTotalPages(pageSize);
         }
 
         public long TotalResult { get; }
         public int CurrentPage { get; }
         public int PageSize { get; }
-        public int TotalPages => (int)Math.Ceiling(TotalResult / (double)PageSize);
+        public int TotalPages { get; }
         public bool HasMorePages => CurrentPage < TotalPages;
-        public List<T> Items { get; }
+        public List<T>? Items { get; }
+
+        private int CalculateTotalPages(int pageSize) =>
+            (int)Math.Ceiling(TotalResult / (double)pageSize);
     }
 }
