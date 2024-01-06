@@ -12,12 +12,12 @@ public class CreateTransactionRequest : Request
     public DateTime TransactionDate { get; set; }
     public List<string> Tags { get; set; } = [];
 
-    public Transaction ToModel() => new()
+    public Transaction ToModel(Category category, Subcategory subcategory) => new()
     {
         Id = $"{Guid.NewGuid()}",
         UserId = UserId,
         Description = Description,
-        Category = Category,
+        Category = CategoryViewModel.CreateFrom(category, subcategory),
         Payment = Payment.Process(),
         TransactionDate = TransactionDate,
         Tags = Tags,

@@ -21,12 +21,7 @@ public static class FluntValidationExtensions
         return contract.IsNotNullOrEmpty(val, notification.Key, notification.Message);
     }
 
-    public static Contract<T> IsNotNull<T>(this Contract<T> contract, DateTime? val, Notification notification)
-    {
-        return contract.IsNotNull(val, notification.Key, notification.Message);
-    }
-
-    public static Contract<T> IsNotNull<T>(this Contract<T> contract, Enum? val, Notification notification)
+    public static Contract<T> IsNotNull<T>(this Contract<T> contract, object? val, Notification notification)
     {
         return contract.IsNotNull(val, notification.Key, notification.Message);
     }
@@ -87,22 +82,17 @@ public static class FluntValidationExtensions
         return contract;
     }
 
-    public static Contract<T> IsRequiredWhen<T, P>(this Contract<T> contract, P property, Func<bool> condition, Notification notification)
+    public static Contract<T> IsSatified<T>(this Contract<T> contract, T obj, Func<T, bool> when, Func<T, bool> mustBe, Notification notification)
     {
-        if(condition() && property is null)
+        if (when(obj) is true & mustBe(obj) is false)
         {
             contract.AddNotification(notification);
         }
         return contract;
     }
 
-    public static Contract<T> IsNotAllowedWhen<T, P>(this Contract<T> contract, P property, Func<bool> condition, Notification notification)
+    public static Contract<T> IsTrue<T>(this Contract<T> contract, bool? value, Notification notification)
     {
-        if(condition() && property is not null)
-        {
-            contract.AddNotification(notification);
-        }
-        return contract;
+        return contract.IsTrue(value ?? false, notification.Key, notification.Message);
     }
 }
-

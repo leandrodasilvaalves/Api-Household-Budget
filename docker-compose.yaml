@@ -13,7 +13,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNET_ENV}
       - ASPNETCORE_URLS=http://+:80
-      - ENABLED=true
     depends_on:
       ravendb:
         condition: service_healthy
@@ -25,7 +24,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 2s
-    command: sh -c 'if [ "$ENABLED" = "false" ]; then exit 0; fi' #melhorar aqui
+    command: sh -c 'exit 0'
 
   ravendb:
     container_name: ${PREFIX_CONTAINERS}.ravendb

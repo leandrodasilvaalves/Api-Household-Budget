@@ -1,4 +1,6 @@
 using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Enums;
+using Household.Budget.Contracts.Errors;
 
 namespace Household.Budget.UseCases.Transactions.CreateTransaction;
 
@@ -8,7 +10,7 @@ public class CreateTransactionHandler : ICreateTransactionHandler
     private readonly ICategoryRepository _categoryRepository;
     private readonly ISubcategoryRepository _subcategoryRepository;
 
-    public CreateTransactionHandler(ITransactionRepository transactionRepository, 
+    public CreateTransactionHandler(ITransactionRepository transactionRepository,
                                     ICategoryRepository categoryRepository,
                                     ISubcategoryRepository subcategoryRepository)
     {
@@ -19,11 +21,21 @@ public class CreateTransactionHandler : ICreateTransactionHandler
 
     public async Task<CreateTransactionResponse> HandleAsync(CreateTransactionRequest request, CancellationToken cancellationToken)
     {
-        //CREDIT_CARD_IS_ONLY_ALLOWED_WHEN_CATEGORY_TYPE_IS_EXPENSES
-        //SUBCATEGORY_MUST_BE_CHILD_OF_CATEGORY
-        
-        var transaction = request.ToModel();
+        var categoryTask = _categoryRepository.GetByIdAsync(request.Category.Id, request.UserId, cancellationToken);
+        var subcategoryTask = _subcategoryRepository.GetByIdAsync(request.Category.Subcategory?.Id ?? "", request.UserId, cancellationToken);
+
+        await Task.WhenAll(categoryTask, subcategoryTask);
+        var category = categoryTask.Result;
+        var subcategory = subcategoryTask.Result;
+
+        var contract = new CreateTransactionRequestContract(request, category, subcategory);
+        if(contract.IsValid is false)
+        {
+            return new CreateTransactionResponse(contract.Notifications);
+        }
+
+        var transaction = request.ToModel(category, subcategory);
         await _transactionRepository.CreateAsync(transaction, cancellationToken);
-        return new CreateTransactionResponse(transaction); //TODO: ajustar aqui
+        return new CreateTransactionResponse(transaction);
     }
 }
