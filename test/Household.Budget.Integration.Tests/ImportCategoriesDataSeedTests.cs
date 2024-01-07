@@ -171,7 +171,7 @@ public class ImportCategoriesDataSeedTests
         RootUserId = config.GetSection("Identity:RootUser:Request:UserId").Get<string>();
 
         var services = new ServiceCollection()
-            .AddRavenDb(config)
+            .AddMongo(config)
             .BuildServiceProvider();
 
         CategoryRepository = services.GetService<ICategoryRepository>();

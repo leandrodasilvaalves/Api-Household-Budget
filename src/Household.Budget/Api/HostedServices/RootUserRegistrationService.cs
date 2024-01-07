@@ -3,27 +3,24 @@ using System.Text.Json;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 
-namespace Household.Budget.Api.HostedServices.ChainedServices;
+namespace Household.Budget.Api.HostedServices;
 
-public class RootUserRegistrationService : IBackgroundService
+public class RootUserRegistrationService : BackgroundService
 {
-    private readonly ILogger<DatabaseCreatorService> _logger;
+    private readonly ILogger<RootUserRegistrationService> _logger;
     private readonly IConfiguration _configuration;
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    private readonly IBackgroundService _next;
 
-    public RootUserRegistrationService(ILogger<DatabaseCreatorService> logger,
+    public RootUserRegistrationService(ILogger<RootUserRegistrationService> logger,
                                   IConfiguration configuration,
-                                  IServiceScopeFactory serviceScopeFactory,
-                                  IBackgroundService next)
+                                  IServiceScopeFactory serviceScopeFactory)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-        _next = next ?? throw new ArgumentNullException(nameof(next));
     }
 
-    public async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (_configuration.GetValue<bool>("Identity:RootUser:Enabled") is true)
         {
@@ -42,6 +39,5 @@ public class RootUserRegistrationService : IBackgroundService
                 _logger.LogError("Root user wasn't created. Causes: {0}", JsonSerializer.Serialize(response));
             }
         }
-        await _next.ExecuteAsync(stoppingToken);
     }
 }

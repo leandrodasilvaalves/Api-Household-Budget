@@ -3,12 +3,13 @@ using System.Linq.Expressions;
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
+using Household.Budget.Infra.Data.Context;
 
 namespace Household.Budget.Infra.Data.Repositories
 {
     public class TransactionRepository : Repository<Transaction>, ITransactionRepository
     {
-        public TransactionRepository(IRavenDbContext context)
+        public TransactionRepository(IMongoDbContext<Transaction> context)
             : base(context) { }
 
         public Task<PagedListResult<Transaction>> GetAllAsync(int year, int month, int pageSize, int pageNumber,

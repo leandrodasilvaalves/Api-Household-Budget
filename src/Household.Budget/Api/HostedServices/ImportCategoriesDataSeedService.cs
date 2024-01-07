@@ -1,16 +1,16 @@
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
 
 using MassTransit;
-namespace Household.Budget.Api.HostedServices.ChainedServices;
+namespace Household.Budget.Api.HostedServices;
 
-public class ImportCategoriesDataSeedService : IBackgroundService
+public class ImportCategoriesDataSeedService : BackgroundService
 {
-    private readonly ILogger<DatabaseCreatorService> _logger;
+    private readonly ILogger<ImportCategoriesDataSeedService> _logger;
     private readonly IConfiguration _configuration;
     private readonly IBus _bus;
 
     public ImportCategoriesDataSeedService(
-                                  ILogger<DatabaseCreatorService> logger,
+                                  ILogger<ImportCategoriesDataSeedService> logger,
                                   IConfiguration configuration,
                                   IBus bus)
     {
@@ -19,7 +19,7 @@ public class ImportCategoriesDataSeedService : IBackgroundService
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
-    public async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (_configuration.GetValue<bool>("Seed:Categories:Enabled") is true)
         {
