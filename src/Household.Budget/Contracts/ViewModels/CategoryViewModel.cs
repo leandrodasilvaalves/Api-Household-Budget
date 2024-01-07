@@ -22,4 +22,24 @@ public class CategoryViewModel
         };
         return viewModel;
     }
+
+    public void Merge(Category category, Subcategory subcategory)
+    {
+        if (category.Id is not null)
+        {
+            Id = category.Id;
+            Name = category.Name ?? "";
+            Merge(subcategory);
+        }
+    }
+
+    private void Merge(Subcategory subcategory)
+    {
+        if (subcategory.Id is not null)
+        {
+            Subcategory ??= new();
+            Subcategory.Id = subcategory.Id;
+            Subcategory.Name = subcategory.Name ?? "";
+        }
+    }
 }

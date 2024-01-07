@@ -4,6 +4,7 @@ using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.GetTransactionById;
 using Household.Budget.UseCases.Transactions.ListTransactions;
+using Household.Budget.UseCases.Transactions.UpdateTransaction;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +36,15 @@ namespace Household.Budget.Api.Controllers
         {
             var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
             return result.ToActionResult(HttpStatusCode.Created);
+        }
+
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] string id, [FromBody] UpdateTransactionRequest request,
+                                                     [FromServices] IUpdateTransactionHandler handler)
+        {
+            request.Id = id;
+            var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
+            return result.ToActionResult(HttpStatusCode.OK);
         }
     }
 }

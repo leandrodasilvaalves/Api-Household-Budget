@@ -20,4 +20,21 @@ public class CreditCardViewModel
         FirstDueDate = null;
         return this;
     }
+
+    public void Merge(CreditCardViewModel creditCard, float totalPurchase)
+    {
+        if (!string.IsNullOrWhiteSpace(creditCard.Name))
+        {
+            Name = creditCard.Name;
+        }
+        if(InstallmentNumber != creditCard?.InstallmentNumber)
+        {
+            InstallmentNumber = creditCard?.InstallmentNumber;
+        }
+        if(FirstDueDate != creditCard?.FirstDueDate)
+        {
+            FirstDueDate = creditCard?.FirstDueDate;
+        }
+        ProcessPurchase(totalPurchase);
+    }
 }

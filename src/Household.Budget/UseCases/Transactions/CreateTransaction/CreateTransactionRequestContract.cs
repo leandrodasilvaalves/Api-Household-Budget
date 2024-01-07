@@ -1,6 +1,7 @@
 
 using Flunt.Validations;
 
+using Household.Budget.Contracts;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Extensions;
@@ -19,6 +20,7 @@ public class CreateTransactionRequestContract : Contract<CreateTransactionReques
             .IsNotNull(request.TransactionDate, TransactionErrors.TRANSACTION_DATE_IS_REQUIRED)
             .IsLowerOrEqualsThan(request.Description, 50, TransactionErrors.DESCRIPTION_MAX_LENGTH)
             .IsNotNull(request.Payment.Type, TransactionErrors.PAYMENT_TOTAL_IS_REQUIRED)
+            .IsTrue(CurrentYear.IsValid(request.TransactionDate.Year), TransactionErrors.TRANSACTION_DATE_INVALID_YEAR)
             .IsSatified(request,
                 x => x.Payment.Type == PaymentType.CREDIT_CARD,
                 x => x.Payment.CreditCard is not null,
@@ -43,7 +45,7 @@ public class CreateTransactionRequestContract : Contract<CreateTransactionReques
             .IsTrue(category?.Subcategories.Any(s => s.Id == subcategory?.Id),
                 TransactionErrors.SUBCATEGORY_MUST_BE_CHILD_OF_CATEGORY)
             .IsSatified(request,
-                x => x.Payment.Type == PaymentType.CREDIT_CARD,
+                x => x.Payment?.Type == PaymentType.CREDIT_CARD,
                 x => category?.Type == CategoryType.EXPENSES,
                 TransactionErrors.CREDIT_CARD_IS_ONLY_ALLOWED_WHEN_CATEGORY_TYPE_IS_EXPENSES);
     }

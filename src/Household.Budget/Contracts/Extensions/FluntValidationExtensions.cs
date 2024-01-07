@@ -26,6 +26,11 @@ public static class FluntValidationExtensions
         return contract.IsNotNull(val, notification.Key, notification.Message);
     }
 
+    public static Contract<T> IsNotNullOrWhiteSpace<T>(this Contract<T> contract, string? val, Notification notification)
+    {
+        return contract.IsNotNullOrWhiteSpace(val, notification.Key, notification.Message);
+    }
+
     public static Contract<T> IsGreaterOrEqualsThan<T>(this Contract<T> contract, string val, int comparer, Notification notification)
     {
         return contract.IsGreaterOrEqualsThan(val, comparer, notification.Key, notification.Message);
@@ -82,9 +87,9 @@ public static class FluntValidationExtensions
         return contract;
     }
 
-    public static Contract<T> IsSatified<T>(this Contract<T> contract, T obj, Func<T, bool> when, Func<T, bool> mustBe, Notification notification)
+    public static Contract<T> IsSatified<T>(this Contract<T> contract, T obj, Func<T, bool> firstCodition, Func<T, bool> secondCondition, Notification notification)
     {
-        if (when(obj) is true & mustBe(obj) is false)
+        if (firstCodition(obj) is true & secondCondition(obj) is false)
         {
             contract.AddNotification(notification);
         }

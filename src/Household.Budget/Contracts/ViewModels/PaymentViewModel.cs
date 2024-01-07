@@ -16,4 +16,30 @@ public class PaymentViewModel
         }
         return this;
     }
+
+    public void Merge(PaymentViewModel payment)
+    {
+        if (Total != payment.Total)
+        {
+            Total = payment.Total;
+        }
+        if (Type != payment.Type)
+        {
+            Type = payment.Type;
+            Merge(payment.CreditCard);
+        }
+    }
+
+    private void Merge(CreditCardViewModel? creditCard)
+    {
+        if (Type == PaymentType.CREDIT_CARD)
+        {
+            CreditCard ??= new();
+            CreditCard.Merge(creditCard ?? new(), Total);
+        }
+        else
+        {
+            CreditCard = null;
+        }
+    }
 }
