@@ -37,9 +37,9 @@ public static class InfraExtensions
 
     public static void AddIdentityProvider(this IServiceCollection services, IConfiguration config)
     {
-        var connectionString = config.GetSection($"{MongoConfig.SectionName}:ConnectionString").Get<string>();
-        services.AddIdentity<AppIdentityUser, IdentityRole>()
-                .AddMongoDbStores<AppIdentityUser, MongoIdentityRole<string>, string>(connectionString, "Identity")
+        var mongoConfig = config.GetSection(MongoConfig.SectionName).Get<MongoConfig>() ?? new();
+        services.AddIdentity<AppIdentityUser, MongoIdentityRole<string>>()
+                .AddMongoDbStores<AppIdentityUser, MongoIdentityRole<string>, string>(mongoConfig.ConnectionString, mongoConfig.DatabaseName)
                 .AddDefaultTokenProviders();
     }
 }
