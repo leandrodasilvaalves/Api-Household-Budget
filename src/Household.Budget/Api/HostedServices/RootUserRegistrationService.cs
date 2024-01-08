@@ -1,9 +1,6 @@
 using System.Text.Json;
 
 using Household.Budget.Contracts.Data;
-using Household.Budget.Contracts.Enums;
-using Household.Budget.Contracts.Models;
-using Household.Budget.Infra.Data.Context;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 

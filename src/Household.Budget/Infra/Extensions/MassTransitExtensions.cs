@@ -25,7 +25,7 @@ public static class MassTransitExtensions
             bus.UsingRabbitMq((context, cfg) =>
             {
                 var uri = new Uri(config.Cluster);
-                cfg.Host(uri, host =>
+                cfg.Host(uri, config.VirtualHost, host =>
                 {
                     host.Username(config.Username);
                     host.Password(config.Password);
@@ -71,4 +71,5 @@ public class RabbitConfig
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
     public bool UseSSL { get; set; } = false;
+    public string VirtualHost { get; set; } = "/";
 }

@@ -1,5 +1,3 @@
-using Flunt.Notifications;
-
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Http.Responses;
 using Household.Budget.Contracts.Models;
