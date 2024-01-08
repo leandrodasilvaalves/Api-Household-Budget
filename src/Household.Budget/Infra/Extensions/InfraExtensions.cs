@@ -32,6 +32,7 @@ public static class InfraExtensions
         services.AddSingleton<ICategoryRepository, CategoryRepository>();
         services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
         services.AddSingleton<ITransactionRepository, TransactionRepository>();
+        services.AddSingleton<IImportedSeedConfigRespository, ImportedSeedConfigRespository>();
         return services;
     }
 
