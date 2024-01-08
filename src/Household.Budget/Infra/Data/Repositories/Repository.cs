@@ -3,26 +3,19 @@ using System.Linq.Expressions;
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Models;
+using Household.Budget.Infra.Data.Context;
 
-using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
+using MongoDB.Driver;
 
 namespace Household.Budget.Infra.Data.Repositories;
 
 public class Repository<T> : IRepository<T> where T : Model
 {
-    private readonly IRavenDbContext _context;
+    private readonly IMongoDbContext<T> _context;
 
-    public Repository(IRavenDbContext context)
+    public Repository(IMongoDbContext<T> context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
-
-    public async Task CreateAsync(T model, CancellationToken cancellationToken = default)
-    {
-        var session = _context.Store.OpenAsyncSession();
-        await session.StoreAsync(model, cancellationToken);
-        await session.SaveChangesAsync(cancellationToken);
     }
 
     public Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
@@ -37,35 +30,31 @@ public class Repository<T> : IRepository<T> where T : Model
     protected async Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default)
     {
         int skip = pageSize * (pageNumber - 1);
-        int take = pageSize;
 
         predicate ??= x => x.Status == ModelStatus.ACTIVE &&
                            (x.Owner == ModelOwner.SYSTEM || x.UserId == userId);
 
-        var session = _context.Store.OpenAsyncSession();
-        var items = await session.Query<T>()
-            .Statistics(out QueryStatistics statistics)
-            .Skip(skip).Take(take)
+        var count = _context.Collection
+            .CountDocumentsAsync(predicate, new CountOptions(), cancellationToken);
+
+        var items = Task.Run(() => _context.Collection
+            .AsQueryable()
             .Where(predicate)
+            .Skip(skip)
+            .Take(pageSize)
             .OrderByDescending(x => x.UpdatedAt)
-            .ToListAsync(cancellationToken);
+            .ToList(), cancellationToken);
 
-        return new PagedListResult<T>(items, statistics.TotalResults, pageSize, pageNumber);
+        await Task.WhenAll(count, items);
+        return new PagedListResult<T>(items.Result, count.Result, pageSize, pageNumber);
     }
 
-    public Task<T> GetByIdAsync(string id, string userId, CancellationToken cancellationToken = default)
-    {
-        var session = _context.Store.OpenAsyncSession();
-        return session.Query<T>()
-            .Where(x => x.Id == id && x.Status == ModelStatus.ACTIVE &&
-                  (x.Owner == ModelOwner.SYSTEM || x.UserId == userId))
-            .FirstOrDefaultAsync(cancellationToken);
-    }
+    public Task<T> GetByIdAsync(string id, string userId, CancellationToken cancellationToken = default) =>
+        _context.Collection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
 
-    public async Task UpdateAsync(T model, CancellationToken cancellationToken = default)
-    {
-        var session = _context.Store.OpenAsyncSession();
-        await session.StoreAsync(model, cancellationToken);
-        await session.SaveChangesAsync(cancellationToken);
-    }
+    public Task CreateAsync(T model, CancellationToken cancellationToken = default) =>
+        _context.Collection.InsertOneAsync(model, new InsertOneOptions(), cancellationToken);
+
+    public Task UpdateAsync(T model, CancellationToken cancellationToken = default) =>
+        _context.Collection.ReplaceOneAsync(x => x.Id == model.Id, model, new ReplaceOptions(), cancellationToken);
 }

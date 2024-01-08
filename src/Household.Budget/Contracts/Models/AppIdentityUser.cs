@@ -1,18 +1,18 @@
-﻿using Raven.Identity;
+﻿using AspNetCore.Identity.MongoDbCore.Models;
 
 namespace Household.Budget.Contracts.Models;
 
-public class AppIdentityUser : IdentityUser
+public class AppIdentityUser : MongoIdentityUser<string>
 {
     public AppIdentityUser() => Id = $"{Guid.NewGuid()}";
     public string? FullName { get; set; }
 }
 
-public class AppIdentityUserClaim : IdentityUserClaim
+public class AppIdentityUserClaim : MongoClaim
 {
     public AppIdentityUserClaim(string claim)
     {
-        ClaimType = claim;
-        ClaimValue = claim;
+        Type = claim;
+        Value = claim;
     }
 }

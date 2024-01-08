@@ -15,7 +15,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - Seed__Categories__Enabled=true
     depends_on:
-      ravendb:
+      mongo:
         condition: service_healthy
       rabbit:
         condition: service_healthy
@@ -26,28 +26,50 @@ services:
       retries: 3
       start_period: 2s
     command: sh -c 'exit 0'
-
-  ravendb:
-    container_name: ${PREFIX_CONTAINERS}.ravendb
-    image: ravendb/ravendb
-    volumes:
-      - /opt/RavenDB/Server/config
-      - /opt/RavenDB/Server/RavenData
+  
+  mongo:
+    image: mongo
+    container_name: ${PREFIX_CONTAINERS}.mongo
     environment:
-      - RAVEN_Setup_Mode=None
-      - RAVEN_License_Eula_Accepted=true
-      - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
-      - RAVEN_LogToConsole=true
-      - RAVEN_DataDir=RavenData
-      - Hostname='ravendb'
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     ports:
-      - "8080:8080"
+      - 27017:27017
+    cpus: 0.5
+    mem_limit: 256M
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/admin/stats"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 5s
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+  
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: ${PREFIX_CONTAINERS}.mongo-express
+  #   depends_on:
+  #     mongo:
+  #       condition: service_healthy
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
+  #   cpus: 0.25
+  #   mem_limit: 256M
+
+  mongo-ui:
+    container_name:  ${PREFIX_CONTAINERS}.mongo-ui
+    image: ugleiton/mongo-gui
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "4321:4321"
+    environment:
+      - MONGO_URL=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
+    cpus: 0.25
+    mem_limit: 256M
       
   rabbit:
     image: rabbitmq:3-management

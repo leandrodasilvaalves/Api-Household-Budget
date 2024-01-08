@@ -1,31 +1,36 @@
 using System.Text.Json;
 
+using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Enums;
+using Household.Budget.Contracts.Models;
+using Household.Budget.Infra.Data.Context;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 
-namespace Household.Budget.Api.HostedServices.ChainedServices;
+namespace Household.Budget.Api.HostedServices;
 
-public class RootUserRegistrationService : IBackgroundService
+public class RootUserRegistrationService : BackgroundService
 {
-    private readonly ILogger<DatabaseCreatorService> _logger;
+    private readonly ILogger<RootUserRegistrationService> _logger;
     private readonly IConfiguration _configuration;
-    private readonly IServiceScopeFactory _serviceScopeFactory;
-    private readonly IBackgroundService _next;
+    private readonly IServiceScopeFactory _serviceScopeFactory;    
+    private readonly IImportedSeedConfigRespository _respository;
 
-    public RootUserRegistrationService(ILogger<DatabaseCreatorService> logger,
+    public RootUserRegistrationService(ILogger<RootUserRegistrationService> logger,
                                   IConfiguration configuration,
                                   IServiceScopeFactory serviceScopeFactory,
-                                  IBackgroundService next)
+                                  IImportedSeedConfigRespository respository)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-        _next = next ?? throw new ArgumentNullException(nameof(next));
+        _respository = respository ?? throw new ArgumentNullException(nameof(respository));
     }
 
-    public async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        if (_configuration.GetValue<bool>("Identity:RootUser:Enabled") is true)
+        if (_configuration.GetValue<bool>("Identity:RootUser:Enabled") is true && 
+            (await _respository.RootUserHasBeenCreatedAsync(stoppingToken) is false))
         {
             using var scope = _serviceScopeFactory.CreateScope();
             var handler = scope.ServiceProvider.GetService<ICreateAdminUserHandler>()
@@ -35,6 +40,9 @@ public class RootUserRegistrationService : IBackgroundService
             var response = await handler.HandleAsync(request ?? CreateAdminUserRequest.DefaultAdminUser(), stoppingToken);
             if (response.IsSuccess)
             {
+                var seedConfig = await _respository.GetAsync(stoppingToken) ?? new();
+                seedConfig.UpdateRootUserConfig();
+                await _respository.SaveAsync(seedConfig, stoppingToken);
                 _logger.LogInformation("Root user was created successfully.");
             }
             else
@@ -42,6 +50,5 @@ public class RootUserRegistrationService : IBackgroundService
                 _logger.LogError("Root user wasn't created. Causes: {0}", JsonSerializer.Serialize(response));
             }
         }
-        await _next.ExecuteAsync(stoppingToken);
     }
 }

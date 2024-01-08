@@ -21,7 +21,7 @@ public class ChangeUserPasswordResponse : AbstractResponse<ChangeUserPasswordVie
 public class ChangeUserPasswordViewModel(AppIdentityUser user)
 {
     public string FullName { get; } = user.FullName ?? "";
-    public string UserName { get; } = user.UserName;
-    public string Email { get; } = user.Email;
+    public string UserName { get; } = user.UserName ?? "";
+    public string Email { get; } = user.Email ?? "";
 
 }

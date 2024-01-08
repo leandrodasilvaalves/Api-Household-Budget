@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 using Household.Budget.Api.Controllers.Filters;
 using Household.Budget.Api.HealthCheck;
+using Household.Budget.Infra.Data.Context;
 
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,15 +21,16 @@ public static class ApiConfiExtensions
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
-        services.AddEndpointsApiExplorer();        
+        services.AddEndpointsApiExplorer();
     }
 
-    public static void ConfigureHealthChecks(this IServiceCollection services)
+    public static void AddHealthChecks(this IServiceCollection services, IConfiguration config)
     {
+        var mongoConnection = config.GetSection($"{MongoConfig.SectionName}:ConnectionString").Get<string>() ?? "";
         services.AddSingleton<ImportSeedHealthCheck>();
         services.AddHealthChecks()
-           .AddCheck<RavenDbHealthCheck>("RavenDb")
-           .AddCheck<ImportSeedHealthCheck>("ImportSeed", tags: new[] { "ready" });
+            .AddMongoDb(mongoConnection)
+            .AddCheck<ImportSeedHealthCheck>("ImportSeed", tags: new[] { "ready" });
     }
 
     public static void UseHealthCheck(this WebApplication app)
