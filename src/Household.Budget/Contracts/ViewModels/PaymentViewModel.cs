@@ -23,23 +23,26 @@ public class PaymentViewModel
         {
             Total = payment.Total;
         }
-        if (Type != payment.Type)
+        if (Type != payment.Type && payment.Type is not PaymentType.CREDIT_CARD)
         {
-            Type = payment.Type;
-            Merge(payment.CreditCard);
+            MergeWhenIsNotCreditCard(payment.Type);
+        }
+        if (payment.Type is PaymentType.CREDIT_CARD)
+        {
+            MergeWhenIsCreditCard(payment);
         }
     }
 
-    private void Merge(CreditCardViewModel? creditCard)
+    private void MergeWhenIsNotCreditCard(PaymentType type)
     {
-        if (Type == PaymentType.CREDIT_CARD)
-        {
-            CreditCard ??= new();
-            CreditCard.Merge(creditCard ?? new(), Total);
-        }
-        else
-        {
-            CreditCard = null;
-        }
+        Type = type;
+        CreditCard = null;
+    }
+
+    private void MergeWhenIsCreditCard(PaymentViewModel payment)
+    {
+        Type = payment.Type;
+        CreditCard ??= new();
+        CreditCard.Merge(payment.CreditCard ?? new(), Total);
     }
 }
