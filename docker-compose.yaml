@@ -56,6 +56,20 @@ services:
       - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
     cpus: 0.25
     mem_limit: 256M
+
+  mongo-ui:
+    container_name:  ${PREFIX_CONTAINERS}.mongo-ui
+    image: ugleiton/mongo-gui
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "4321:4321"
+    environment:
+      - MONGO_URL=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
+    cpus: 0.25
+    mem_limit: 256M
       
   rabbit:
     image: rabbitmq:3-management
