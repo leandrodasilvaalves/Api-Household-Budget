@@ -5,6 +5,7 @@ using Household.Budget.Infra.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.UseKeyVault();
+builder.Services.AddKissLog(builder.Configuration);
 builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.ConfigureApi();
 builder.Services.AddSwaggerGen();
@@ -16,6 +17,7 @@ builder.Services.ConfigureJwt(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseKissLog(app.Configuration);
 app.UserExceptionHandling();
 app.UseSwagger();
 app.UseSwaggerUI();
