@@ -4,6 +4,7 @@ using Household.Budget.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.UseKeyVault();
 builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.ConfigureApi();
 builder.Services.AddSwaggerGen();

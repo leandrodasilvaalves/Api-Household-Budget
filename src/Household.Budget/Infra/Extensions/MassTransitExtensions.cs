@@ -13,7 +13,7 @@ public static class MassTransitExtensions
 {
     public static void AddMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
-        var config = configuration.GetSection(RabbitConfig.SectionName).Get<RabbitConfig>() ?? new();
+        var config = configuration.GetSection(RabbitConfig.SectionName).Get<RabbitConfig>() ?? new();        
         services.AddMassTransit(bus =>
         {
             bus.AddConsumer<SubcategoryWasCreatedConsumer>();
