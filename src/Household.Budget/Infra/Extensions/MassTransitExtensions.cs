@@ -31,7 +31,6 @@ public static class MassTransitExtensions
                     host.Password(config.Password);
                     host.UseCluster(cluster =>
                     config.Hosts.ForEach(node => cluster.Node(node)));
-                    if (config.UseSSL) { host.UseSsl(s => s.Protocol = SslProtocols.Tls12); }
                 });
 
                 cfg.ReceiveEndpoint("subcategories.notifications", endpoint =>
@@ -70,6 +69,5 @@ public class RabbitConfig
     public List<string> Hosts { get; set; } = [];
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
-    public bool UseSSL { get; set; } = false;
     public string VirtualHost { get; set; } = "/";
 }
