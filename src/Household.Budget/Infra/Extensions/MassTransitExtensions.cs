@@ -1,5 +1,3 @@
-using System.Security.Authentication;
-
 using Household.Budget.Infra.Consumers;
 using Household.Budget.Infra.Consumers.Category;
 using Household.Budget.Infra.Consumers.Subcategory;

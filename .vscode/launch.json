@@ -2,6 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "(Api) Household.Budget",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-api",
+            "program": "${workspaceFolder}/src/Household.Budget/bin/Debug/net8.0/Household.Budget.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Household.Budget",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(http?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
             "name": "(console) Household.Budget.Tool",
             "type": "coreclr",
             "request": "launch",
@@ -12,16 +29,25 @@
             "stopAtEntry": false,
             "console": "internalConsole",
             "env": {
-                "ENV_NAME": "Docker",
+                "DOTNET_ENVIRONMENT": "Development",
                 "CSV_FILE": "/home/leandro/Downloads/orcamento-2023.csv",
                 "OWNER_USER_ID": "56171a48-a629-48ce-876a-1321280d9ca0",
                 "TRANSACTION_YEAR": "2022",
                 "DEFAULT_TRANSACATION_DESCRIPTION": "Importado da Planilha",
                 "TRANSACTION_TAGS": "planilha, 2023, orcamento-domestico, google-sheets",
-                "Mongo__ConnectionString": "mongodb://rootuser:rootpassword@localhost:27017",
-                "RabbitMQ__Cluster": "rabbitmq://localhost",
-                "RabbitMQ__Hosts__0": "localhost",
+                "HOUSEHOLD_API_URL": "http://localhost:5215",
+                "HOUSEHOLD_API_TIMEOUT": "30000",
             },
         }
+    ],
+    "compounds": [
+        {
+            "name": "All",
+            "configurations": [
+                "(Api) Household.Budget",
+                "(console) Household.Budget.Tool",
+            ],
+            "stopAll": true
+        },
     ]
 }

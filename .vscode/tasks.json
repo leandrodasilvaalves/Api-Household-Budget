@@ -2,6 +2,18 @@
 	"version": "2.0.0",
 	"tasks": [
         {
+            "label": "build-api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/Household.Budget/Household.Budget.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build-tool",
             "command": "dotnet",
             "type": "process",
@@ -13,5 +25,5 @@
             ],
             "problemMatcher": "$msCompile"
         },
-    ]
+    ]    
 }

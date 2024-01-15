@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using System.Globalization;
 
-var envName = Environment.GetEnvironmentVariable("ENV_NAME");
+var envName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
     .AddJsonFile($"appsettings.{envName}.json", optional: true, reloadOnChange: false)
@@ -79,7 +79,7 @@ using (var csv = new CsvReader(reader, csvConfig))
                             Name = subcategory?.Name ?? "",
                         }
                     },
-                    // Type = category.Type
+                    //TODO: Type = category.Type
                 };
                 await handler.HandleAsync(request, CancellationToken.None);
             }
