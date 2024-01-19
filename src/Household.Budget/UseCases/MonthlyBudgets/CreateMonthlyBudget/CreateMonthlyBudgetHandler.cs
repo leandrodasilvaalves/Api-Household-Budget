@@ -1,4 +1,5 @@
 using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Models;
 
 namespace Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
@@ -18,6 +19,14 @@ public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
     public async Task<CreateMonthlyBudgetResponse> HandleAsync(CreateMonthlyBudgetRequest request,
                                                                CancellationToken cancellationToken)
     {
+
+        var alreadyExists = await _monthlyBudgeRepository.ExistsAsync(
+                request.UserId, request.Year, request.Month, cancellationToken);
+        if (alreadyExists)
+        {
+            return new CreateMonthlyBudgetResponse(BudgetError.BUGET_ALREADY_EXISTS);
+        }
+
         var categoriesIds = request.Categories.Select(x => x.Id).ToArray();
         bool hasMorePage = false;
         List<Category> categories = [];

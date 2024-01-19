@@ -17,7 +17,6 @@ public class MonthlyBudget : Model
     public int Year { get; set; }
     public Month Month { get; set; }
     public List<BudgetCategoryModel> Categories { get; set; }
-
     public TotalModel? Incomes { get; set; }
     public TotalModel? Expenses { get; set; }
 
