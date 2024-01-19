@@ -1,7 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 
-using Household.Budget.Api.Extensions;
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Infra.Extensions;
@@ -21,9 +20,9 @@ var config = new ConfigurationBuilder()
 
 var services = new ServiceCollection();
 services.AddInfra(config);
-services.AddUseCases();
-var provider = services.BuildServiceProvider();
+services.AddSingleton<ICreateTransactionHandler, Household.Budget.Tool.CreateTransactionHandler>();
 
+var provider = services.BuildServiceProvider();
 var categoryRepository = provider.GetRequiredService<ICategoryRepository>();
 var handler = provider.GetRequiredService<ICreateTransactionHandler>();
 
