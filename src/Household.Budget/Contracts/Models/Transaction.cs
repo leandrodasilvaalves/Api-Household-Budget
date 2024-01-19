@@ -1,3 +1,4 @@
+using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.ViewModels;
 using Household.Budget.UseCases.Transactions.UpdateTransaction;
 
@@ -10,6 +11,7 @@ public class Transaction : Model
     public PaymentViewModel Payment { get; set; } = new();
     public DateTime TransactionDate { get; set; }
     public List<string> Tags { get; set; } = [];
+    public CategoryType Type { get; set; }
 
     public void Merge(UpdateTransactionRequest? request, Category category, Subcategory subcategory)
     {
@@ -17,6 +19,7 @@ public class Transaction : Model
         {
             Description = request.Description;
         }
+        Type = category.Type;
         Merge(request?.Category, category, subcategory);
         Merge(request?.Tags);
         Merge(request?.Payment);
@@ -24,7 +27,7 @@ public class Transaction : Model
 
     private void Merge(CategoryViewModel? categoryRequest, Category category, Subcategory subcategory)
     {
-        if (categoryRequest is {})
+        if (categoryRequest is { })
         {
             Category.Merge(category, subcategory);
         }
@@ -32,7 +35,7 @@ public class Transaction : Model
 
     private void Merge(PaymentViewModel? payment)
     {
-        if(payment is {})
+        if (payment is { })
         {
             Payment.Merge(payment);
         }

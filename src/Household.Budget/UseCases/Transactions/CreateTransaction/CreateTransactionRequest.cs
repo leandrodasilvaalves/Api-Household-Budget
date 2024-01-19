@@ -23,6 +23,7 @@ public class CreateTransactionRequest : Request
         Tags = Tags,
         Status = ModelStatus.ACTIVE,
         Owner = ModelOwner.USER,
+        Type = category.Type,
         CreatedAt = DateTime.Now,
         UpdatedAt = DateTime.Now,
     };

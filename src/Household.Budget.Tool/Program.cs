@@ -79,7 +79,6 @@ using (var csv = new CsvReader(reader, csvConfig))
                             Name = subcategory?.Name ?? "",
                         }
                     },
-                    //TODO: Type = category.Type
                 };
                 await handler.HandleAsync(request, CancellationToken.None);
             }

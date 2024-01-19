@@ -33,6 +33,7 @@ public static class InfraExtensions
         services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
         services.AddSingleton<ITransactionRepository, TransactionRepository>();
         services.AddSingleton<IImportedSeedConfigRespository, ImportedSeedConfigRespository>();
+        services.AddSingleton<IMonthlyBudgeRepository, MonthlyBudgeRepository>();
         return services;
     }
 

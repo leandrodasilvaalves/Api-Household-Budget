@@ -19,7 +19,7 @@ public static class FluntValidationExtensions
     public static Contract<T> IsNotNullOrEmpty<T>(this Contract<T> contract, string val, Notification notification)
     {
         return contract.IsNotNullOrEmpty(val, notification.Key, notification.Message);
-    }
+    }    
 
     public static Contract<T> IsNotNull<T>(this Contract<T> contract, object? val, Notification notification)
     {

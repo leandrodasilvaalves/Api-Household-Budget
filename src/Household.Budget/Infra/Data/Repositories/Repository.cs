@@ -18,7 +18,8 @@ public class Repository<T> : IRepository<T> where T : Model
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default)
+    public Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId,
+                                                CancellationToken cancellationToken = default)
     {
 
         Expression<Func<T, bool>> predicate = x => x.Status == ModelStatus.ACTIVE &&
@@ -27,7 +28,11 @@ public class Repository<T> : IRepository<T> where T : Model
         return GetAllAsync(pageSize, pageNumber, userId, predicate, cancellationToken);
     }
 
-    protected async Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default)
+    protected async Task<PagedListResult<T>> GetAllAsync(int pageSize,
+                                                         int pageNumber,
+                                                         string userId,
+                                                         Expression<Func<T, bool>>? predicate = null,
+                                                         CancellationToken cancellationToken = default)
     {
         int skip = pageSize * (pageNumber - 1);
 
