@@ -27,11 +27,13 @@ public class MongoDbContext<T> : IMongoDbContext<T> where T : Model
     {
         var conventionPack = new ConventionPack {
             new CamelCaseElementNameConvention(),
-            new EnumRepresentationConvention(BsonType.String)
+            new EnumRepresentationConvention(BsonType.String),
+            new IgnoreIfNullConvention(true),
         };
 
         ConventionRegistry.Register("camelCase", conventionPack, t => true);
         ConventionRegistry.Register("EnumStringConvention", conventionPack, t => true);
+        ConventionRegistry.Register("IgnoreIfNull", conventionPack, t => true);
     }
 
     private IMongoCollection<T> ConfigureCollection(MongoConfig options)

@@ -57,7 +57,7 @@ public class Repository<T> : IRepository<T> where T : Model
     public Task<T> GetByIdAsync(string id, string userId, CancellationToken cancellationToken = default) =>
         GetOneAsync(x => x.Id == id && (x.Owner == ModelOwner.SYSTEM || x.UserId == userId), cancellationToken);
 
-    protected Task<T> GetOneAsync(Expression<Func<T, bool>>? predicate, CancellationToken cancellationToken) =>
+    public Task<T> GetOneAsync(Expression<Func<T, bool>>? predicate, CancellationToken cancellationToken) =>
         _context.Collection.Find(predicate).FirstOrDefaultAsync(cancellationToken);
 
     public Task CreateAsync(T model, CancellationToken cancellationToken = default) =>

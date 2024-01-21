@@ -13,5 +13,7 @@ namespace Household.Budget.Infra.Data.Repositories
         public async Task<bool> ExistsAsync(string userId, int year, Month month, CancellationToken cancellationToken) =>
             (await GetOneAsync(x => x.UserId == userId && x.Year == year && x.Month == month, cancellationToken)) is { };
 
+        public async Task<MonthlyBudget> GetOneAsync(string userId, int year, Month month, CancellationToken cancellationToken) =>
+            await GetOneAsync(x => x.UserId == userId && x.Year == year && x.Month == month, cancellationToken);
     }
 }
