@@ -1,5 +1,6 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
+using Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 
 namespace Household.Budget.Contracts.Models;
 
@@ -27,10 +28,54 @@ public class MonthlyBudget : Model
         Month = request.Month;
         UserId = request.UserId;
         CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
         AddCategories(request.Categories, categories);
         Incomes.Calculate(GetTotals(CategoryType.INCOMES));
         Expenses.Calculate(GetTotals(CategoryType.EXPENSES));
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Merge(UpdateMonthlyBudgetRequest request)
+    {
+        if (request.Status.HasValue)
+        {
+            Status = request.Status.Value;
+            if (Status == ModelStatus.EXCLUDED)
+            {
+                return;
+            }
+        }
+        if (request.Year.HasValue)
+        {
+            Year = request.Year.Value;
+        }
+        if (request.Month.HasValue)
+        {
+            Month = request.Month.Value;
+        }
+        MergeCategories(request.Categories);
+        Incomes.Calculate(GetTotals(CategoryType.INCOMES));
+        Expenses.Calculate(GetTotals(CategoryType.EXPENSES));
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    private void MergeCategories(List<BudgetCategoryRequestViewModel> categoriesRequest)
+    {
+        foreach (var category in categoriesRequest)
+        {
+            var budgetCategory = Categories.FirstOrDefault(x => x.Id == category.Id);
+            MergeSubcategories(category.Subcategories, budgetCategory?.Subcategories ?? []);
+            budgetCategory?.UpdatePlannedTotal(category);
+        }
+    }
+
+    private static void MergeSubcategories(List<BudgetCategoryRequestViewModel> subcategoriesRequest,
+                                           List<BudgetSubcategoryModel> budgetSubcategories)
+    {
+        foreach (var subcategoryRequest in subcategoriesRequest)
+        {
+            var budgetSubcategory = budgetSubcategories.FirstOrDefault(x => x.Id == subcategoryRequest.Id);
+            budgetSubcategory?.UpdatePlannedTotal(subcategoryRequest);
+        }
     }
 
     private IEnumerable<TotalModel> GetTotals(CategoryType type) =>
@@ -79,11 +124,14 @@ public class BudgetCategoryModel
     public CategoryType? Type { get; set; }
     public TotalModel? Total { get; set; }
     public List<BudgetSubcategoryModel>? Subcategories { get; set; }
+
+    public void UpdatePlannedTotal(BudgetCategoryRequestViewModel subcategoryRequest) =>
+        Total = (TotalModel)subcategoryRequest.PlannedTotal;
 }
 
 public class BudgetSubcategoryModel : BudgetCategoryModel
 {
-    public List<BudgetSubcategoryModel>? Transactions { get; set; }
+    public List<BudgetTransactionModel>? Transactions { get; set; }
 }
 
 public class BudgetTransactionModel
@@ -97,6 +145,7 @@ public class TotalModel
     public float Planned { get; set; }
     public float Actual { get; set; }
     public float Difference => Planned - Actual;
+    public string Percentage => (Planned == 0 ? 0 : Actual / Planned * 100).ToString("P2");
 
     public void Calculate(IEnumerable<TotalModel> totals)
     {

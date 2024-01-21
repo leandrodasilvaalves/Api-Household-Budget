@@ -1,6 +1,7 @@
 using Flunt.Notifications;
 using Flunt.Validations;
 
+using Household.Budget.Contracts;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Extensions;
 using Household.Budget.Contracts.Models;
@@ -17,7 +18,8 @@ public class CreateMonthlyBudgetRequestContract : Contract<CreateMonthlyBudgetRe
             .IsTrue(request.Categories.All(x => x.Subcategories.All(x => !string.IsNullOrWhiteSpace(x.Id))),
                 SubcategoryErrors.SUBCATEGORY_ID_IS_REQUIRED)
             .IsTrue(request.Categories.All(x => x.PlannedTotal == x.Subcategories.Sum(x => x.PlannedTotal)),
-                BudgetError.CATEGORY_PLANNED_TOTAL_MUST_BE_SUM_OF_SUBCATEGORIES);
+                BudgetError.CATEGORY_PLANNED_TOTAL_MUST_BE_SUM_OF_SUBCATEGORIES)
+            .IsTrue(CurrentYear.IsValid(request.Year), CommonErrors.INVALID_YEAR);
     }
 
     public CreateMonthlyBudgetRequestContract(CreateMonthlyBudgetRequest request, List<Category> categories)

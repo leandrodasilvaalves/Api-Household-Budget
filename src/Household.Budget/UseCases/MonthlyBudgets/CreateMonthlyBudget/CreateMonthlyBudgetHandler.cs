@@ -20,9 +20,8 @@ public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
                                                                CancellationToken cancellationToken)
     {
 
-        var alreadyExists = await _monthlyBudgeRepository.ExistsAsync(
-                request.UserId, request.Year, request.Month, cancellationToken);
-        if (alreadyExists)
+        if (await _monthlyBudgeRepository.ExistsAsync(
+            request.UserId, request.Year, request.Month, cancellationToken))
         {
             return new CreateMonthlyBudgetResponse(BudgetError.BUGET_ALREADY_EXISTS);
         }

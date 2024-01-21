@@ -3,6 +3,7 @@ using System.Net;
 using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
+using Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,5 +27,15 @@ public class MonthlyBudgetController : CustomControllerBase
     {
         var response = await handler.HandleAsync(request, HttpContext.RequestAborted);
         return response.ToActionResult(HttpStatusCode.Created);
+    }
+
+    [HttpPatch("{id:Guid}")]
+    public async Task<IActionResult> UpdateAsync([FromRoute] string id,
+                                           [FromBody] UpdateMonthlyBudgetRequest request,
+                                           [FromServices] IUpdateMonthlyBudgetHandler handler)
+    {
+        request.Id = id;
+        var response = await handler.HandleAsync(request, HttpContext.RequestAborted);
+        return response.ToActionResult(HttpStatusCode.Created, HttpStatusCode.NotFound);
     }
 }
