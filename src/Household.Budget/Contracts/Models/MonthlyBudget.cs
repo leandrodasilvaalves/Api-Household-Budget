@@ -17,8 +17,8 @@ public class MonthlyBudget : Model
     public int Year { get; set; }
     public Month Month { get; set; }
     public List<BudgetCategoryModel> Categories { get; set; }
-    public TotalModel? Incomes { get; set; }
-    public TotalModel? Expenses { get; set; }
+    public TotalModel Incomes { get; set; } = new();
+    public TotalModel Expenses { get; set; } = new();
 
     public void Create(CreateMonthlyBudgetRequest request, List<Category> categories)
     {
@@ -29,9 +29,12 @@ public class MonthlyBudget : Model
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         AddCategories(request.Categories, categories);
-        Incomes = new(Categories.Where(c => c.Type == CategoryType.INCOMES).ToList());
-        Expenses = new(Categories.Where(c => c.Type == CategoryType.EXPENSES).ToList());
+        Incomes.Calculate(GetTotals(CategoryType.INCOMES));
+        Expenses.Calculate(GetTotals(CategoryType.EXPENSES));
     }
+
+    private IEnumerable<TotalModel> GetTotals(CategoryType type) =>
+        from categ in Categories where categ.Type == type select categ.Total;
 
     private void AddCategories(List<BudgetCategoryRequestViewModel> categoriesRequest, List<Category> categories)
     {
@@ -42,7 +45,7 @@ public class MonthlyBudget : Model
             {
                 Id = category?.Id ?? "",
                 Name = category?.Name ?? "",
-                PlannedTotal = request?.PlannedTotal ?? 0,
+                Total = (TotalModel)request?.PlannedTotal,
                 Type = category?.Type,
                 Subcategories = AddSubCategories(request?.Subcategories, category?.Subcategories)
             };
@@ -61,7 +64,7 @@ public class MonthlyBudget : Model
             {
                 Id = subcategory.Id ?? "",
                 Name = subcategory.Name ?? "",
-                PlannedTotal = request?.PlannedTotal ?? 0,
+                Total = (TotalModel)request?.PlannedTotal,
             };
             subcategoriesModel.Add(subcategoryModel);
         }
@@ -74,9 +77,7 @@ public class BudgetCategoryModel
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public CategoryType? Type { get; set; }
-    public float PlannedTotal { get; set; }
-    public float ActualTotal { get; set; }
-    public float Difference => PlannedTotal - ActualTotal;
+    public TotalModel? Total { get; set; }
     public List<BudgetSubcategoryModel>? Subcategories { get; set; }
 }
 
@@ -88,11 +89,21 @@ public class BudgetSubcategoryModel : BudgetCategoryModel
 public class BudgetTransactionModel
 {
     public string Id { get; set; } = "";
-    public float Total { get; set; }
+    public float Amount { get; set; }
 }
 
-public class TotalModel(List<BudgetCategoryModel> categories)
+public class TotalModel
 {
-    public float PlannedTotal { get; set; } = categories.Sum(x => x.PlannedTotal);
-    public float ActualTotal { get; set; } = categories.Sum(x => x.ActualTotal);
+    public float Planned { get; set; }
+    public float Actual { get; set; }
+    public float Difference => Planned - Actual;
+
+    public void Calculate(IEnumerable<TotalModel> totals)
+    {
+        Planned = totals.Sum(x => x.Planned);
+        Actual = totals.Sum(x => x.Actual);
+    }
+
+    public static explicit operator TotalModel(float? planned) =>
+        new() { Planned = planned ?? 0, Actual = 0 };
 }
