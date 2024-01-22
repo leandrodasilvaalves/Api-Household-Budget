@@ -6,10 +6,10 @@ namespace Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 
 public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
 {
-    private readonly IMonthlyBudgeRepository _monthlyBudgeRepository;
+    private readonly IMonthlyBudgetRepository _monthlyBudgeRepository;
     private readonly ICategoryRepository _categoryRepository;
 
-    public CreateMonthlyBudgetHandler(IMonthlyBudgeRepository monthlyBudgeRepository,
+    public CreateMonthlyBudgetHandler(IMonthlyBudgetRepository monthlyBudgeRepository,
                                       ICategoryRepository categoryRepository)
     {
         _monthlyBudgeRepository = monthlyBudgeRepository ?? throw new ArgumentNullException(nameof(monthlyBudgeRepository));
@@ -26,20 +26,7 @@ public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
             return new CreateMonthlyBudgetResponse(BudgetError.BUGET_ALREADY_EXISTS);
         }
 
-        var categoriesIds = request.Categories.Select(x => x.Id).ToArray();
-        bool hasMorePage = false;
-        List<Category> categories = [];
-        do
-        {
-            var (pageNumber, pageSize) = (1, 50);
-            var result = await _categoryRepository.GetAllAsync(
-                pageSize, pageNumber, request.UserId, cancellationToken, categoriesIds);
-
-            hasMorePage = result.HasMorePages;
-            pageNumber++;
-            categories.AddRange(result.Items ?? []);
-        } while (hasMorePage);
-
+        var categories = await GetAllCategoriesAsync(request.UserId, cancellationToken);
         var contract = new CreateMonthlyBudgetRequestContract(request, categories);
         if (contract.IsValid is false)
         {
@@ -50,5 +37,20 @@ public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
         monthlyBudget.Create(request, categories);
         await _monthlyBudgeRepository.CreateAsync(monthlyBudget, cancellationToken);
         return new CreateMonthlyBudgetResponse(monthlyBudget);
+    }
+
+    private async Task<List<Category>> GetAllCategoriesAsync(string userId, CancellationToken cancellationToken)
+    {
+        bool hasMorePage;
+        var (pageNumber, pageSize) = (1, 50);
+        List<Category> categories = [];
+        do
+        {
+            var result = await _categoryRepository.GetAllAsync(pageSize, pageNumber, userId, cancellationToken);
+            hasMorePage = result.HasMorePages;
+            pageNumber++;
+            categories.AddRange(result.Items ?? []);
+        } while (hasMorePage);
+        return categories;
     }
 }

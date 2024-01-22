@@ -4,9 +4,9 @@ namespace Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 
 public class UpdateMonthlyBudgetHandler : IUpdateMonthlyBudgetHandler
 {
-    private readonly IMonthlyBudgeRepository _monthlyBudgeRepository;
+    private readonly IMonthlyBudgetRepository _monthlyBudgeRepository;
 
-    public UpdateMonthlyBudgetHandler(IMonthlyBudgeRepository monthlyBudgeRepository)
+    public UpdateMonthlyBudgetHandler(IMonthlyBudgetRepository monthlyBudgeRepository)
     {
         _monthlyBudgeRepository = monthlyBudgeRepository ?? throw new ArgumentNullException(nameof(monthlyBudgeRepository));
     }

@@ -15,6 +15,14 @@ public class Transaction : Model
 
     public void Merge(UpdateTransactionRequest? request, Category category, Subcategory subcategory)
     {
+        if (request is { } && request.Status.HasValue)
+        {
+            Status = request.Status.Value;
+            if (Status == ModelStatus.EXCLUDED)
+            {
+                return;
+            }
+        }
         if (string.IsNullOrWhiteSpace(request?.Description) is false)
         {
             Description = request.Description;

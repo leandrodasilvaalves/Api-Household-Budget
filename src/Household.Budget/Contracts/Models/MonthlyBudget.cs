@@ -115,6 +115,18 @@ public class MonthlyBudget : Model
         }
         return subcategoriesModel;
     }
+
+    public void AttachTransaction(Transaction transaction)
+    {
+        Categories?.FirstOrDefault(c => c.Id == transaction.Category.Id)
+            ?.Subcategories?.FirstOrDefault(s => s.Id == transaction.Category?.Subcategory?.Id)
+                ?.AddTransaction(transaction);
+
+        Categories?.ForEach(c => c.CalculateTotal());
+        Incomes.Calculate(GetTotals(CategoryType.INCOMES));
+        Expenses.Calculate(GetTotals(CategoryType.EXPENSES));
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
 
 public class BudgetCategoryModel
@@ -127,23 +139,44 @@ public class BudgetCategoryModel
 
     public void UpdatePlannedTotal(BudgetCategoryRequestViewModel subcategoryRequest) =>
         Total = (TotalModel)subcategoryRequest.PlannedTotal;
+
+    public void CalculateTotal()
+    {
+        Total ??= new();
+        Total.Actual = Subcategories?.Sum(x => x.Total?.Actual ?? 0) ?? 0;
+    }
 }
 
 public class BudgetSubcategoryModel : BudgetCategoryModel
 {
     public List<BudgetTransactionModel>? Transactions { get; set; }
+    public void AddTransaction(Transaction transaction)
+    {
+        Transactions ??= [];
+        Transactions.Add(new(transaction?.Id ?? "", transaction?.Payment?.Total ?? 0));
+        Total ??= new();
+        Total.Actual = Transactions?.Sum(x => x.Amount) ?? 0;
+    }
 }
 
 public class BudgetTransactionModel
 {
+    public BudgetTransactionModel() { }
+
+    public BudgetTransactionModel(string id, float amount)
+    {
+        Id = id;
+        Amount = amount;
+    }
+
     public string Id { get; set; } = "";
     public float Amount { get; set; }
 }
 
 public class TotalModel
 {
-    public float Planned { get; set; }
-    public float Actual { get; set; }
+    public float Planned { get; set; } = default;
+    public float Actual { get; set; } = default;
     public float Difference => Planned - Actual;
     public string Percentage => (Planned == 0 ? 0 : Actual / Planned * 100).ToString("P2");
 

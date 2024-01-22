@@ -4,9 +4,9 @@ namespace Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
 
 public class GetMonthlyBudgetsHandler : IGetMonthlyBudgetsHandler
 {
-    private readonly IMonthlyBudgeRepository _repository;
+    private readonly IMonthlyBudgetRepository _repository;
 
-    public GetMonthlyBudgetsHandler(IMonthlyBudgeRepository repository)
+    public GetMonthlyBudgetsHandler(IMonthlyBudgetRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }

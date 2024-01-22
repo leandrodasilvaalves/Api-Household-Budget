@@ -5,9 +5,9 @@ using Household.Budget.Infra.Data.Context;
 
 namespace Household.Budget.Infra.Data.Repositories
 {
-    public class MonthlyBudgeRepository : Repository<MonthlyBudget>, IMonthlyBudgeRepository
+    public class MonthlyBudgetRepository : Repository<MonthlyBudget>, IMonthlyBudgetRepository
     {
-        public MonthlyBudgeRepository(IMongoDbContext<MonthlyBudget> context)
+        public MonthlyBudgetRepository(IMongoDbContext<MonthlyBudget> context)
             : base(context) { }
 
         public async Task<bool> ExistsAsync(string userId, int year, Month month, CancellationToken cancellationToken) =>

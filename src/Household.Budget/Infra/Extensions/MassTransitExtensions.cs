@@ -4,6 +4,7 @@ using Household.Budget.Infra.Consumers.Subcategory;
 
 using MassTransit;
 using Household.Budget.Infra.Consumers.Observers;
+using Household.Budget.Infra.Consumers.Transactions;
 
 namespace Household.Budget.Infra.Extensions;
 
@@ -19,6 +20,7 @@ public static class MassTransitExtensions
             bus.AddConsumer<SubcategoryChangedCategoryConsumer>();
             bus.AddConsumer<ImportCategorySeedRequestConsumer>();
             bus.AddConsumer<CreateSubcategorySeedRequestConsumer>();
+            bus.AddConsumer<TransactionWasCreatedConsumer>();
 
             bus.UsingRabbitMq((context, cfg) =>
             {
@@ -42,6 +44,11 @@ public static class MassTransitExtensions
                 {
                     endpoint.CustomConfigureConsumer<ImportCategorySeedRequestConsumer>(context);
                     endpoint.CustomConfigureConsumer<CreateSubcategorySeedRequestConsumer>(context);
+                });
+
+                cfg.ReceiveEndpoint("transactions.notifications", endpoint =>
+                {
+                    endpoint.CustomConfigureConsumer<TransactionWasCreatedConsumer>(context);
                 });
 
                 cfg.ConfigureEndpoints(context);
