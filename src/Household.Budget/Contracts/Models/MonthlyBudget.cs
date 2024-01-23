@@ -116,12 +116,53 @@ public class MonthlyBudget : Model
         return subcategoriesModel;
     }
 
-    public void AttachTransaction(Transaction transaction)
+    public void AttachTransaction(Transaction? transaction)
+    {
+        Categories?.FirstOrDefault(c => c.Id == transaction?.Category.Id)
+            ?.Subcategories?.FirstOrDefault(s => s.Id == transaction?.Category?.Subcategory?.Id)
+                ?.AddTransaction(transaction);
+
+        Recalculate();
+    }
+
+    public void DetachTransaction(Transaction transaction)
     {
         Categories?.FirstOrDefault(c => c.Id == transaction.Category.Id)
             ?.Subcategories?.FirstOrDefault(s => s.Id == transaction.Category?.Subcategory?.Id)
-                ?.AddTransaction(transaction);
+                ?.RemoveTransaction(transaction);
 
+        Recalculate();
+    }
+
+    public void UpdateTransacation(Transaction transaction)
+    {
+        var category = (from categ in Categories
+                        from subcateg in categ.Subcategories ?? []
+                        from trans in subcateg.Transactions ?? []
+                        where trans.Id == transaction.Id
+                        select new { Id = categ.Id, subcategId = subcateg.Id })
+                       .FirstOrDefault();
+
+        if (category is not null && category?.subcategId != transaction?.Category?.Subcategory?.Id)
+        {
+            Categories.FirstOrDefault(c => c.Id == category?.Id)
+                ?.Subcategories?.FirstOrDefault(s => s?.Id == category?.subcategId)
+                    ?.RemoveTransaction(t => t.Id == transaction?.Id);
+
+            AttachTransaction(transaction);
+        }
+        else
+        {
+            Categories?.FirstOrDefault(c => c?.Id == transaction?.Id)
+                ?.Subcategories?.FirstOrDefault(s => s?.Id == transaction?.Category?.Subcategory?.Id)
+                ?.UpdateTransaction(transaction);
+
+            Recalculate();
+        }
+    }
+
+    private void Recalculate()
+    {
         Categories?.ForEach(c => c.CalculateTotal());
         Incomes.Calculate(GetTotals(CategoryType.INCOMES));
         Expenses.Calculate(GetTotals(CategoryType.EXPENSES));
@@ -150,10 +191,36 @@ public class BudgetCategoryModel
 public class BudgetSubcategoryModel : BudgetCategoryModel
 {
     public List<BudgetTransactionModel>? Transactions { get; set; }
-    public void AddTransaction(Transaction transaction)
+    public void AddTransaction(Transaction? transaction)
     {
         Transactions ??= [];
-        Transactions.Add(new(transaction?.Id ?? "", transaction?.Payment?.Total ?? 0));
+        Transactions.Add((BudgetTransactionModel)transaction);
+        Recalculate();
+    }
+
+    public void RemoveTransaction(Transaction transaction)
+    {
+        Transactions?.Remove((BudgetTransactionModel)transaction);
+        Recalculate();
+    }
+
+    public void RemoveTransaction(Predicate<BudgetTransactionModel> predicate)
+    {
+        Transactions?.RemoveAll(predicate);
+    }
+
+    public void UpdateTransaction(Transaction? transaction)
+    {
+        var index = Transactions?.FindIndex(t => t.Id == transaction?.Id);
+        if (index.HasValue)
+        {
+            Transactions ??= [];
+            Transactions[index.Value] = (BudgetTransactionModel)transaction;
+        }
+    }
+
+    private void Recalculate()
+    {
         Total ??= new();
         Total.Actual = Transactions?.Sum(x => x.Amount) ?? 0;
     }
@@ -161,16 +228,27 @@ public class BudgetSubcategoryModel : BudgetCategoryModel
 
 public class BudgetTransactionModel
 {
-    public BudgetTransactionModel() { }
-
-    public BudgetTransactionModel(string id, float amount)
-    {
-        Id = id;
-        Amount = amount;
-    }
-
     public string Id { get; set; } = "";
+    public DateOnly? TransactionDate { get; set; }
+    public string? Description { get; set; } = "";
     public float Amount { get; set; }
+
+    public static explicit operator BudgetTransactionModel(Transaction? transaction) => new()
+    {
+        Id = transaction?.Id ?? "",
+        Description = Reduce(transaction?.Description ?? ""),
+        TransactionDate = SetDate(transaction?.TransactionDate),
+        Amount = transaction?.Payment?.Total ?? 0
+    };
+
+    private static string Reduce(string value, short maxLength = 30) =>
+        value.Length > maxLength ? value[..maxLength] : value;
+
+    public static DateOnly SetDate(DateTime? date)
+    {
+        date ??= DateTime.UtcNow;
+        return new(date.Value.Year, date.Value.Month, date.Value.Day);
+    }
 }
 
 public class TotalModel

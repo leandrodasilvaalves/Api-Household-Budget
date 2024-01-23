@@ -21,6 +21,7 @@ public static class MassTransitExtensions
             bus.AddConsumer<ImportCategorySeedRequestConsumer>();
             bus.AddConsumer<CreateSubcategorySeedRequestConsumer>();
             bus.AddConsumer<TransactionWasCreatedConsumer>();
+            bus.AddConsumer<TransactionWasUpdatedConsumer>();
 
             bus.UsingRabbitMq((context, cfg) =>
             {
@@ -49,6 +50,7 @@ public static class MassTransitExtensions
                 cfg.ReceiveEndpoint("transactions.notifications", endpoint =>
                 {
                     endpoint.CustomConfigureConsumer<TransactionWasCreatedConsumer>(context);
+                    endpoint.CustomConfigureConsumer<TransactionWasUpdatedConsumer>(context);
                 });
 
                 cfg.ConfigureEndpoints(context);

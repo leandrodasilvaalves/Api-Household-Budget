@@ -6,6 +6,7 @@ namespace Household.Budget.Contracts.Models;
 
 public class Transaction : Model
 {
+    private readonly Dictionary<string, object> _metaData = [];
     public string Description { get; set; } = "";
     public CategoryViewModel Category { get; set; } = new();
     public PaymentViewModel Payment { get; set; } = new();
@@ -23,14 +24,36 @@ public class Transaction : Model
                 return;
             }
         }
+
         if (string.IsNullOrWhiteSpace(request?.Description) is false)
         {
             Description = request.Description;
         }
+
+        if (request is { } && request.TransactionDate.HasValue)
+        {
+            _metaData.Add(nameof(TransactionDate), TransactionDate);
+            TransactionDate = request.TransactionDate.Value;
+        }
+
         Type = category.Type;
         Merge(request?.Category, category, subcategory);
         Merge(request?.Tags);
         Merge(request?.Payment);
+    }
+
+    public KeyValuePair<string, object>[] GetMetaData() => _metaData
+            .Select(x => new KeyValuePair<string, object>(x.Key, x.Value))
+            .ToArray();
+
+    public Transaction CloneWith(Dictionary<string, object> metaData)
+    {
+        var clone = (Transaction)MemberwiseClone();
+        if (metaData.TryGetValue(nameof(TransactionDate), out var transactionDate))
+        {
+            clone.TransactionDate = (DateTime)transactionDate;
+        }
+        return clone;
     }
 
     private void Merge(CategoryViewModel? categoryRequest, Category category, Subcategory subcategory)
