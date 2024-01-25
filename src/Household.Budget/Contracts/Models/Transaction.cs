@@ -42,16 +42,14 @@ public class Transaction : Model
         Merge(request?.Payment);
     }
 
-    public KeyValuePair<string, object>[] GetMetaData() => _metaData
-            .Select(x => new KeyValuePair<string, object>(x.Key, x.Value))
-            .ToArray();
+    public Dictionary<string, object> GetMetaData() => _metaData;
 
     public Transaction CloneWith(Dictionary<string, object> metaData)
     {
         var clone = (Transaction)MemberwiseClone();
         if (metaData.TryGetValue(nameof(TransactionDate), out var transactionDate))
         {
-            clone.TransactionDate = (DateTime)transactionDate;
+            clone.TransactionDate = DateTime.Parse($"{transactionDate}");
         }
         return clone;
     }

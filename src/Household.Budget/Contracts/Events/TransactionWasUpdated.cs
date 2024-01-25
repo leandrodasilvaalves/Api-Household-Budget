@@ -4,10 +4,10 @@ namespace Household.Budget.Contracts.Events;
 
 public class TransactionWasUpdated : Event<Transaction>
 {
-    public TransactionWasUpdated(Transaction data, params KeyValuePair<string, object>[] metadata)
+    public TransactionWasUpdated(Transaction data)
     {
         Data = data ?? throw new ArgumentNullException(nameof(data));
-        AddMetaData(metadata);
+        AddMetaData(data.GetMetaData());
     }
 
     public override string Name => "TRANSACTION_WAS_UPDATED";
@@ -23,6 +23,6 @@ public class TransactionWasUpdated : Event<Transaction>
         var keyName = nameof(Transaction.TransactionDate);
         return
             MetaData.TryGetValue(keyName, out var transactionDate)
-            && HasChanged((DateTime)transactionDate);
+            && HasChanged(DateTime.Parse($"{transactionDate}"));
     }
 }

@@ -70,9 +70,11 @@ public class UpdateTransactionRequestContract : Contract<UpdateTransactionReques
                 x => subcategory is not null,
                 SubcategoryErrors.SUBCATEGORY_NOT_FOUND)
 
-            .IsTrue(category?.Subcategories.Any(s => s.Id == subcategory?.Id),
+            .IsSatified(request,
+                x => x.Category is not null,
+                _ => category?.Subcategories.Any(s => s.Id == subcategory?.Id) ?? false,
                 TransactionErrors.SUBCATEGORY_MUST_BE_CHILD_OF_CATEGORY)
-                
+
             .IsSatified(request,
                 x => x.Payment?.Type == PaymentType.CREDIT_CARD,
                 x => category?.Type == CategoryType.EXPENSES,

@@ -10,12 +10,8 @@ public abstract class Event<TData> : IEvent<TData>
 
     public DateTime SendedAt { get; }
 
-    public Dictionary<string, object> MetaData { get; } = [];
-    protected void AddMetaData(IEnumerable<KeyValuePair<string, object>> metaData)
-    {
-        foreach (var item in metaData)
-        {
-            MetaData.Add(item.Key, item.Value);
-        }
-    }
+    public Dictionary<string, object> MetaData { get; set; } = [];
+    
+    protected void AddMetaData(Dictionary<string, object> metaData) => 
+        MetaData = metaData;
 }

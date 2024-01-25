@@ -129,31 +129,31 @@ public class MonthlyBudget : Model
     {
         Categories?.FirstOrDefault(c => c.Id == transaction.Category.Id)
             ?.Subcategories?.FirstOrDefault(s => s.Id == transaction.Category?.Subcategory?.Id)
-                ?.RemoveTransaction(transaction);
+                ?.RemoveTransaction(x => x.Id == transaction.Id);
 
         Recalculate();
     }
 
     public void UpdateTransacation(Transaction transaction)
     {
-        var category = (from categ in Categories
-                        from subcateg in categ.Subcategories ?? []
-                        from trans in subcateg.Transactions ?? []
-                        where trans.Id == transaction.Id
-                        select new { Id = categ.Id, subcategId = subcateg.Id })
+        var originalCategory = (from categ in Categories
+                                from subcateg in categ.Subcategories ?? []
+                                from trans in subcateg.Transactions ?? []
+                                where trans.Id == transaction.Id
+                                select new { Id = categ.Id, subcategId = subcateg.Id })
                        .FirstOrDefault();
 
-        if (category is not null && category?.subcategId != transaction?.Category?.Subcategory?.Id)
+        if (originalCategory is not null && originalCategory?.subcategId != transaction?.Category?.Subcategory?.Id)
         {
-            Categories.FirstOrDefault(c => c.Id == category?.Id)
-                ?.Subcategories?.FirstOrDefault(s => s?.Id == category?.subcategId)
+            Categories.FirstOrDefault(c => c.Id == originalCategory?.Id)
+                ?.Subcategories?.FirstOrDefault(s => s?.Id == originalCategory?.subcategId)
                     ?.RemoveTransaction(t => t.Id == transaction?.Id);
 
             AttachTransaction(transaction);
         }
         else
         {
-            Categories?.FirstOrDefault(c => c?.Id == transaction?.Id)
+            Categories?.FirstOrDefault(c => c?.Id == transaction?.Category.Id)
                 ?.Subcategories?.FirstOrDefault(s => s?.Id == transaction?.Category?.Subcategory?.Id)
                 ?.UpdateTransaction(transaction);
 
@@ -198,15 +198,10 @@ public class BudgetSubcategoryModel : BudgetCategoryModel
         Recalculate();
     }
 
-    public void RemoveTransaction(Transaction transaction)
-    {
-        Transactions?.Remove((BudgetTransactionModel)transaction);
-        Recalculate();
-    }
-
     public void RemoveTransaction(Predicate<BudgetTransactionModel> predicate)
     {
         Transactions?.RemoveAll(predicate);
+        Recalculate();
     }
 
     public void UpdateTransaction(Transaction? transaction)

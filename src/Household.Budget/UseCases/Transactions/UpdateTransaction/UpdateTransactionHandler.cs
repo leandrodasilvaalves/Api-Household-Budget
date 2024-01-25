@@ -41,7 +41,7 @@ public class UpdateTransactionHandler : IUpdateTransactionHandler
 
         transaction.Merge(request, category, subcategory);
         await _transactionRepository.UpdateAsync(transaction, cancellationToken);
-        await _bus.Publish(new TransactionWasUpdated(transaction, transaction.GetMetaData()), cancellationToken);
+        await _bus.Publish(new TransactionWasUpdated(transaction), cancellationToken);
         return new UpdateTransactionResponse(transaction);
     }
 }
