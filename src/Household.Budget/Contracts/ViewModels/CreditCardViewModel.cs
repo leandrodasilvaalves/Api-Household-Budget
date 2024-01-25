@@ -7,7 +7,7 @@ public class CreditCardViewModel
     public DateTime? FirstDueDate { get; set; }
     public InstallMentViewModel? Installment { get; set; }
 
-    public CreditCardViewModel ProcessPurchase(float totalPurchase)
+    public CreditCardViewModel ProcessPurchase(decimal totalPurchase)
     {
         var installmentAmount = (totalPurchase / InstallmentNumber) ?? 0;
 
@@ -21,7 +21,7 @@ public class CreditCardViewModel
         return this;
     }
 
-    public void Merge(CreditCardViewModel creditCard, float totalPurchase)
+    public void Merge(CreditCardViewModel creditCard, decimal totalPurchase)
     {
         if (!string.IsNullOrWhiteSpace(creditCard.Name))
         {

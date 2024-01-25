@@ -4,7 +4,7 @@ namespace Household.Budget.Contracts.ViewModels;
 
 public class PaymentViewModel
 {
-    public float Total { get; set; }
+    public decimal Total { get; set; }
     public PaymentType Type { get; set; }
     public CreditCardViewModel? CreditCard { get; set; }
 

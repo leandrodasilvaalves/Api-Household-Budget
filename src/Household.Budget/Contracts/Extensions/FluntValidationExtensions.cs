@@ -41,7 +41,7 @@ public static class FluntValidationExtensions
         return contract.IsGreaterThan(val, comparer, notification.Key, notification.Message);
     }
 
-    public static Contract<T> IsGreaterThan<T>(this Contract<T> contract, float val, float comparer, Notification notification)
+    public static Contract<T> IsGreaterThan<T>(this Contract<T> contract, decimal val, decimal comparer, Notification notification)
     {
         return contract.IsGreaterThan(val, comparer, notification.Key, notification.Message);
     }

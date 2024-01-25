@@ -4,7 +4,7 @@ public class InstallMentViewModel
 {
     public InstallMentViewModel() { }
     
-    public InstallMentViewModel(DateTime firstDueDate, float amount, int? number)
+    public InstallMentViewModel(DateTime firstDueDate, decimal amount, int? number)
     {
         Number = number ?? 0;
         if (Number > 0)
@@ -16,7 +16,7 @@ public class InstallMentViewModel
     public int Number { get; set; }
     public List<NextPaymentViewModel> NextPayments { get; set; } = [];
 
-    private void ProcessNextPayments(DateTime firstDueDate, float amount)
+    private void ProcessNextPayments(DateTime firstDueDate, decimal amount)
     {
         NextPayments = new List<NextPaymentViewModel>(Number);
         for (var i = 0; i < Number; i++)

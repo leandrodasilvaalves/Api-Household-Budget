@@ -2,20 +2,20 @@ public class Data
 {
     public string Category { get; set; } = "";
     public string Subcategory { get; set; } = "";
-    public float Jan { get; set; }
-    public float Fev { get; set; }
-    public float Mar { get; set; }
-    public float Apr { get; set; }
-    public float Mai { get; set; }
-    public float Jun { get; set; }
-    public float Jul { get; set; }
-    public float Aug { get; set; }
-    public float Sep { get; set; }
-    public float Oct { get; set; }
-    public float Nov { get; set; }
-    public float Dec { get; set; }
+    public decimal Jan { get; set; }
+    public decimal Fev { get; set; }
+    public decimal Mar { get; set; }
+    public decimal Apr { get; set; }
+    public decimal Mai { get; set; }
+    public decimal Jun { get; set; }
+    public decimal Jul { get; set; }
+    public decimal Aug { get; set; }
+    public decimal Sep { get; set; }
+    public decimal Oct { get; set; }
+    public decimal Nov { get; set; }
+    public decimal Dec { get; set; }
 
-    public float GetTotal(int month) => month switch
+    public decimal GetTotal(int month) => month switch
     {
         1 => Jan,
         2 => Fev,

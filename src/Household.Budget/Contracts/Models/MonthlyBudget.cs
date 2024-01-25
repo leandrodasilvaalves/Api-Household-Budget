@@ -226,7 +226,7 @@ public class BudgetTransactionModel
     public string Id { get; set; } = "";
     public DateOnly? TransactionDate { get; set; }
     public string? Description { get; set; } = "";
-    public float Amount { get; set; }
+    public decimal Amount { get; set; }
 
     public static explicit operator BudgetTransactionModel(Transaction? transaction) => new()
     {
@@ -248,9 +248,9 @@ public class BudgetTransactionModel
 
 public class TotalModel
 {
-    public float Planned { get; set; } = default;
-    public float Actual { get; set; } = default;
-    public float Difference => Planned - Actual;
+    public decimal Planned { get; set; } = default;
+    public decimal Actual { get; set; } = default;
+    public decimal Difference => Planned - Actual;
     public string Percentage => (Planned == 0 ? 0 : Actual / Planned * 100).ToString("P2");
 
     public void Calculate(IEnumerable<TotalModel> totals)
@@ -259,6 +259,6 @@ public class TotalModel
         Actual = totals.Sum(x => x.Actual);
     }
 
-    public static explicit operator TotalModel(float? planned) =>
+    public static explicit operator TotalModel(decimal? planned) =>
         new() { Planned = planned ?? 0, Actual = 0 };
 }

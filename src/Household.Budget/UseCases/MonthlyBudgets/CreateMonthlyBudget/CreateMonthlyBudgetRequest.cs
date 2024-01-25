@@ -15,7 +15,7 @@ public class CreateMonthlyBudgetRequest : Request
 public class BudgetCategoryRequestViewModel
 {
     public string Id { get; set; } = "";
-    public float PlannedTotal { get; set; }
+    public decimal PlannedTotal { get; set; }
 
     public List<BudgetCategoryRequestViewModel> Subcategories { get; set; } = [];
 }
