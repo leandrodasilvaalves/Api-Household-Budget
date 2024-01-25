@@ -224,7 +224,7 @@ public class BudgetSubcategoryModel : BudgetCategoryModel
 public class BudgetTransactionModel
 {
     public string Id { get; set; } = "";
-    public DateOnly? TransactionDate { get; set; }
+    public DateTime? TransactionDate { get; set; }
     public string? Description { get; set; } = "";
     public decimal Amount { get; set; }
 
@@ -232,18 +232,12 @@ public class BudgetTransactionModel
     {
         Id = transaction?.Id ?? "",
         Description = Reduce(transaction?.Description ?? ""),
-        TransactionDate = SetDate(transaction?.TransactionDate),
+        TransactionDate = transaction?.TransactionDate,
         Amount = transaction?.Payment?.Total ?? 0
     };
 
     private static string Reduce(string value, short maxLength = 30) =>
         value.Length > maxLength ? value[..maxLength] : value;
-
-    public static DateOnly SetDate(DateTime? date)
-    {
-        date ??= DateTime.UtcNow;
-        return new(date.Value.Year, date.Value.Month, date.Value.Day);
-    }
 }
 
 public class TotalModel
