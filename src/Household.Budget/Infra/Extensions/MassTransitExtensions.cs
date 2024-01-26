@@ -57,6 +57,7 @@ public static class MassTransitExtensions
                 cfg.ReceiveEndpoint("transactions.requests", endpoint =>
                 {
                     endpoint.CustomConfigureConsumer<ImportTransactionConsumer>(context);
+                    endpoint.PrefetchCount = 3;
                 });
 
                 cfg.ConfigureEndpoints(context);

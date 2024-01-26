@@ -52,8 +52,8 @@ namespace Household.Budget.Api.Controllers
         public async Task<IActionResult> ImportAsync([FromForm] ImportTransactionRequest request,
                                                      [FromServices] IImportTransactionHandler handler)
         {
-            var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
-            return result.ToActionResult(HttpStatusCode.Accepted, HttpStatusCode.BadRequest);
+            handler.HandleAsync(request, HttpContext.RequestAborted);
+            return Accepted();
         }
     }
 }

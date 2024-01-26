@@ -1,5 +1,6 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
+using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 
@@ -30,6 +31,10 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
             var response = await _createMonthlyBudgetHandler.HandleAsync(request, cancellationToken);
             if (response.IsSuccess is false)
             {
+                if (response.Errors.Any(x => x.Equals(BudgetError.BUGET_ALREADY_EXISTS)))
+                {
+                    return await HandleAsync(notification, cancellationToken);
+                }
                 return new TransactionWasCreatedEventResponse(response?.Errors ?? []);
             }
             monthlyBudget = response.Data;
