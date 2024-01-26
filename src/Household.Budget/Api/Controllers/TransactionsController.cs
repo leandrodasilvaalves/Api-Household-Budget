@@ -3,6 +3,7 @@ using System.Net;
 using Household.Budget.Contracts.Http.Controllers;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.GetTransactionById;
+using Household.Budget.UseCases.Transactions.ImportTransactions;
 using Household.Budget.UseCases.Transactions.ListTransactions;
 using Household.Budget.UseCases.Transactions.UpdateTransaction;
 
@@ -45,6 +46,14 @@ namespace Household.Budget.Api.Controllers
             request.Id = id;
             var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
             return result.ToActionResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost("import")]
+        public async Task<IActionResult> ImportAsync([FromForm] ImportTransactionRequest request,
+                                                     [FromServices] IImportTransactionHandler handler)
+        {
+            var result = await handler.HandleAsync(request, HttpContext.RequestAborted);
+            return result.ToActionResult(HttpStatusCode.Accepted, HttpStatusCode.BadRequest);
         }
     }
 }

@@ -21,6 +21,7 @@ using Household.Budget.UseCases.Subcategories.CreateSubcategory;
 using Household.Budget.UseCases.Subcategories.ListSubcategories;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.GetTransactionById;
+using Household.Budget.UseCases.Transactions.ImportTransactions;
 using Household.Budget.UseCases.Transactions.ListTransactions;
 using Household.Budget.UseCases.Transactions.UpdateTransaction;
 
@@ -71,6 +72,7 @@ public static class UseCasesExtensions
         services.AddSingleton<IGetTransacationByIdHandler, GetTransacationByIdHandler>();
         services.AddSingleton<IListTransactionHandler, ListTransactionHandler>();
         services.AddSingleton<IUpdateTransactionHandler, UpdateTransactionHandler>();
+        services.AddSingleton<IImportTransactionHandler, ImportTransactionHandler>();
     }
 
     private static void AddMonthlyBudget(this IServiceCollection services)

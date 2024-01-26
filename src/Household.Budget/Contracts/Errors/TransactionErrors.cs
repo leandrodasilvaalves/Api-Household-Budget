@@ -21,4 +21,5 @@ public class TransactionErrors
     public static Notification SUBCATEGORY_MUST_BE_CHILD_OF_CATEGORY = new("SUBCATEGORY_MUST_BE_CHILD_OF_CATEGORY", "Subcategory must be a child of the category.");
     public static Notification TRANSACTION_NOT_FOUND = new("TRANSACTION_NOT_FOUND", "Transaction not found");
     public static Notification TRANSACTION_ID_IS_REQUIRED = new("TRANSACTION_ID_IS_REQUIRED", "Transaction Is required.");
+    public static Notification CSV_FILE_IS_REQUIRED = new("CSV_FILE_IS_REQUIRED", "Csv file is required for imorting process");
 }
