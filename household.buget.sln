@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{004CF193-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Household.Budget.Integration.Tests", "test\Household.Budget.Integration.Tests\Household.Budget.Integration.Tests.csproj", "{0FE09369-8675-4A09-9066-47A1D8CD9F6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Household.Budget.Tool", "src\Household.Budget.Tool\Household.Budget.Tool.csproj", "{1D636CB5-2445-46C8-B9E8-F9FB83C43161}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{0FE09369-8675-4A09-9066-47A1D8CD9F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE09369-8675-4A09-9066-47A1D8CD9F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE09369-8675-4A09-9066-47A1D8CD9F6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D636CB5-2445-46C8-B9E8-F9FB83C43161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D636CB5-2445-46C8-B9E8-F9FB83C43161}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D636CB5-2445-46C8-B9E8-F9FB83C43161}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D636CB5-2445-46C8-B9E8-F9FB83C43161}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,7 +32,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AE5E65DF-6213-4248-9BDE-EAD7DEF863CB} = {642E8A35-133D-483F-BECB-C3D9A636C6C3}
 		{0FE09369-8675-4A09-9066-47A1D8CD9F6D} = {004CF193-6DFC-4260-9FDB-C091CF174539}
-		{1D636CB5-2445-46C8-B9E8-F9FB83C43161} = {642E8A35-133D-483F-BECB-C3D9A636C6C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F090BF7-270A-4783-88F8-5001AF26FB23}
