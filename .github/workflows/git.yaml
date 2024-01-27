@@ -10,7 +10,7 @@ on:
     outputs:
       version: 
         description: Calculated application version
-        value: ${{ jobs.versioning.full_semver }}
+        value: ${{ jobs.versioning.outputs.full_semver }}
 
 jobs:
   versioning:
