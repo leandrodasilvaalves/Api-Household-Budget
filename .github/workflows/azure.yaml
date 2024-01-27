@@ -11,7 +11,7 @@ on:
         required: true
     secrets:
       azure-deploy:
-      required: true
+        required: true
 
 jobs:
   deploy:
