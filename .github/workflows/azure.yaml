@@ -1,0 +1,32 @@
+name: Deploy Azure Web App
+
+on:
+  workflow_call:
+    inputs:
+      appname:
+        type: string
+        required: true
+      docker-image:
+        type: string
+        required: true
+    secrets:
+      azure-deploy:
+      required: true
+
+jobs:
+  deploy:
+    name: Deploy on Azure
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Login on Azure
+        uses: azure/docker-login@v1
+        with:
+          creds: ${{ secrets.azure-deploy }}
+
+      # - name: Deploy to Azure Web App
+      #   uses: azure/webapps-deploy@v2
+      #   with:
+      #     app-name: ${{ inputs.appname }}
+      #     images: ${{ inputs.docker-image }}
+        

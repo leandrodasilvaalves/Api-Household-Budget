@@ -8,32 +8,39 @@ on:
       - "feature/**"
 
 jobs:
-  versioning:
-    uses: ./.github/workflows/git.yaml
+  # versioning:
+  #   uses: ./.github/workflows/git.yaml
 
-  build:
-    name: .Net Building
-    uses: ./.github/workflows/build.yaml
-    needs: Versioning
-    with:
-      dotnet-version: "8.0.x"
-      solution-name: household.buget.sln
+  # build:
+  #   uses: ./.github/workflows/build.yaml
+  #   needs: Versioning
+  #   with:
+  #     dotnet-version: "8.0.x"
+  #     solution-name: household.buget.sln
 
-  docker:    
-    uses: ./.github/workflows/docker.yaml
-    needs: [versioning, build]
+  # docker:
+  #   uses: ./.github/workflows/docker.yaml
+  #   needs: [versioning, build]
+  #   with:
+  #     username: leandroalves86
+  #     context: ./src/Household.Budget/
+  #     dockerfile: ./src/Household.Budget/Dockerfile
+  #     version: ${{needs.versioning.outputs.version}}
+  #     solution-name: household.buget
+  #   secrets:
+  #     usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  # verify_image:
+  #   runs-on: ubuntu-latest
+  #   needs: docker
+  #   steps:
+  #     - run: echo ${{ needs.docker.outputs.docker-image }}
+
+  deploy:
+    uses: ./.github/workflows/azure.yaml
+    # needs: [docker]
     with:
-      username: leandroalves86
-      context: ./src/Household.Budget/
-      dockerfile: ./src/Household.Budget/Dockerfile
-      version: ${{needs.versioning.outputs.version}}
-      solution-name: household.buget
+      appname: householdbudget
+      docker-image: leandroalves86/household.buget:1.0.0-beta.1
     secrets:
-      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  verify_image:
-    runs-on: ubuntu-latest
-    needs: docker
-    steps:
-      - run: echo ${{ needs.docker.outputs.docker-image }}
-
+      azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
