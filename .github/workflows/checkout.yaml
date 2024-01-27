@@ -1,0 +1,26 @@
+name: Checkout Repository
+
+on:
+  push:
+    branches:
+      - "main"
+      - "release/**"
+      - "feature/**"
+
+jobs:
+  checkout:
+    name: Git checkout
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetching code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+  building:
+    name: Building application
+    uses: ./.github/workflows/build.yaml
+    with:
+      dotnet-version: "8.0.x"
+      solution-name: household.buget.sln
