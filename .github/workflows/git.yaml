@@ -17,7 +17,7 @@ jobs:
     name: Versioning
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.set_version.outputs.version }}
+      version: ${{ steps.gitversion.outputs.fullsemver }}
 
     steps:
       - name: Downloading code
@@ -33,7 +33,3 @@ jobs:
       - name: Determining version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
-
-      - name: Setting version
-        id: set_version
-        run: echo "version=$(dotnet-gitversion /showvariable fullsemver)" >> $GITHUB_OUTPUT
