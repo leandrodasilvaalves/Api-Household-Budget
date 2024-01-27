@@ -12,20 +12,21 @@ jobs:
     name: Git Version
     uses: ./.github/workflows/git.yaml
 
-  build:
-    name: Building application
-    uses: ./.github/workflows/build.yaml
-    needs: Versioning
-    with:
-      dotnet-version: "8.0.x"
-      solution-name: household.buget.sln
+  # build:
+  #   name: .Net Building
+  #   uses: ./.github/workflows/build.yaml
+  #   needs: Versioning
+  #   with:
+  #     dotnet-version: "8.0.x"
+  #     solution-name: household.buget.sln
 
   docker:
-    name: Build and publish
+    name: Docker Build and publish
     uses: ./.github/workflows/docker.yaml
-    needs: build
+    # needs: build
     with:
       username: leandroalves86
+      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
       context: ./src/Household.Budget/
       dockerfile: ./src/Household.Budget/Dockerfile
       version: ${{ needs.versioning.outputs.fullsemver }}
