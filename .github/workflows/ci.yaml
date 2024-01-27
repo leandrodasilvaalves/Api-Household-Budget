@@ -30,3 +30,9 @@ jobs:
       solution-name: household.buget
     secrets:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  verify_image:
+    needs: docker
+    steps:
+      - run: echo ${{ needs.docker.outputs.docker-image }}
+
