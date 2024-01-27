@@ -25,7 +25,7 @@ jobs:
           creds: ${{ secrets.azure-deploy }}
           enable-AzPSSession: true
 
-      - name: Deploy to Azure Web App
+      - name: Deploying application
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ inputs.appname }}
