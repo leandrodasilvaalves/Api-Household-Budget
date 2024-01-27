@@ -25,7 +25,6 @@ jobs:
     name: Teste version
     runs-on: ubuntu-latest
     needs: Versioning
-
     steps:
       - run: |
           echo version: ${{ needs.versioning.outputs.version }}  

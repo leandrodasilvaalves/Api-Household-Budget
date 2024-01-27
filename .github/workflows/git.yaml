@@ -10,14 +10,14 @@ on:
     outputs:
       version: 
         description: Calculated application version
-        value: ${{ jobs.versioning.version }}
+        value: ${{ jobs.versioning.full_semver }}
 
 jobs:
   versioning:
     name: Versioning
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.set_version.outputs.version }}
+      full_semver: ${{ steps.set_version.outputs.fullsemver }}
 
     steps:
       - name: Downloading code
@@ -36,5 +36,4 @@ jobs:
 
       - name: Setting version
         id: set_version
-        run: |
-          echo "version=1.0.0-beta.1+13" >> "$GITHUB_OUTPUT"
+        run: echo "fullsemver=1.0.0-beta.1+13" >> "$GITHUB_OUTPUT"
