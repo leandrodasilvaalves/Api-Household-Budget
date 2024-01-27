@@ -14,10 +14,12 @@ jobs:
   testversion:
     name: Teste version
     runs-on: ubuntu-latest
-    needs: Versioning
+    needs: versioning
+
     steps:
-      - run: |
-          echo version: ${{ needs.versioning.outputs.version }}
+      - name: Check version output
+        run: |
+          echo "Version: ${{needs.versioning.outputs.version}}"
 
   # build:
   #   name: .Net Building
