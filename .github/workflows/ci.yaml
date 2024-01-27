@@ -21,7 +21,7 @@ jobs:
 
   docker:    
     uses: ./.github/workflows/docker.yaml
-    # needs: build
+    needs: versioning
     with:
       username: leandroalves86
       context: ./src/Household.Budget/
