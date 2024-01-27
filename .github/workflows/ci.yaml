@@ -26,8 +26,10 @@ jobs:
     # needs: build
     with:
       username: leandroalves86
-      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
       context: ./src/Household.Budget/
       dockerfile: ./src/Household.Budget/Dockerfile
       version: ${{ needs.versioning.outputs.fullsemver }}
       solution-name: household.buget.sln
+    secrets:
+      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+
