@@ -24,7 +24,8 @@ on:
         required: true        
 
 jobs:
-  build:
+  dockerizing:
+    name: Docker Build and publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

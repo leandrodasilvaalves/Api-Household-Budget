@@ -11,16 +11,6 @@ jobs:
   versioning:
     uses: ./.github/workflows/git.yaml
 
-  testversion:
-    name: Teste version
-    runs-on: ubuntu-latest
-    needs: versioning
-
-    steps:
-      - name: Check version output
-        run: |
-          echo "Version: ${{needs.versioning.outputs.version}}"
-
   # build:
   #   name: .Net Building
   #   uses: ./.github/workflows/build.yaml
@@ -29,15 +19,14 @@ jobs:
   #     dotnet-version: "8.0.x"
   #     solution-name: household.buget.sln
 
-  # docker:
-  #   name: Docker Build and publish
-  #   uses: ./.github/workflows/docker.yaml
-  #   # needs: build
-  #   with:
-  #     username: leandroalves86
-  #     context: ./src/Household.Budget/
-  #     dockerfile: ./src/Household.Budget/Dockerfile
-  #     version: ${{ needs.versioning.outputs.version }}
-  #     solution-name: household.buget
-  #   secrets:
-  #     usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+  docker:    
+    uses: ./.github/workflows/docker.yaml
+    # needs: build
+    with:
+      username: leandroalves86
+      context: ./src/Household.Budget/
+      dockerfile: ./src/Household.Budget/Dockerfile
+      version: ${{needs.versioning.outputs.version}}"
+      solution-name: household.buget
+    secrets:
+      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
