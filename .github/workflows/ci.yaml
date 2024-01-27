@@ -9,10 +9,10 @@ on:
 
 jobs:
   Versioning:
-    name: Versioning
-    uses: ./.github/workflows/git.yaml        
+    name: Git Version
+    uses: ./.github/workflows/git.yaml
 
-  building:
+  build:
     name: Building application
     uses: ./.github/workflows/build.yaml
     needs: Versioning
@@ -20,3 +20,12 @@ jobs:
       dotnet-version: "8.0.x"
       solution-name: household.buget.sln
 
+  docker:
+    name: Build and publish
+    uses: ./.github/workflows/docker.yaml
+    needs: build
+    with:
+      username: leandroalves86
+      context: ./src/Household.Budget/
+      dockerfile: ./src/Household.Budget/Dockerfile
+      version: ${{ needs.versioning.outputs.fullsemver }}
