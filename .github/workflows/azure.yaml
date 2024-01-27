@@ -25,14 +25,9 @@ jobs:
           creds: ${{ secrets.azure-deploy }}
           enable-AzPSSession: true
 
-      - name: 'Run az commands'
-        run: |
-          az account show
-          az group list
-
-      # - name: Deploy to Azure Web App
-      #   uses: azure/webapps-deploy@v2
-      #   with:
-      #     app-name: ${{ inputs.appname }}
-      #     images: ${{ inputs.docker-image }}
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ inputs.appname }}
+          images: ${{ inputs.docker-image }}
         
