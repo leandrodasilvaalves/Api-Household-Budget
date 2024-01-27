@@ -20,9 +20,15 @@ jobs:
   
     steps:
       - name: Login on Azure
-        uses: azure/docker-login@v1
+        uses: Azure/login@v1
         with:
           creds: ${{ secrets.azure-deploy }}
+          enable-AzPSSession: true
+
+      - name: 'Run az commands'
+        run: |
+          az account show
+          az group list
 
       # - name: Deploy to Azure Web App
       #   uses: azure/webapps-deploy@v2
