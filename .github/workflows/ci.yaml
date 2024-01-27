@@ -7,29 +7,28 @@ on:
       - "release/**"
       - "feature/**"
 
-jobs:
-  job1:
-    uses: ./.github/workflows/called-workflow.yaml
-
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - run: echo ${{ needs.job1.outputs.firstword }} ${{ needs.job1.outputs.secondword }}
-
 # jobs:
-#   versioning:
-#     name: Git Version
-#     uses: ./.github/workflows/git.yaml
+#   job1:
+#     uses: ./.github/workflows/called-workflow.yaml
 
-#   testversion:
-#     name: Teste version
+#   job2:
 #     runs-on: ubuntu-latest
-#     needs: Versioning
-
+#     needs: job1
 #     steps:
-#       - run: |
-#           echo version: ${{ needs.versioning.outputs.version }}  
+#       - run: echo ${{ needs.job1.outputs.firstword }} ${{ needs.job1.outputs.secondword }}
+
+jobs:
+  versioning:
+    uses: ./.github/workflows/git.yaml
+
+  testversion:
+    name: Teste version
+    runs-on: ubuntu-latest
+    needs: Versioning
+
+    steps:
+      - run: |
+          echo version: ${{ needs.versioning.outputs.version }}  
 
   # build:
   #   name: .Net Building
