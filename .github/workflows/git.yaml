@@ -7,6 +7,8 @@ on:
         type: string
         required: false
         default: "5.12.0"   
+    outputs:
+      version: ${{ jobs.versioning.version }}
 
 jobs:
   versioning:
