@@ -12,9 +12,6 @@ on:
       username:
         type: string
         required: true
-      usertoken:
-        type: string
-        required: true
       solution-name:
         type: string
         required: true
