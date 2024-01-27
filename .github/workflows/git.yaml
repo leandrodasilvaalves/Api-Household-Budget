@@ -8,7 +8,9 @@ on:
         required: false
         default: "5.12.0"   
     outputs:
-      version: ${{ jobs.versioning.version }}
+      version: 
+        description: Calculated application version
+        value: ${{ jobs.versioning.version }}
 
 jobs:
   versioning:
