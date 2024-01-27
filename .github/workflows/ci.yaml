@@ -15,6 +15,7 @@ jobs:
   building:
     name: Building application
     uses: ./.github/workflows/build.yaml
+    needs: Versioning
     with:
       dotnet-version: "8.0.x"
       solution-name: household.buget.sln
