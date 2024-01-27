@@ -1,4 +1,4 @@
-name: Checkout Repository
+name: Continous Integration
 
 on:
   push:
@@ -8,15 +8,9 @@ on:
       - "feature/**"
 
 jobs:
-  checkout:
-    name: Git checkout
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Fetching code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+  Versioning:
+    name: Versioning
+    uses: ./.github/workflows/git.yaml        
 
   building:
     name: Building application
@@ -24,3 +18,4 @@ jobs:
     with:
       dotnet-version: "8.0.x"
       solution-name: household.buget.sln
+
