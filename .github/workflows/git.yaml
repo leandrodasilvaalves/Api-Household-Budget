@@ -36,4 +36,4 @@ jobs:
 
       - name: Setting version
         id: set_version
-        run: echo "version=1.0.0-beta.1+13" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(dotnet-gitversion /showvariable fullsemver)" >> $GITHUB_OUTPUT
