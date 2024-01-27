@@ -26,7 +26,7 @@ jobs:
       username: leandroalves86
       context: ./src/Household.Budget/
       dockerfile: ./src/Household.Budget/Dockerfile
-      version: ${{needs.versioning.outputs.version}}"
+      version: ${{needs.versioning.outputs.version}}
       solution-name: household.buget
     secrets:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
