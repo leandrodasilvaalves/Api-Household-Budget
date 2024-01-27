@@ -21,16 +21,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install GitVersion
+      - name: Installing GitVersion
         uses: gittools/actions/gitversion/setup@v0
         with:
           versionSpec: ${{ inputs.gitversion-app }}
 
-      - name: Determine version
+      - name: Determining version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
 
       - name: Setting version
         id: set_version
         run: |
-          echo "version=$(dotnet-gitversion /showvariable fullsemver)" >> $GITHUB_OUTPUT
+          echo "version=1.0.0-beta.1+13" >> "$GITHUB_OUTPUT"
