@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - run: |
-          echo version: ${{ needs.versioning.outputs.version }}  
+          echo version: ${{ needs.versioning.versioning.outputs.version }}  
 
   # build:
   #   name: .Net Building
