@@ -29,3 +29,4 @@ jobs:
       context: ./src/Household.Budget/
       dockerfile: ./src/Household.Budget/Dockerfile
       version: ${{ needs.versioning.outputs.fullsemver }}
+      solution-name: household.buget.sln
