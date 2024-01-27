@@ -56,7 +56,6 @@ jobs:
 
       - name: Build and push docker image
         uses: docker/build-push-action@v5
-        needs: create_tag
         with:
           context: ${{ inputs.context }}
           file: ${{ inputs.dockerfile }}
