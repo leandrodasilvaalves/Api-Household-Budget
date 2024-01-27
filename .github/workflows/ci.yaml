@@ -9,7 +9,7 @@ on:
 
 jobs:
   job1:
-    uses: ./.github/workflows/called-workflow.yml@v1
+    uses: ./.github/workflows/called-workflow.yml
 
   job2:
     runs-on: ubuntu-latest
