@@ -11,17 +11,17 @@ jobs:
   versioning:
     uses: ./.github/workflows/git.yaml
 
-  # build:
-  #   name: .Net Building
-  #   uses: ./.github/workflows/build.yaml
-  #   needs: Versioning
-  #   with:
-  #     dotnet-version: "8.0.x"
-  #     solution-name: household.buget.sln
+  build:
+    name: .Net Building
+    uses: ./.github/workflows/build.yaml
+    needs: Versioning
+    with:
+      dotnet-version: "8.0.x"
+      solution-name: household.buget.sln
 
   docker:    
     uses: ./.github/workflows/docker.yaml
-    needs: versioning
+    needs: [versioning, build]
     with:
       username: leandroalves86
       context: ./src/Household.Budget/
