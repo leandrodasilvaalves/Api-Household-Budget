@@ -13,7 +13,7 @@ jobs:
     name: Versioning
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.set_output.outputs.fullSemVer }}
+      version: ${{ steps.set_output.outputs.version }}
 
     steps:
       - name: Downloading code
