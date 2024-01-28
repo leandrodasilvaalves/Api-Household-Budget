@@ -19,9 +19,8 @@ on:
       version:
         type: string
         default: latest
-      default-branch:
+      prefix-allowed-branch:
         type: string
-        default: 'main'
     secrets:
       usertoken:
         required: true   
@@ -34,7 +33,7 @@ jobs:
   dockerizing:
     name: Build and publish
     runs-on: ubuntu-latest
-    # if: ${{ contains(github.event.pull_request.base.ref, inputs.default-branch) }}
+    if: github.ref == 'refs/heads/main' || contains(github.ref, inputs.prefix-allowed-branch)
     outputs:
       docker-image: ${{ steps.create_tag.outputs.docker-tag }}
 

@@ -9,9 +9,8 @@ on:
       docker-image:
         type: string
         required: true
-      default-branch:
+      prefix-allowed-branch:
         type: string
-        default: 'main'
     secrets:
       azure-deploy:
         required: true
@@ -20,7 +19,7 @@ jobs:
   deploy:
     name: Deploy on Azure
     runs-on: ubuntu-latest
-    # if: ${{ contains(github.event.pull_request.base.ref, inputs.default-branch) }}
+    if: github.ref == 'refs/heads/main' || contains(github.ref, inputs.prefix-allowed-branch)
   
     steps:
       - name: Login on Azure
