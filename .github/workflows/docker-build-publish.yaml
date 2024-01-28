@@ -21,6 +21,7 @@ on:
         default: latest
       prefix-allowed-branch:
         type: string
+        default: 'none'
     secrets:
       usertoken:
         required: true   
