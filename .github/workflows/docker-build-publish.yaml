@@ -34,7 +34,7 @@ jobs:
   dockerizing:
     name: Build and publish
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.pull_request.base.ref, inputs.default-branch) }}
+    # if: ${{ contains(github.event.pull_request.base.ref, inputs.default-branch) }}
     outputs:
       docker-image: ${{ steps.create_tag.outputs.docker-tag }}
 

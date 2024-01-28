@@ -12,39 +12,46 @@ on:
       - main
 
 jobs:
-  versioning:
-    uses: ./.github/workflows/git-version.yaml
+  # versioning:
+  #   uses: ./.github/workflows/git-version.yaml
 
-  build:
-    uses: ./.github/workflows/build-net.yaml
-    needs: Versioning
-    with:
-      solution-name: household.buget.sln
+  # build:
+  #   uses: ./.github/workflows/build-net.yaml
+  #   needs: Versioning
+  #   with:
+  #     solution-name: household.buget.sln
 
-  docker:
-    uses: ./.github/workflows/docker-build-publish.yaml
-    needs: [versioning, build]
-    with:
-      username: leandroalves86
-      context: ./src/Household.Budget/
-      dockerfile: ./src/Household.Budget/Dockerfile
-      version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
-      solution-name: household.buget
-      default-branch: release
-    secrets:
-      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+  # docker:
+  #   uses: ./.github/workflows/docker-build-publish.yaml
+  #   needs: [versioning, build]
+  #   with:
+  #     username: leandroalves86
+  #     context: ./src/Household.Budget/
+  #     dockerfile: ./src/Household.Budget/Dockerfile
+  #     version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
+  #     solution-name: household.buget
+  #     default-branch: release
+  #   secrets:
+  #     usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  deploy:
-    uses: ./.github/workflows/azure-deploy.yaml
-    needs: [docker]
-    with:
-      appname: householdbudget
-      docker-image: ${{ needs.docker.outputs.docker-image }}
-    secrets:
-      azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
+  # deploy:
+  #   uses: ./.github/workflows/azure-deploy.yaml
+  #   needs: [docker]
+  #   with:
+  #     appname: householdbudget
+  #     docker-image: ${{ needs.docker.outputs.docker-image }}
+  #   secrets:
+  #     azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
 
-  tag:
-    uses: ./.github/workflows/create-tag.yaml
-    needs: [versioning, deploy]
-    with:
-      version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
+  # tag:
+  #   uses: ./.github/workflows/create-tag.yaml
+  #   needs: [versioning, deploy]
+  #   with:
+  #     version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
+  allowed-branches:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: |
+          echo branch: ${{ github.event.ref }}
+          echo main: ${{ github.ref == 'refs/heads/main'}} 
