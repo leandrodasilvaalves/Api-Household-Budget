@@ -12,7 +12,7 @@ on:
 jobs:
   conditional:
     runs-on: ubuntu-latest
-    if: ${{ inputs.current-branch | grep -E inputs.allowed-branches }}
+    if: ${{ $(inputs.current-branch | grep -E inputs.allowed-branches) }}
 
     steps:
       - run: echo Hello world
