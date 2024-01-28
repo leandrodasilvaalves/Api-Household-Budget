@@ -13,7 +13,7 @@ on:
 
 jobs:  
   building:
-    name: .Net Building
+    name: .Net Building ${{ inputs.dotnet-version }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET Core SDK ${{ inputs.dotnet-version }}
+      - name: Setup .NET SDK ${{ inputs.dotnet-version }}
         uses: actions/setup-dotnet@v3.2.0
         with:
           dotnet-version: ${{ inputs.dotnet-version }}

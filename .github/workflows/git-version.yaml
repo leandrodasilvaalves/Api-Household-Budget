@@ -17,7 +17,7 @@ on:
 
 jobs:
   versioning:
-    name: Versioning
+    name: Git Version
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.gitversion.outputs.SemVer }}

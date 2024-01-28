@@ -30,7 +30,7 @@ jobs:
       dockerfile: ./src/Household.Budget/Dockerfile
       version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
       solution-name: household.buget
-      default-branch: 'release/**'
+      default-branch: release
     secrets:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
 
