@@ -12,39 +12,40 @@ on:
       - main
 
 jobs:
-  versioning:
-    uses: ./.github/workflows/git-version.yaml
+  # versioning:
+  #   uses: ./.github/workflows/git-version.yaml
 
-  build:
-    uses: ./.github/workflows/build-net.yaml
-    needs: Versioning
-    with:
-      dotnet-version: "8.0.x"
-      solution-name: household.buget.sln
+  # build:
+  #   uses: ./.github/workflows/build-net.yaml
+  #   needs: Versioning
+  #   with:
+  #     dotnet-version: "8.0.x"
+  #     solution-name: household.buget.sln
 
-  docker:
-    uses: ./.github/workflows/docker-build-publish.yaml
-    needs: [versioning, build]
-    with:
-      username: leandroalves86
-      context: ./src/Household.Budget/
-      dockerfile: ./src/Household.Budget/Dockerfile
-      version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
-      solution-name: household.buget
-    secrets:
-      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+  # docker:
+  #   uses: ./.github/workflows/docker-build-publish.yaml
+  #   needs: [versioning, build]
+  #   with:
+  #     username: leandroalves86
+  #     context: ./src/Household.Budget/
+  #     dockerfile: ./src/Household.Budget/Dockerfile
+  #     version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
+  #     solution-name: household.buget
+  #   secrets:
+  #     usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  deploy:
-    uses: ./.github/workflows/azure-deploy.yaml
-    needs: [docker]
-    with:
-      appname: householdbudget
-      docker-image: ${{ needs.docker.outputs.docker-image }}
-    secrets:
-      azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
+  # deploy:
+  #   uses: ./.github/workflows/azure-deploy.yaml
+  #   needs: [docker]
+  #   with:
+  #     appname: householdbudget
+  #     docker-image: ${{ needs.docker.outputs.docker-image }}
+  #   secrets:
+  #     azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
 
   tag:
     uses: ./.github/workflows/create-tag.yaml
-    needs: [versioning, deploy]
+    # needs: [versioning, deploy]
     with:
-      version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
+      version: 1.0.0-beta.1.0048
+      # version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
