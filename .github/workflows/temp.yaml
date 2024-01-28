@@ -1,0 +1,18 @@
+name: Temp condition
+
+on: 
+  workflow_call:
+    inputs:
+      current-branch:
+        type: string
+        default: 'main'
+      allowed-branches:
+        type: string
+        default: "release|hotfix|main"
+jobs:
+  conditional:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.current-branch | grep -E inputs.allowed-branches }}
+
+    steps:
+      - run: echo Hello world
