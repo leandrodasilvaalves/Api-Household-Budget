@@ -13,17 +13,17 @@ on:
 
 jobs:
   versioning:
-    uses: ./.github/workflows/git.yaml
+    uses: ./.github/workflows/git-version.yaml
 
   build:
-    uses: ./.github/workflows/build.yaml
+    uses: ./.github/workflows/build-net.yaml
     needs: Versioning
     with:
       dotnet-version: "8.0.x"
       solution-name: household.buget.sln
 
   docker:
-    uses: ./.github/workflows/docker.yaml
+    uses: ./.github/workflows/docker-build-publish.yaml
     needs: [versioning, build]
     with:
       username: leandroalves86
@@ -35,10 +35,16 @@ jobs:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
 
   deploy:
-    uses: ./.github/workflows/azure.yaml
+    uses: ./.github/workflows/azure-deploy.yaml
     needs: [docker]
     with:
       appname: householdbudget
       docker-image: ${{ needs.docker.outputs.docker-image }}
     secrets:
       azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
+
+  tag:
+    uses: ./.github/workflows/create-tag.yaml
+    needs: [versioning, deploy]
+    with:
+      version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}

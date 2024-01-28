@@ -29,7 +29,7 @@ on:
 
 jobs:
   dockerizing:
-    name: Build and publish
+    name: Build and publish - ${{ inputs.version }}
     runs-on: ubuntu-latest
     outputs:
       docker-image: ${{ steps.create_tag.outputs.docker-tag }}
