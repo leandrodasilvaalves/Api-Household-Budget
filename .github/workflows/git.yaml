@@ -17,7 +17,7 @@ jobs:
     name: Versioning
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.gitversion.outputs.SemVer }}
+      version: ${{ steps.gitversion.outputs.FullSemVer }}
 
     steps:
       - name: Downloading code
