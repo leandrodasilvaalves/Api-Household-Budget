@@ -57,6 +57,7 @@ jobs:
       - run: |
           echo branch: ${{ github.event.ref }}
           echo main: ${{ github.ref == 'refs/heads/main'}} 
+          echo branches: ${{ (fromJSON("['refs/heads/release/**', 'refs/heads/hotfix', 'refs/heads/main']") }}
 
         #escrever um arquivo apartado e tentar implementar a lógica abaixo 
         # na sintaxe do git  
