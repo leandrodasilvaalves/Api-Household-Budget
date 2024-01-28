@@ -2,17 +2,14 @@ name: Temp condition
 
 on:
   workflow_call:
-    inputs:
-      current-branch:
-        type: string
-        default: "main"
+    inputs:      
       allowed-branches:
         type: string
-        default: "['release', 'hotfix', 'main']"
+        default: "['refs/heads/release/**', 'refs/heads/hotfix', 'refs/heads/main']"
 jobs:
   conditional:
     runs-on: ubuntu-latest
-    if: ${{ contains(fromJSON(inputs.allowed-branches), inputs.current-branch) }}
+    if: ${{ contains(fromJSON(inputs.allowed-branches), github.ref) }}
 
     steps:
       - run: |
