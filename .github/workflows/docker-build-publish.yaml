@@ -32,7 +32,7 @@ on:
 
 jobs:
   dockerizing:
-    name: Build and publish - ${{ inputs.version }}
+    name: Build and publish
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.base.ref == inputs.default-branch }}
     outputs:
