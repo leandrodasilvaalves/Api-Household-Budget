@@ -55,7 +55,7 @@ jobs:
       - run: |
           echo branch: ${{ github.event.ref }}
           echo main: ${{ github.ref == 'refs/heads/main'}} 
-          echo contains: ${{ contains(github.ref, ['release', 'main', 'hotfix'] ) }} 
+          echo contains: ${{ contains(github.ref, 'release') }} 
 
       - name: Check if current branch is allowed
         run: |
