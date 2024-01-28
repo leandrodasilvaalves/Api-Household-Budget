@@ -55,4 +55,16 @@ jobs:
       - run: |
           echo branch: ${{ github.event.ref }}
           echo main: ${{ github.ref == 'refs/heads/main'}} 
-          echo contains: ${{ contains(github.ref, 'release' ) }} 
+          echo contains: ${{ contains(github.ref, ['release', 'main', 'hotfix'] ) }} 
+
+      - name: Check if current branch is allowed
+        run: |
+          allowed_branches=('release' 'main' 'hotfix')
+          current_branch="${{ github.event.ref }}"
+
+          if [[ "${allowed_branches[@]}" =~ $current_branch ]]; then
+            echo "Branch is allowed."
+          else
+            echo "Branch is not allowed."
+            exit 1
+          fi
