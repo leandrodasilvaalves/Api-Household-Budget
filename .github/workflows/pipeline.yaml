@@ -48,6 +48,7 @@ jobs:
   #   needs: [versioning, deploy]
   #   with:
   #     version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
+
   allowed-branches:
     runs-on: ubuntu-latest
 
@@ -55,7 +56,13 @@ jobs:
       - run: |
           echo branch: ${{ github.event.ref }}
           echo main: ${{ github.ref == 'refs/heads/main'}} 
-          echo contains: ${{ contains(github.ref, 'release') }} 
-          echo contains array: ${{ contains(fromJson('["refs/heads/release/**", "refs/heads/main"]'), github.event.ref) }}
-
-      
+         
+      - run: |
+          current_branch=${{ github.event.ref }}
+          allowed_branches="release|main|hotfix"
+          if echo "$current_branch" | grep -E "$allowed_branches" >/dev/null; then
+              echo "Branch is allowed."
+          else
+              echo "Branch is not allowed."
+              exit 0
+          fi
