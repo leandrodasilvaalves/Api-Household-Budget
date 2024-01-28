@@ -55,4 +55,4 @@ jobs:
       - run: |
           echo branch: ${{ github.event.ref }}
           echo main: ${{ github.ref == 'refs/heads/main'}} 
-          echo contains: ${{ contains(github.ref, release) }} 
+          echo contains: ${{ contains(github.ref, 'release' ) }} 
