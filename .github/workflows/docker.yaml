@@ -26,10 +26,6 @@ on:
       docker-image:
         description: "New docker image"
         value: ${{ jobs.dockerizing.outputs.docker-image }}
-  push:
-    branches:
-      - main
-      - release/**
 
 jobs:
   dockerizing:

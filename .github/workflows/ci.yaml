@@ -3,7 +3,6 @@ name: Continous Integration
 on:
   push:
     branches:
-      - "main"
       - "release/**"
       - "feature/**"
   pull_request:
@@ -30,7 +29,7 @@ jobs:
       username: leandroalves86
       context: ./src/Household.Budget/
       dockerfile: ./src/Household.Budget/Dockerfile
-      version: ${{needs.versioning.outputs.version}}
+      version: ${{needs.versioning.outputs.version}}.${{needs.versioning.outputs.build}}
       solution-name: household.buget
     secrets:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}

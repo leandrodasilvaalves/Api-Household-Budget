@@ -11,13 +11,17 @@ on:
       version: 
         description: Calculated application version
         value: ${{ jobs.versioning.outputs.version }}
+      build:
+        description: Build metadata paddded
+        value: ${{ jobs.versioning.outputs.build }}
 
 jobs:
   versioning:
     name: Versioning
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.gitversion.outputs.FullSemVer }}
+      version: ${{ steps.gitversion.outputs.SemVer }}
+      build: ${{ steps.gitversion.outputs.BuildMetaDataPadded }}
 
     steps:
       - name: Downloading code
