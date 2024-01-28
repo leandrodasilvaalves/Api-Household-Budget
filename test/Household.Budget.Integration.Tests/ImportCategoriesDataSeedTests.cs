@@ -19,7 +19,7 @@ namespace Household.Budget.Integration.Tests;
 public class ImportCategoriesDataSeedTests
 {
     private INetwork? Network { get; set; }
-    private IContainer? RavenDb { get; set; }
+    private IContainer? MongoDb { get; set; }
     private IContainer? RabbitMQ { get; set; }
     private IContainer? ApiContainer { get; set; }
     private IFutureDockerImage? ApiImage { get; set; }
@@ -50,7 +50,7 @@ public class ImportCategoriesDataSeedTests
     private async Task SetupEnvironmentAsync()
     {
         await CreateNetwork();
-        await CreateRavenDbContainerAsync();
+        await CreateMongoContainerAsync();
         await CreateRabbitContainerAsync();
         await CreateApiImageAsync();
         await CreateApiContainerAsync();
@@ -88,35 +88,27 @@ public class ImportCategoriesDataSeedTests
             .ConfigureAwait(false);
     }
 
-    private async Task CreateRavenDbContainerAsync()
+    private async Task CreateMongoContainerAsync()
     {
         var environment = new Dictionary<string, string>
         {
-            {"RAVEN_Setup_Mode", "None"},
-            {"RAVEN_License_Eula_Accepted", "true"},
-            {"RAVEN_Security_UnsecuredAccessAllowed", "PrivateNetwork"},
-            {"RAVEN_LogToConsole", "true"},
-            {"RAVEN_DataDir", "RavenData"},
-            {"Hostname", "ravendb"},
+            {"MONGO_INITDB_ROOT_USERNAME", "root"},
+            {"MONGO_INITDB_ROOT_PASSWORD", "rootpassword"},
         };
 
-        RavenDb = new ContainerBuilder()
-            .WithName("ravendb")
-            .WithImage("ravendb/ravendb")
-            .WithPortBinding(8080, 8080)
+        MongoDb = new ContainerBuilder()
+            .WithName("mongo")
+            .WithImage("mongo")
+            .WithPortBinding(27017, 27017)
             .WithEnvironment(environment)
             .WithNetwork(Network)
             .WithWaitStrategy(
-                Wait.ForUnixContainer().
-                    UntilHttpRequestIsSucceeded(request =>
-                        request
-                        .ForPort(8080)
-                        .ForPath("/admin/stats")
-                        .ForStatusCode(HttpStatusCode.OK)))
+                 Wait.ForUnixContainer()
+                .UntilPortIsAvailable(27017))
             .WithCleanUp(true)
             .Build();
 
-        await RavenDb
+        await MongoDb
             .StartAsync()
             .ConfigureAwait(false);
     }

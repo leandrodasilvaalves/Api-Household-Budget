@@ -46,6 +46,7 @@ public static class MassTransitExtensions
                 {
                     endpoint.CustomConfigureConsumer<ImportCategorySeedRequestConsumer>(context);
                     endpoint.CustomConfigureConsumer<CreateSubcategorySeedRequestConsumer>(context);
+                    endpoint.PrefetchCount = 8;
                 });
 
                 cfg.ReceiveEndpoint("transactions.notifications", endpoint =>
