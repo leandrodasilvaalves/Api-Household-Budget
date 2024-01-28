@@ -19,6 +19,9 @@ on:
       version:
         type: string
         default: latest
+      default-branch:
+        type: string
+        default: 'main'
     secrets:
       usertoken:
         required: true   
@@ -31,6 +34,7 @@ jobs:
   dockerizing:
     name: Build and publish - ${{ inputs.version }}
     runs-on: ubuntu-latest
+    if: ${{ && github.event.pull_request.base.ref == inputs.default-branch }}
     outputs:
       docker-image: ${{ steps.create_tag.outputs.docker-tag }}
 
