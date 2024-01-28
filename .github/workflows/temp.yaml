@@ -12,7 +12,9 @@ on:
 jobs:
   conditional:
     runs-on: ubuntu-latest
-    if: ${{ $(inputs.current-branch | grep -E inputs.allowed-branches) }}
+    if: ${{ github.ref =~ inputs.allowed-branches) }}
 
     steps:
-      - run: echo Hello world
+      - run: |
+          echo Hello world
+          echo branch ${{ github.ref }}
