@@ -18,6 +18,14 @@ jobs:
   versioning:
     uses: ./.github/workflows/git-version.yaml
 
+  test-version:
+    runs-on: ubuntu-latest
+    needs: versioning
+    steps:
+      - run: |
+          echo version: ${{needs.versioning.outputs.version}}
+
+
   # build:
   #   uses: ./.github/workflows/build-net.yaml
   #   needs: Versioning
