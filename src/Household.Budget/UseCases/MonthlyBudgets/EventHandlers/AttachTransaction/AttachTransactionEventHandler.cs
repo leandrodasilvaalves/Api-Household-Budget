@@ -1,8 +1,9 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
-using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
+
+using MassTransit;
 
 namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransaction;
 
@@ -10,12 +11,15 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
 {
     private readonly IMonthlyBudgetRepository _repository;
     private readonly ICreateMonthlyBudgetHandler _createMonthlyBudgetHandler;
+    private readonly IBus _bus;
 
     public AttachTransactionEventHandler(IMonthlyBudgetRepository repository,
-                                         ICreateMonthlyBudgetHandler createMonthlyBudgetHandler)
+                                         ICreateMonthlyBudgetHandler createMonthlyBudgetHandler,
+                                         IBus bus)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _createMonthlyBudgetHandler = createMonthlyBudgetHandler ?? throw new ArgumentNullException(nameof(createMonthlyBudgetHandler));
+        _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
     public async Task<TransactionWasCreatedEventResponse> HandleAsync(TransactionWasCreated notification, CancellationToken cancellationToken)
@@ -27,17 +31,13 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
 
         if (monthlyBudget is null)
         {
-            CreateMonthlyBudgetRequest request = new() { Year = year, Month = month, UserId = transaction?.UserId ?? "" };
-            var response = await _createMonthlyBudgetHandler.HandleAsync(request, cancellationToken);
-            if (response.IsSuccess is false)
+            lock (_repository)
             {
-                if (response.Errors.Any(x => x.Equals(BudgetError.BUGET_ALREADY_EXISTS)))
-                {
-                    return await HandleAsync(notification, cancellationToken);
-                }
-                return new TransactionWasCreatedEventResponse(response?.Errors ?? []);
+                CreateMonthlyBudgetRequest request = new() { Year = year, Month = month, UserId = transaction?.UserId ?? "" };
+                _createMonthlyBudgetHandler.HandleAsync(request, cancellationToken).Wait(cancellationToken);
+                _bus.Publish(notification, cancellationToken).Wait(cancellationToken);
+                return new TransactionWasCreatedEventResponse(notification);
             }
-            monthlyBudget = response.Data;
         }
 
         monthlyBudget?.AttachTransaction(transaction);
