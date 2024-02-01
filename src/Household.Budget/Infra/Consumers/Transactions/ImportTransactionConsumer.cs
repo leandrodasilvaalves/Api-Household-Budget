@@ -1,3 +1,4 @@
+using Household.Budget.Contracts.Exceptions;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 
 using MassTransit;
@@ -13,7 +14,13 @@ namespace Household.Budget.Infra.Consumers.Transactions
             _handler = handler ?? throw new ArgumentNullException(nameof(handler));
         }
 
-        public Task Consume(ConsumeContext<CreateTransactionRequest> context) =>
-            _handler.HandleAsync(context.Message, context.CancellationToken);
+        public async Task Consume(ConsumeContext<CreateTransactionRequest> context)
+        {
+            var response = await _handler.HandleAsync(context.Message, context.CancellationToken);
+            if (response.IsSuccess is false)
+            {
+                throw new ImportTransactionException(response);
+            }
+        }
     }
 }

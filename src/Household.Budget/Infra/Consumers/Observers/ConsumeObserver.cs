@@ -22,7 +22,7 @@ public class ConsumeObserver : IConsumeObserver
 
     public Task ConsumeFault<T>(ConsumeContext<T> context, Exception exception) where T : class
     {
-        _logger.LogError(JsonSerializer.Serialize(new { context.Message, Heanders = context.Headers.GetAll(), Exception = exception }));
+        _logger.LogError(JsonSerializer.Serialize(new { context.Message, Heanders = context.Headers.GetAll(), Exception = exception.Message }));
         return Task.CompletedTask;
     }
 
