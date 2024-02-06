@@ -17,11 +17,12 @@ builder.Services.ConfigureJwt(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseCustomCors();
 app.UseKissLog(app.Configuration);
 app.UserExceptionHandling();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHttpsRedirection();
+app.UseCustomHttpsRedirection(app.Environment);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

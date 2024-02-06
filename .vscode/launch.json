@@ -17,35 +17,13 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
-        },
-        {
-            "name": "(console) Household.Budget.Tool",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build-tool",
-            "program": "${workspaceFolder}/src/Household.Budget.Tool/bin/Debug/net8.0/Household.Budget.Tool.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            "console": "internalConsole",
-            "env": {
-                "DOTNET_ENVIRONMENT": "Development",
-                "CSV_FILE": "/home/leandro/Downloads/orcamento-2023.csv",
-                "OWNER_USER_ID": "56171a48-a629-48ce-876a-1321280d9ca0",
-                "TRANSACTION_YEAR": "2022",
-                "DEFAULT_TRANSACATION_DESCRIPTION": "Importado da Planilha",
-                "TRANSACTION_TAGS": "planilha, 2023, orcamento-domestico, google-sheets",
-                "HOUSEHOLD_API_URL": "http://localhost:5215",
-                "HOUSEHOLD_API_TIMEOUT": "30000",
-            },
         }
     ],
     "compounds": [
         {
             "name": "All",
             "configurations": [
-                "(Api) Household.Budget",
-                "(console) Household.Budget.Tool",
+                "(Api) Household.Budget"
             ],
             "stopAll": true
         },

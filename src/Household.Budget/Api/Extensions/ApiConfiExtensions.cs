@@ -24,6 +24,23 @@ public static class ApiConfiExtensions
         services.AddEndpointsApiExplorer();
     }
 
+    public static void UseCustomCors(this IApplicationBuilder app)
+    {
+        app.UseCors(options => options
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+    }
+
+    public static void UseCustomHttpsRedirection(this IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsProduction() is false)
+        {
+            return;
+        }
+        app.UseHttpsRedirection();
+    }
+
     public static void AddHealthChecks(this IServiceCollection services, IConfiguration config)
     {
         var mongoConnection = config.GetSection($"{MongoConfig.SectionName}:ConnectionString").Get<string>() ?? "";
