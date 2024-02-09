@@ -22,7 +22,7 @@ jobs:
     uses: leandrodasilvaalves/actions/.github/workflows/build-net.yaml@v1.0.0
     needs: Versioning
     with:
-      solution-name: household.buget.sln
+      solution-name: household.budget.sln
 
   docker:
     uses: leandrodasilvaalves/actions/.github/workflows/docker-build-publish.yaml@v1.0.0
@@ -32,7 +32,7 @@ jobs:
       context: ./src/Household.Budget/
       dockerfile: ./src/Household.Budget/Dockerfile
       version: ${{needs.versioning.outputs.version}}
-      solution-name: household.buget
+      solution-name: household.budget
       prefix-allowed-branch: release
     secrets:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
