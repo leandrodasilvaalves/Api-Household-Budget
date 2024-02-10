@@ -1,6 +1,7 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Events;
+using Household.Budget.Contracts.Models;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 
 using MassTransit;
@@ -25,8 +26,7 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
     public async Task<TransactionWasCreatedEventResponse> HandleAsync(TransactionWasCreated notification, CancellationToken cancellationToken)
     {
         var transaction = notification.Data;
-        var year = transaction.TransactionDate.Year;
-        var month = (Month)transaction.TransactionDate.Month;
+        var (year, month) = GetYearMonth(transaction);
         var monthlyBudget = await _repository.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
 
         if (monthlyBudget is null)
@@ -43,5 +43,18 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
         monthlyBudget?.AttachTransaction(transaction);
         await _repository.UpdateAsync(monthlyBudget, cancellationToken);
         return new TransactionWasCreatedEventResponse(notification);
+    }
+
+    private static (int, Month) GetYearMonth(Transaction transaction)
+    {
+        var year = transaction.TransactionDate.Year;
+        int? month = transaction.TransactionDate.Month;
+
+        if (transaction.Payment.Type == PaymentType.CREDIT_CARD)
+        {
+            month = transaction.Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault()?.DueDate.Month;
+            year = transaction.TransactionDate.Year;
+        }
+        return (year, (Month)month);
     }
 }
