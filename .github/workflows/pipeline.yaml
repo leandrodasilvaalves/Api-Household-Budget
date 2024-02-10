@@ -43,6 +43,7 @@ jobs:
     with:
       appname: householdbudget
       docker-image: ${{ needs.docker.outputs.docker-image }}
+      prefix-allowed-branch: release
     secrets:
       azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
 
