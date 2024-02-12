@@ -1,5 +1,4 @@
 using Household.Budget.Contracts.Data;
-using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Events;
 using Household.Budget.Contracts.Models;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
@@ -26,7 +25,7 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
     public async Task<TransactionWasCreatedEventResponse> HandleAsync(TransactionWasCreated notification, CancellationToken cancellationToken)
     {
         var transaction = notification.Data;
-        var (year, month) = GetYearMonth(transaction);
+        var (year, month) = transaction.GetYearMonth();
         var monthlyBudget = await _repository.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
 
         if (monthlyBudget is null)
@@ -40,21 +39,42 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
             }
         }
 
-        monthlyBudget?.AttachTransaction(transaction);
-        await _repository.UpdateAsync(monthlyBudget, cancellationToken);
+        if (transaction.HasNextPayments())
+        {
+            var payment = transaction.GetFirstNextPayment();
+            var model = (BudgetTransactionWithCategoryModel)transaction;
+            model.Amount = payment.Amount;
+            model.TransactionDate = payment.DueDate;
+            monthlyBudget.AttachTransaction(model);
+        }
+        else
+        {
+            monthlyBudget?.AttachTransaction(transaction);
+        }
+
+        await Task.WhenAll(
+            _repository.UpdateAsync(monthlyBudget, cancellationToken),
+            PublishNextPaymentsWhenCreditCardAsync(transaction, cancellationToken)
+        );
+
         return new TransactionWasCreatedEventResponse(notification);
     }
 
-    private static (int, Month) GetYearMonth(Transaction transaction)
+    private async Task PublishNextPaymentsWhenCreditCardAsync(Transaction transaction, CancellationToken cancellationToken)
     {
-        var year = transaction.TransactionDate.Year;
-        int? month = transaction.TransactionDate.Month;
-
-        if (transaction.Payment.Type == PaymentType.CREDIT_CARD)
+        var budgetTransactionNextPayments = new List<BudgetTransactionWithCategoryModel>();
+        var nextPayments = transaction.GetNextPayments(true);
+        if (nextPayments.Count > 0)
         {
-            month = transaction.Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault()?.DueDate.Month;
-            year = transaction.TransactionDate.Year;
+            foreach (var payment in nextPayments)
+            {
+                var model = (BudgetTransactionWithCategoryModel)transaction;
+                model.Amount = payment.Amount;
+                model.TransactionDate = payment.DueDate;
+                budgetTransactionNextPayments.Add(model);
+            }
+            var endpoint = await _bus.GetPublishSendEndpoint<BudgetTransactionWithCategoryModel>();
+            await endpoint.SendBatch(budgetTransactionNextPayments, cancellationToken);
         }
-        return (year, (Month)month);
     }
 }

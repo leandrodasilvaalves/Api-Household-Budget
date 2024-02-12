@@ -54,6 +54,44 @@ public class Transaction : Model
         return clone;
     }
 
+    public (int, Month) GetYearMonth()
+    {
+        var year = TransactionDate.Year;
+        int? month = TransactionDate.Month;
+
+        if (Payment.Type == PaymentType.CREDIT_CARD)
+        {
+            month = Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault()?.DueDate.Month;
+            year = TransactionDate.Year;
+        }
+        return (year, (Month)month);
+    }
+
+    public bool IsCreditCard() => Payment.Type == PaymentType.CREDIT_CARD;
+
+    public bool HasNextPayments()
+    {
+        var installment = Payment?.CreditCard?.Installment;
+        return IsCreditCard() && installment?.Number > 1;
+    }
+
+    public List<NextPaymentViewModel> GetNextPayments(bool removeFirst = false)
+    {
+        List<NextPaymentViewModel> nextPayments = [];
+        if (HasNextPayments())
+        {
+            nextPayments = [.. Payment?.CreditCard?.Installment?.NextPayments];
+            if (removeFirst)
+            {
+                nextPayments.RemoveAt(0);
+            }
+        }
+        return nextPayments;
+    }
+
+    public NextPaymentViewModel GetFirstNextPayment() => 
+        Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault();
+
     private void Merge(CategoryViewModel? categoryRequest, Category category, Subcategory subcategory)
     {
         if (categoryRequest is { })

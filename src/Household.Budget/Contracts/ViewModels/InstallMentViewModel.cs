@@ -3,7 +3,7 @@ namespace Household.Budget.Contracts.ViewModels;
 public class InstallMentViewModel
 {
     public InstallMentViewModel() { }
-    
+
     public InstallMentViewModel(DateTime firstDueDate, decimal amount, int? number)
     {
         Number = number ?? 0;
@@ -23,7 +23,7 @@ public class InstallMentViewModel
         {
             NextPayments.Add(new NextPaymentViewModel
             {
-                DueDate = firstDueDate.AddDays(30 * i),
+                DueDate = firstDueDate.AddMonths(i),
                 Amount = amount,
             });
         }
