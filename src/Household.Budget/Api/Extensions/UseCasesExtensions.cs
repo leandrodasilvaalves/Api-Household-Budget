@@ -13,6 +13,7 @@ using Household.Budget.UseCases.Identity.LoginUser;
 using Household.Budget.UseCases.Identity.RegisterUser;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransaction;
+using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransactionNextPayment;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.DetachTransaction;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.UpdateTransaction;
 using Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
@@ -83,5 +84,6 @@ public static class UseCasesExtensions
         services.AddSingleton<IAttachTransactionEventHandler, AttachTransactionEventHandler>();
         services.AddSingleton<IDetachTransactionEventHandler, DetachTransactionEventHandler>();
         services.AddSingleton<IUpdateTransactionEventHandler, UpdateTransactionEventHandler>();
+        services.AddSingleton<IAttachTransactionNextPaymentEventHandler, AttachTransactionNextPaymentEventHandler>();
     }
 }

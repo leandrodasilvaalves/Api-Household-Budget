@@ -120,6 +120,15 @@ public class MonthlyBudget : Model
     {
         Categories?.FirstOrDefault(c => c.Id == transaction?.Category.Id)
             ?.Subcategories?.FirstOrDefault(s => s.Id == transaction?.Category?.Subcategory?.Id)
+                ?.AddTransaction((BudgetTransactionModel)transaction);
+
+        Recalculate();
+    }
+
+    public void AttachTransaction(BudgetTransactionWithCategoryModel? transaction)
+    {
+        Categories?.FirstOrDefault(c => c.Id == transaction?.Category)
+            ?.Subcategories?.FirstOrDefault(s => s.Id == transaction?.Subcategory)
                 ?.AddTransaction(transaction);
 
         Recalculate();
@@ -191,10 +200,10 @@ public class BudgetCategoryModel
 public class BudgetSubcategoryModel : BudgetCategoryModel
 {
     public List<BudgetTransactionModel>? Transactions { get; set; }
-    public void AddTransaction(Transaction? transaction)
+    public void AddTransaction(BudgetTransactionModel? transaction)
     {
         Transactions ??= [];
-        Transactions.Add((BudgetTransactionModel)transaction);
+        Transactions.Add(transaction);
         Recalculate();
     }
 
@@ -236,8 +245,29 @@ public class BudgetTransactionModel
         Amount = transaction?.Payment?.Total ?? 0
     };
 
-    private static string Reduce(string value, short maxLength = 30) =>
+    protected static string Reduce(string value, short maxLength = 30) =>
         value.Length > maxLength ? value[..maxLength] : value;
+}
+
+public class BudgetTransactionWithCategoryModel : BudgetTransactionModel
+{
+    public string Category { get; set; } = "";
+    public string Subcategory { get; set; } = "";
+    public string UserId { get; set; } = "";
+
+    public (int?, Month) GetYearMonth() => 
+        (TransactionDate?.Year, (Month)TransactionDate?.Month);
+
+    public static explicit operator BudgetTransactionWithCategoryModel(Transaction? transaction) => new()
+    {
+        Id = transaction?.Id ?? "",
+        Description = Reduce(transaction?.Description ?? ""),
+        TransactionDate = transaction?.TransactionDate,
+        Amount = transaction?.Payment?.Total ?? 0,
+        Category = transaction?.Category?.Id ?? "",
+        Subcategory = transaction?.Category?.Subcategory?.Id ?? "",
+        UserId = transaction?.UserId ?? "",
+    };
 }
 
 public class TotalModel

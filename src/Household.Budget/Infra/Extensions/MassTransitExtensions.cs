@@ -5,6 +5,7 @@ using Household.Budget.Infra.Consumers.Subcategory;
 using MassTransit;
 using Household.Budget.Infra.Consumers.Observers;
 using Household.Budget.Infra.Consumers.Transactions;
+using Household.Budget.Infra.Consumers.MonthlyBudget;
 
 namespace Household.Budget.Infra.Extensions;
 
@@ -12,7 +13,7 @@ public static class MassTransitExtensions
 {
     public static void AddMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
-        var config = configuration.GetSection(RabbitConfig.SectionName).Get<RabbitConfig>() ?? new();        
+        var config = configuration.GetSection(RabbitConfig.SectionName).Get<RabbitConfig>() ?? new();
         services.AddMassTransit(bus =>
         {
             bus.AddConsumer<SubcategoryWasCreatedConsumer>();
@@ -23,6 +24,7 @@ public static class MassTransitExtensions
             bus.AddConsumer<TransactionWasCreatedConsumer>();
             bus.AddConsumer<TransactionWasUpdatedConsumer>();
             bus.AddConsumer<ImportTransactionConsumer>();
+            bus.AddConsumer<AttachTransactionNextPaymentConsumer>();
 
             bus.UsingRabbitMq((context, cfg) =>
             {
@@ -58,6 +60,12 @@ public static class MassTransitExtensions
                 cfg.ReceiveEndpoint("transactions.requests", endpoint =>
                 {
                     endpoint.CustomConfigureConsumer<ImportTransactionConsumer>(context);
+                    endpoint.PrefetchCount = 3;
+                });
+
+                cfg.ReceiveEndpoint("monthlybudget.requests", endpoint =>
+                {
+                    endpoint.CustomConfigureConsumer<AttachTransactionNextPaymentConsumer>(context);
                     endpoint.PrefetchCount = 3;
                 });
 
