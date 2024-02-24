@@ -13,9 +13,6 @@ public class UpdateTransactionRequestContract : Contract<UpdateTransactionReques
     public UpdateTransactionRequestContract(UpdateTransactionRequest request)
     {
         Requires()
-            .IsNotNullOrWhiteSpace(request.Id,
-                TransactionErrors.TRANSACTION_ID_IS_REQUIRED)
-
             .IsSatified(request,
                 x => !string.IsNullOrWhiteSpace(x.Description),
                 x => x.Description?.Length <= 50,
