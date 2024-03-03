@@ -39,7 +39,7 @@ public class CategoriesController : CustomControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateCategoryRequest request,
+    public async Task<IActionResult> UpdateAsync([FromRoute] string id, [FromBody] UpdateCategoryRequest request,
                                                  [FromServices] IUpdateCategoryHandler handler)
     {
         var result = await handler.HandleAsync(request.WithId(id), HttpContext.RequestAborted);

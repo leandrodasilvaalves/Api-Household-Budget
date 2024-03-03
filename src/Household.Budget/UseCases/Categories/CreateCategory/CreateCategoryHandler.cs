@@ -1,4 +1,5 @@
 using Household.Budget.Contracts.Data;
+using Household.Budget.Contracts.Models;
 
 
 namespace Household.Budget.UseCases.Categories.CreateCategories;
@@ -14,7 +15,8 @@ public class CreateCategoryHandler : ICreateCategoryHandler
 
     public async Task<CreateCategoryResponse> HandleAsync(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
-        var category = request.ToModel();
+        var category = new Category();
+        category.Create(request);
         await _repository.CreateAsync(category, cancellationToken);
         return new CreateCategoryResponse(category);
     }
