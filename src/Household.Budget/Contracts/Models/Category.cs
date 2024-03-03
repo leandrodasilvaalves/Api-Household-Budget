@@ -27,11 +27,9 @@ public class Category : Model
 
     public void Update(UpdateCategoryRequest request)
     {
-        Id = request.Id;
         Name = request.Name;
         Owner = request.Owner;
         Status = request.Status;
-        UserId = request.UserId;
         Type = request.Type;
         UpdatedAt = DateTime.UtcNow;
     }
