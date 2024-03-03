@@ -1,7 +1,4 @@
-﻿using Household.Budget.Contracts.Models;
-using Household.Budget.Contracts.Constants;
-
-namespace Household.Budget.UseCases.Identity.CreateAdminUser;
+﻿namespace Household.Budget.UseCases.Identity.CreateAdminUser;
 
 public class CreateAdminUserRequest : Request
 {
@@ -22,22 +19,6 @@ public class CreateAdminUserRequest : Request
     public string UserName { get; }
     public string Email { get; }
     public string Password { get; }
-
-    public AppIdentityUser ToModel()
-    {
-        AppIdentityUser model = new()
-        {
-            Id = UserId,
-            FullName = FullName,
-            UserName = UserName,
-            Email = Email,
-        };
-        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.USER_READER));
-        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.USER_WRITER));
-        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.ADMIN_READER));
-        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.ADMIN_WRITER));
-        return model;
-    }
 
     public CreateAdminUserResponseViewModel ToViewModel(string userId) => new(userId, this);
 

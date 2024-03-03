@@ -1,7 +1,4 @@
-﻿using Household.Budget.Contracts.Constants;
-using Household.Budget.Contracts.Models;
-
-namespace Household.Budget.UseCases.Identity.RegisterUser;
+﻿namespace Household.Budget.UseCases.Identity.RegisterUser;
 
 public class RegisterUserRequest : Request
 {
@@ -20,19 +17,6 @@ public class RegisterUserRequest : Request
     public string UserName { get; }
     public string Email { get; }
     public string Password { get; }
-
-    public AppIdentityUser ToModel()
-    {
-        AppIdentityUser model =  new()
-        {
-            FullName = FullName,
-            UserName = UserName,
-            Email = Email,
-        };
-        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.USER_READER));
-        model.Claims.Add(new AppIdentityUserClaim(IdentityClaims.USER_WRITER));
-        return model;
-    }
 
     public RegisterUserResponseViewModel ToViewModel() => new(this);
 

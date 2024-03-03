@@ -18,7 +18,8 @@ public class RegisterUserHandler : IRegisterUserHandler
 
     public async Task<RegisterUserResponse> HandleAsync(RegisterUserRequest request, CancellationToken cancellationToken)
     {
-        var appUser = request.ToModel();
+        var appUser = new AppIdentityUser();
+        appUser.CreateUser(request);
         var result = await _userManager.CreateAsync(appUser, request.Password);
 
         return result.Succeeded ?
