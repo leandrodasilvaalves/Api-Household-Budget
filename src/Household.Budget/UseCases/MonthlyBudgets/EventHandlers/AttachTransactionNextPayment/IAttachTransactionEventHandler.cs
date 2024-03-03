@@ -1,4 +1,4 @@
-using Household.Budget.Domain.Entities;
+using Household.Budget.Domain.Models;
 
 namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransactionNextPayment
 {
