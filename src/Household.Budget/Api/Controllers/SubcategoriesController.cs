@@ -39,7 +39,7 @@ namespace Household.Budget.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateSubcategoryRequest request,
+        public async Task<IActionResult> UpdateAsync([FromRoute] string id, [FromBody] UpdateSubcategoryRequest request,
                                                      [FromServices] IUpdateSubcategoryHandler handler)
         {
             var result = await handler.HandleAsync(request.WithId(id), HttpContext.RequestAborted);

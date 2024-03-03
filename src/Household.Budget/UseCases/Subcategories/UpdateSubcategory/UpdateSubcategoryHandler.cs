@@ -30,22 +30,23 @@ public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
         Task.WaitAll([categoryTask, subcategoryTask], cancellationToken);
 
         var category = categoryTask.Result;
-        var oldSubcategory = subcategoryTask.Result;
+        var subcategory = subcategoryTask.Result;
+        var oldSubcategory = subcategory.Clone();
 
         if (category is null)
         {
             return new UpdateSubcategoryResponse(CategoryErrors.CATEGORY_NOT_FOUND);
         }
-        if (oldSubcategory is null)
+        if (subcategory is null)
         {
             return new UpdateSubcategoryResponse(SubcategoryErrors.SUBCATEGORY_NOT_FOUND);
         }
 
-        var updatedSubcategory = request.ToModel(category);
-        await _subcategoryRepository.UpdateAsync(updatedSubcategory, cancellationToken);
-        await PublishEventsAsync(updatedSubcategory, oldSubcategory, category, cancellationToken);
+        subcategory.Update(request, category);
+        await _subcategoryRepository.UpdateAsync(subcategory, cancellationToken);
+        await PublishEventsAsync(subcategory, oldSubcategory, category, cancellationToken);
 
-        return new UpdateSubcategoryResponse(updatedSubcategory);
+        return new UpdateSubcategoryResponse(subcategory);
     }
 
     private Task PublishEventsAsync(Subcategory updatedSubcategory, Subcategory oldSubcategory, Category category, CancellationToken cancellationToken)

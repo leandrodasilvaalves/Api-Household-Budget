@@ -1,6 +1,7 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
+using Household.Budget.Contracts.Models;
 
 using MassTransit;
 
@@ -28,7 +29,9 @@ public class CreateSubcategoryHandler : ICreateSubcategoryHandler
         {
             return new CreateSubcategoryResponse(CategoryErrors.CATEGORY_NOT_FOUND);
         }
-        var subcategory = request.ToModel(category);
+        var subcategory = new Subcategory();
+        subcategory.Create(request, category);
+        
         await _subcategoryRepository.CreateAsync(subcategory, cancellationToken);
         await _bus.Publish(new SubcategoryWasCreated(subcategory), cancellationToken);
         return new CreateSubcategoryResponse(subcategory);
