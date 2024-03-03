@@ -1,4 +1,5 @@
 using Flunt.Notifications;
+using Household.Budget.Contracts.Helpers;
 
 namespace Household.Budget.Contracts.Errors
 {

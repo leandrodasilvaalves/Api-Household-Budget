@@ -1,6 +1,4 @@
-namespace Household.Budget.Contracts;
-
-
+namespace Household.Budget.Contracts.Helpers;
 
 public static class CurrentYear
 {

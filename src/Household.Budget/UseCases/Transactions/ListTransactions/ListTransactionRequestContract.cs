@@ -3,6 +3,7 @@ using Flunt.Validations;
 using Household.Budget.Contracts;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Extensions;
+using Household.Budget.Contracts.Helpers;
 
 namespace Household.Budget.UseCases.Transactions.ListTransactions;
 
