@@ -1,5 +1,6 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.ViewModels;
+using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.UpdateTransaction;
 
 namespace Household.Budget.Contracts.Models;
@@ -13,6 +14,22 @@ public class Transaction : Model
     public DateTime TransactionDate { get; set; }
     public List<string> Tags { get; set; } = [];
     public CategoryType Type { get; set; }
+
+    public void Create(CreateTransactionRequest request, Category category, Subcategory subcategory)
+    {
+        Id = $"{Guid.NewGuid()}";
+        UserId = request.UserId;
+        Description = request.Description;
+        Category = CategoryViewModel.CreateFrom(category, subcategory);
+        Payment = request.Payment.Process();
+        TransactionDate = request.TransactionDate;
+        Tags = request.Tags;
+        Status = ModelStatus.ACTIVE;
+        Owner = ModelOwner.USER;
+        Type = category.Type;
+        CreatedAt = DateTime.Now;
+        UpdatedAt = DateTime.Now;
+    }
 
     public void Merge(UpdateTransactionRequest? request, Category category, Subcategory subcategory)
     {
@@ -89,7 +106,7 @@ public class Transaction : Model
         return nextPayments;
     }
 
-    public NextPaymentViewModel GetFirstNextPayment() => 
+    public NextPaymentViewModel GetFirstNextPayment() =>
         Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault();
 
     private void Merge(CategoryViewModel? categoryRequest, Category category, Subcategory subcategory)

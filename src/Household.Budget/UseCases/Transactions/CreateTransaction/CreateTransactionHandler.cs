@@ -1,5 +1,6 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
+using Household.Budget.Contracts.Models;
 
 using MassTransit;
 
@@ -38,7 +39,8 @@ public class CreateTransactionHandler : ICreateTransactionHandler
             return new CreateTransactionResponse(contract.Notifications);
         }
 
-        var transaction = request.ToModel(category, subcategory);
+        var transaction = new Transaction();
+        transaction.Create(request, category, subcategory);
         await _transactionRepository.CreateAsync(transaction, cancellationToken);
         await _bus.Publish(new TransactionWasCreated(transaction), cancellationToken);
         return new CreateTransactionResponse(transaction);
