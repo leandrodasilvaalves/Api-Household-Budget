@@ -1,14 +1,14 @@
 using Household.Budget.Contracts.Enums;
 
-namespace Household.Budget.Contracts.ViewModels;
+namespace Household.Budget.Domain.Models;
 
-public class PaymentViewModel
+public class PaymentModel
 {
     public decimal Total { get; set; }
     public PaymentType Type { get; set; }
-    public CreditCardViewModel? CreditCard { get; set; }
+    public CreditCardModel? CreditCard { get; set; }
 
-    public PaymentViewModel Process()
+    public PaymentModel Process()
     {
         if (Type == PaymentType.CREDIT_CARD)
         {
@@ -17,7 +17,7 @@ public class PaymentViewModel
         return this;
     }
 
-    public void Merge(PaymentViewModel payment)
+    public void Merge(PaymentModel payment)
     {
         if (Total != payment.Total)
         {
@@ -39,7 +39,7 @@ public class PaymentViewModel
         CreditCard = null;
     }
 
-    private void MergeWhenIsCreditCard(PaymentViewModel payment)
+    private void MergeWhenIsCreditCard(PaymentModel payment)
     {
         Type = payment.Type;
         CreditCard ??= new();

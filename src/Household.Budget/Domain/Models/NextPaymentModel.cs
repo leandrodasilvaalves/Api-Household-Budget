@@ -1,6 +1,6 @@
-namespace Household.Budget.Contracts.ViewModels;
+namespace Household.Budget.Domain.Models;
 
-public class NextPaymentViewModel
+public class NextPaymentModel
 {
     public string? Id { get; set; }
     public decimal Amount { get; set; }

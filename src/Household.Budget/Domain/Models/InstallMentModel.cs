@@ -1,10 +1,10 @@
-namespace Household.Budget.Contracts.ViewModels;
+namespace Household.Budget.Domain.Models;
 
-public class InstallMentViewModel
+public class InstallMentModel
 {
-    public InstallMentViewModel() { }
+    public InstallMentModel() { }
 
-    public InstallMentViewModel(DateTime firstDueDate, decimal amount, int? number)
+    public InstallMentModel(DateTime firstDueDate, decimal amount, int? number)
     {
         Number = number ?? 0;
         if (Number > 0)
@@ -14,14 +14,14 @@ public class InstallMentViewModel
     }
 
     public int Number { get; set; }
-    public List<NextPaymentViewModel> NextPayments { get; set; } = [];
+    public List<NextPaymentModel> NextPayments { get; set; } = [];
 
     private void ProcessNextPayments(DateTime firstDueDate, decimal amount)
     {
-        NextPayments = new List<NextPaymentViewModel>(Number);
+        NextPayments = new List<NextPaymentModel>(Number);
         for (var i = 0; i < Number; i++)
         {
-            NextPayments.Add(new NextPaymentViewModel
+            NextPayments.Add(new NextPaymentModel
             {
                 DueDate = firstDueDate.AddMonths(i),
                 Amount = amount,

@@ -1,23 +1,31 @@
 using Household.Budget.Domain.Entities;
 
-namespace Household.Budget.Contracts.ViewModels;
+namespace Household.Budget.Domain.Models;
 
-public class CategoryViewModel
+public class CategoryModel
 {
+    public CategoryModel() {}
+
+    public CategoryModel(string id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
-    public CategoryViewModel? Subcategory { get; set; }
+    public CategoryModel Subcategory { get; set; }
 
-    public static CategoryViewModel CreateFrom(Category category, Subcategory subcategory)
+    public static CategoryModel CreateFrom(Category category, Subcategory subcategory)
     {
-        var viewModel = new CategoryViewModel
+        var viewModel = new CategoryModel
         {
-            Id = category?.Id ?? "",
-            Name = category?.Name ?? "",
+            Id = category?.Id,
+            Name = category?.Name,
             Subcategory = new()
             {
-                Id = subcategory?.Id ?? "",
-                Name = subcategory?.Name ?? "",
+                Id = subcategory?.Id,
+                Name = subcategory?.Name,
             }
         };
         return viewModel;
@@ -28,7 +36,7 @@ public class CategoryViewModel
         if (category.Id is not null)
         {
             Id = category.Id;
-            Name = category.Name ?? "";
+            Name = category.Name;
             Merge(subcategory);
         }
     }
@@ -39,7 +47,7 @@ public class CategoryViewModel
         {
             Subcategory ??= new();
             Subcategory.Id = subcategory.Id;
-            Subcategory.Name = subcategory.Name ?? "";
+            Subcategory.Name = subcategory.Name;
         }
     }
 }

@@ -2,6 +2,7 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.Categories.CreateCategories;
 using Household.Budget.UseCases.Categories.UpdateCategory;
 using Household.Budget.Contracts.Entities;
+using Household.Budget.Domain.Models;
 
 namespace Household.Budget.Domain.Entities;
 
@@ -9,10 +10,10 @@ public class Category : Entity
 {
     public Category() => Subcategories = [];
 
-    public string? Name { get; set; }
+    public string Name { get; set; }
     public CategoryType Type { get; set; }
 
-    public List<CategoryBranch> Subcategories { get; set; }
+    public List<SubcategoryModel> Subcategories { get; set; }
 
     public void Create(CreateCategoryRequest request)
     {

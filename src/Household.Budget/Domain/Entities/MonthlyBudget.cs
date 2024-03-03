@@ -2,6 +2,7 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 using Household.Budget.Contracts.Entities;
+using Household.Budget.Domain.Models;
 
 namespace Household.Budget.Domain.Entities;
 
@@ -64,7 +65,7 @@ public class MonthlyBudget : Entity
         foreach (var category in categoriesRequest)
         {
             var budgetCategory = Categories.FirstOrDefault(x => x.Id == category.Id);
-            MergeSubcategories(category.Subcategories, budgetCategory?.Subcategories ?? []);
+            MergeSubcategories(category.Subcategories, budgetCategory?.Subcategories);
             budgetCategory?.UpdatePlannedTotal(category);
         }
     }
@@ -89,8 +90,8 @@ public class MonthlyBudget : Entity
             var request = categoriesRequest.FirstOrDefault(x => x.Id == category?.Id);
             var budgetCategory = new BudgetCategoryModel
             {
-                Id = category?.Id ?? "",
-                Name = category?.Name ?? "",
+                Id = category?.Id,
+                Name = category?.Name,
                 Total = (TotalModel)request?.PlannedTotal,
                 Type = category?.Type,
                 Subcategories = AddSubCategories(request?.Subcategories, category?.Subcategories)
@@ -99,17 +100,17 @@ public class MonthlyBudget : Entity
         }
     }
 
-    private static List<BudgetSubcategoryModel> AddSubCategories(List<BudgetCategoryRequestViewModel>? subcategoriesRequest,
-                                                          List<CategoryBranch>? subcategories)
+    private static List<BudgetSubcategoryModel> AddSubCategories(List<BudgetCategoryRequestViewModel> subcategoriesRequest,
+                                                          List<SubcategoryModel> subcategories)
     {
         List<BudgetSubcategoryModel> subcategoriesModel = [];
-        foreach (var subcategory in subcategories ?? [])
+        foreach (var subcategory in subcategories)
         {
             var request = subcategoriesRequest?.FirstOrDefault(x => x.Id == subcategory.Id);
             var subcategoryModel = new BudgetSubcategoryModel
             {
-                Id = subcategory.Id ?? "",
-                Name = subcategory.Name ?? "",
+                Id = subcategory.Id,
+                Name = subcategory.Name,
                 Total = (TotalModel)request?.PlannedTotal,
             };
             subcategoriesModel.Add(subcategoryModel);
@@ -147,8 +148,8 @@ public class MonthlyBudget : Entity
     public void UpdateTransacation(Transaction transaction)
     {
         var originalCategory = (from categ in Categories
-                                from subcateg in categ.Subcategories ?? []
-                                from trans in subcateg.Transactions ?? []
+                                from subcateg in categ.Subcategories
+                                from trans in subcateg.Transactions
                                 where trans.Id == transaction.Id
                                 select new { Id = categ.Id, subcategId = subcateg.Id })
                        .FirstOrDefault();
@@ -185,7 +186,7 @@ public class BudgetCategoryModel
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public CategoryType? Type { get; set; }
-    public TotalModel? Total { get; set; }
+    public TotalModel Total { get; set; }
     public List<BudgetSubcategoryModel>? Subcategories { get; set; }
 
     public void UpdatePlannedTotal(BudgetCategoryRequestViewModel subcategoryRequest) =>
@@ -200,7 +201,7 @@ public class BudgetCategoryModel
 
 public class BudgetSubcategoryModel : BudgetCategoryModel
 {
-    public List<BudgetTransactionModel>? Transactions { get; set; }
+    public List<BudgetTransactionModel> Transactions { get; set; }
     public void AddTransaction(BudgetTransactionModel? transaction)
     {
         Transactions ??= [];
@@ -238,10 +239,10 @@ public class BudgetTransactionModel
     public string? Description { get; set; } = "";
     public decimal Amount { get; set; }
 
-    public static explicit operator BudgetTransactionModel(Transaction? transaction) => new()
+    public static explicit operator BudgetTransactionModel(Transaction transaction) => new()
     {
-        Id = transaction?.Id ?? "",
-        Description = Reduce(transaction?.Description ?? ""),
+        Id = transaction?.Id,
+        Description = Reduce(transaction?.Description),
         TransactionDate = transaction?.TransactionDate,
         Amount = transaction?.Payment?.Total ?? 0
     };
@@ -252,22 +253,28 @@ public class BudgetTransactionModel
 
 public class BudgetTransactionWithCategoryModel : BudgetTransactionModel
 {
-    public string Category { get; set; } = "";
+        public BudgetTransactionWithCategoryModel(string category, string userId) 
+        {
+            this.Category = category;
+    this.UserId = userId;
+   
+        }
+            public string Category { get; set; } = "";
     public string Subcategory { get; set; } = "";
     public string UserId { get; set; } = "";
 
-    public (int?, Month) GetYearMonth() => 
+    public (int?, Month) GetYearMonth() =>
         (TransactionDate?.Year, (Month)TransactionDate?.Month);
 
-    public static explicit operator BudgetTransactionWithCategoryModel(Transaction? transaction) => new()
+    public static explicit operator BudgetTransactionWithCategoryModel(Transaction transaction) => new()
     {
-        Id = transaction?.Id ?? "",
-        Description = Reduce(transaction?.Description ?? ""),
+        Id = transaction?.Id,
+        Description = Reduce(transaction?.Description),
         TransactionDate = transaction?.TransactionDate,
         Amount = transaction?.Payment?.Total ?? 0,
-        Category = transaction?.Category?.Id ?? "",
-        Subcategory = transaction?.Category?.Subcategory?.Id ?? "",
-        UserId = transaction?.UserId ?? "",
+        Category = transaction?.Category?.Id,
+        Subcategory = transaction?.Category?.Subcategory?.Id,
+        UserId = transaction?.UserId,
     };
 }
 

@@ -4,13 +4,14 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.Categories.UpdateSubcategory;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
 using Household.Budget.Contracts.Entities;
+using Household.Budget.Domain.Models;
 
 namespace Household.Budget.Domain.Entities;
 
 public class Subcategory : Entity
 {
-    public string? Name { get; set; }
-    public CategoryBranch Category { get; set; }
+    public string Name { get; set; }
+    public CategoryModel Category { get; set; }
 
     public Subcategory Clone() => (Subcategory)this.MemberwiseClone();
 
@@ -35,17 +36,4 @@ public class Subcategory : Entity
         UserId = request.UserId;
         UpdatedAt = DateTime.UtcNow;
     }
-}
-
-public readonly struct CategoryBranch
-{
-    [JsonConstructor]
-    public CategoryBranch(string? id, string? name)
-    {
-        Id = id;
-        Name = name;
-    }
-
-    public string? Id { get; }
-    public string? Name { get; }
 }

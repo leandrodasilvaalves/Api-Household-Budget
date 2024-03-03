@@ -1,17 +1,17 @@
-namespace Household.Budget.Contracts.ViewModels;
+namespace Household.Budget.Domain.Models;
 
-public class CreditCardViewModel
+public class CreditCardModel
 {
     public string Name { get; set; } = "";
     public int? InstallmentNumber { get; set; }
     public DateTime? FirstDueDate { get; set; }
-    public InstallMentViewModel? Installment { get; set; }
+    public InstallMentModel? Installment { get; set; }
 
-    public CreditCardViewModel ProcessPurchase(decimal totalPurchase)
+    public CreditCardModel ProcessPurchase(decimal totalPurchase)
     {
         var installmentAmount = (totalPurchase / InstallmentNumber) ?? 0;
 
-        Installment = new InstallMentViewModel(
+        Installment = new InstallMentModel(
             FirstDueDate ?? DateTime.Now,
             installmentAmount,
             InstallmentNumber);
@@ -21,7 +21,7 @@ public class CreditCardViewModel
         return this;
     }
 
-    public void Merge(CreditCardViewModel creditCard, decimal totalPurchase)
+    public void Merge(CreditCardModel creditCard, decimal totalPurchase)
     {
         if (!string.IsNullOrWhiteSpace(creditCard.Name))
         {

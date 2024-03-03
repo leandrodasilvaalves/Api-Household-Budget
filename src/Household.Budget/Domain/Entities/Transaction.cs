@@ -1,5 +1,5 @@
 using Household.Budget.Contracts.Enums;
-using Household.Budget.Contracts.ViewModels;
+using Household.Budget.Domain.Models;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.UpdateTransaction;
 using Household.Budget.Contracts.Entities;
@@ -10,8 +10,8 @@ public class Transaction : Entity
 {
     private readonly Dictionary<string, object> _metaData = [];
     public string Description { get; set; } = "";
-    public CategoryViewModel Category { get; set; } = new();
-    public PaymentViewModel Payment { get; set; } = new();
+    public CategoryModel Category { get; set; } = new();
+    public PaymentModel Payment { get; set; } = new();
     public DateTime TransactionDate { get; set; }
     public List<string> Tags { get; set; } = [];
     public CategoryType Type { get; set; }
@@ -21,7 +21,7 @@ public class Transaction : Entity
         Id = $"{Guid.NewGuid()}";
         UserId = request.UserId;
         Description = request.Description;
-        Category = CategoryViewModel.CreateFrom(category, subcategory);
+        Category = CategoryModel.CreateFrom(category, subcategory);
         Payment = request.Payment.Process();
         TransactionDate = request.TransactionDate;
         Tags = request.Tags;
@@ -93,9 +93,9 @@ public class Transaction : Entity
         return IsCreditCard() && installment?.Number > 1;
     }
 
-    public List<NextPaymentViewModel> GetNextPayments(bool removeFirst = false)
+    public List<NextPaymentModel> GetNextPayments(bool removeFirst = false)
     {
-        List<NextPaymentViewModel> nextPayments = [];
+        List<NextPaymentModel> nextPayments = [];
         if (HasNextPayments())
         {
             nextPayments = [.. Payment?.CreditCard?.Installment?.NextPayments];
@@ -107,10 +107,10 @@ public class Transaction : Entity
         return nextPayments;
     }
 
-    public NextPaymentViewModel GetFirstNextPayment() =>
+    public NextPaymentModel GetFirstNextPayment() =>
         Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault();
 
-    private void Merge(CategoryViewModel? categoryRequest, Category category, Subcategory subcategory)
+    private void Merge(CategoryModel? categoryRequest, Category category, Subcategory subcategory)
     {
         if (categoryRequest is { })
         {
@@ -118,7 +118,7 @@ public class Transaction : Entity
         }
     }
 
-    private void Merge(PaymentViewModel? payment)
+    private void Merge(PaymentModel? payment)
     {
         if (payment is { })
         {
