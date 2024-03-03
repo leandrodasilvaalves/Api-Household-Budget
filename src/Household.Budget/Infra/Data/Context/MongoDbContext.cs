@@ -1,4 +1,4 @@
-using Household.Budget.Contracts.Models;
+using Household.Budget.Contracts.Entities;
 
 using Microsoft.Extensions.Options;
 
@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace Household.Budget.Infra.Data.Context;
 
-public class MongoDbContext<T> : IMongoDbContext<T> where T : Model
+public class MongoDbContext<T> : IMongoDbContext<T> where T : Entity
 {
     public MongoDbContext(IOptionsMonitor<MongoConfig> options)
     {

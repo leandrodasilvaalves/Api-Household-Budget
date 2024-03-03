@@ -1,10 +1,11 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
+using Household.Budget.Contracts.Entities;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Domain.Entities;
 
-public class MonthlyBudget : Model
+public class MonthlyBudget : Entity
 {
     public MonthlyBudget()
     {

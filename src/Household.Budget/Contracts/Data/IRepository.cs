@@ -1,10 +1,10 @@
 using System.Linq.Expressions;
 
-using Household.Budget.Contracts.Models;
+using Household.Budget.Contracts.Entities;
 
 namespace Household.Budget.Contracts.Data;
 
-public interface IRepository<T> where T : Model
+public interface IRepository<T> where T : Entity
 {
     Task CreateAsync(T model, CancellationToken cancellationToken = default);
     Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default);

@@ -1,8 +1,9 @@
 using Household.Budget.Contracts.Enums;
+using Household.Budget.Contracts.Entities;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Domain.Entities;
 
-public class ImportedSeedConfig : Model
+public class ImportedSeedConfig : Entity
 {
     public bool RootUserHasBeenCreated { get; set; }
     public bool CategoriesHasBeenImported { get; set; }

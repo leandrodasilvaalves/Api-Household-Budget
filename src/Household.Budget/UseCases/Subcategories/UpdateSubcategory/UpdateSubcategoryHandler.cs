@@ -2,7 +2,7 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Events;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 
 using MassTransit;
 

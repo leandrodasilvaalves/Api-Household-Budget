@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 using Household.Budget.Api.Extensions;
 using Household.Budget.Contracts.Constants;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

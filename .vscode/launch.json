@@ -2,30 +2,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(Api) Household.Budget",
+            "name": "(api) Household.Budget",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-api",
+            "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/Household.Budget/bin/Debug/net8.0/Household.Budget.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Household.Budget",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(http?://\\S+)"
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
             }
-        }
-    ],
-    "compounds": [
-        {
-            "name": "All",
-            "configurations": [
-                "(Api) Household.Budget"
-            ],
-            "stopAll": true
         },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
     ]
 }

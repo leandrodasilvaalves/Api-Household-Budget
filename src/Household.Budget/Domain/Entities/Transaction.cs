@@ -2,10 +2,11 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.ViewModels;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.UpdateTransaction;
+using Household.Budget.Contracts.Entities;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Domain.Entities;
 
-public class Transaction : Model
+public class Transaction : Entity
 {
     private readonly Dictionary<string, object> _metaData = [];
     public string Description { get; set; } = "";

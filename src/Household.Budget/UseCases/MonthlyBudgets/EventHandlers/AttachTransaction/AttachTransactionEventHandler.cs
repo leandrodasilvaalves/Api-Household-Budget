@@ -1,6 +1,6 @@
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Events;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 
 using MassTransit;

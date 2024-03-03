@@ -1,10 +1,10 @@
-using Household.Budget.Contracts.Models;
+using Household.Budget.Contracts.Entities;
 
 using MongoDB.Driver;
 
 namespace Household.Budget.Infra.Data.Context;
 
-public interface IMongoDbContext<T> where T : Model
+public interface IMongoDbContext<T> where T : Entity
 {
     IMongoCollection<T> Collection { get; }
 }

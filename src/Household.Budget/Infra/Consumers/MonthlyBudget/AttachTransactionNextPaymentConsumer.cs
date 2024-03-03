@@ -1,4 +1,4 @@
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransactionNextPayment;
 
 using MassTransit;

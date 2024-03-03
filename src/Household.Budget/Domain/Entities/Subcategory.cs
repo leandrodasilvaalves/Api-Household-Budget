@@ -3,10 +3,11 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.Categories.UpdateSubcategory;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
+using Household.Budget.Contracts.Entities;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Domain.Entities;
 
-public class Subcategory : Model
+public class Subcategory : Entity
 {
     public string? Name { get; set; }
     public CategoryBranch Category { get; set; }

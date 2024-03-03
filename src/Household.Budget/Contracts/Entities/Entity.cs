@@ -1,8 +1,8 @@
 using Household.Budget.Contracts.Enums;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Contracts.Entities;
 
-public abstract class Model
+public abstract class Entity
 {
     public string? Id { get; set; }
     public string? UserId { get; set; }

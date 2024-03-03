@@ -1,10 +1,11 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.Categories.CreateCategories;
 using Household.Budget.UseCases.Categories.UpdateCategory;
+using Household.Budget.Contracts.Entities;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Domain.Entities;
 
-public class Category : Model
+public class Category : Entity
 {
     public Category() => Subcategories = [];
 

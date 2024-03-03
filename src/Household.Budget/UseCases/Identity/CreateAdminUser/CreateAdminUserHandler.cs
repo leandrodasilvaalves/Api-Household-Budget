@@ -1,7 +1,7 @@
 using Flunt.Notifications;
 
 using Household.Budget.Contracts.Extensions;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 

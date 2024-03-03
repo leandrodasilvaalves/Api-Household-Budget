@@ -4,7 +4,7 @@ using Household.Budget.Contracts;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Extensions;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 using Household.Budget.Contracts.Helpers;
 
 namespace Household.Budget.UseCases.Transactions.UpdateTransaction;

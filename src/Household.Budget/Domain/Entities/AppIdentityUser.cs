@@ -4,7 +4,7 @@ using Household.Budget.Contracts.Constants;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 using Household.Budget.UseCases.Identity.RegisterUser;
 
-namespace Household.Budget.Contracts.Models;
+namespace Household.Budget.Domain.Entities;
 
 public class AppIdentityUser : MongoIdentityUser<string>
 {

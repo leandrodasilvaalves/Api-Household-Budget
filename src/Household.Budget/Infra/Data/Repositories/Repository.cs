@@ -2,14 +2,14 @@ using System.Linq.Expressions;
 
 using Household.Budget.Contracts.Data;
 using Household.Budget.Contracts.Enums;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Contracts.Entities;
 using Household.Budget.Infra.Data.Context;
 
 using MongoDB.Driver;
 
 namespace Household.Budget.Infra.Data.Repositories;
 
-public class Repository<T> : IRepository<T> where T : Model
+public class Repository<T> : IRepository<T> where T : Entity
 {
     private readonly IMongoDbContext<T> _context;
 

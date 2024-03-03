@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 
 using Household.Budget.Contracts.Data;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 
 using MassTransit;

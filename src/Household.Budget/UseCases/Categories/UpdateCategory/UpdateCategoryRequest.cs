@@ -1,5 +1,5 @@
 using Household.Budget.Contracts.Enums;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 
 namespace Household.Budget.UseCases.Categories.UpdateCategory;
 

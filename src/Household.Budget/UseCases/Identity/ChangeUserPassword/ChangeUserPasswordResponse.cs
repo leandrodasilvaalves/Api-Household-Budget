@@ -1,7 +1,7 @@
 using Flunt.Notifications;
 
 using Household.Budget.Contracts.Http.Responses;
-using Household.Budget.Contracts.Models;
+using Household.Budget.Domain.Entities;
 
 namespace Household.Budget;
 
