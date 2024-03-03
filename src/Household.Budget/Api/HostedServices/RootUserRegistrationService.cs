@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 using Household.Budget.UseCases.Identity.CreateAdminUser;
 
 

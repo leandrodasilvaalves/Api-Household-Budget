@@ -7,7 +7,7 @@ using DotNet.Testcontainers.Networks;
 
 using FluentAssertions;
 
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 using Household.Budget.Infra.Extensions;
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
 

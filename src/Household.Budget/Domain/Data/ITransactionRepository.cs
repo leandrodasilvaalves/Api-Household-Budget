@@ -1,6 +1,6 @@
 using Household.Budget.Domain.Entities;
 
-namespace Household.Budget.Contracts.Data
+namespace Household.Budget.Domain.Data
 {
     public interface ITransactionRepository : IRepository<Transaction>
     {

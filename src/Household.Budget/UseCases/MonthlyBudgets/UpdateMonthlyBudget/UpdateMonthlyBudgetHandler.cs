@@ -1,4 +1,4 @@
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 
 namespace Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 

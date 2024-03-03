@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 using Household.Budget.Contracts.Entities;
 
-namespace Household.Budget.Contracts.Data;
+namespace Household.Budget.Domain.Data;
 
 public interface IRepository<T> where T : Entity
 {

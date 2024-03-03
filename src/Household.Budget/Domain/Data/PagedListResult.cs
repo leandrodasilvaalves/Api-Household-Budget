@@ -1,4 +1,4 @@
-namespace Household.Budget.Contracts.Data
+namespace Household.Budget.Domain.Data
 {
     public class PagedListResult<T>
     {

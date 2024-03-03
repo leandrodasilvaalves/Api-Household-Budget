@@ -1,7 +1,7 @@
 
 using Flunt.Notifications;
 
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 using Household.Budget.Contracts.Http.Responses;
 using Household.Budget.Domain.Entities;
 

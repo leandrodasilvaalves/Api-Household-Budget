@@ -1,7 +1,7 @@
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Domain.Entities;
 
-namespace Household.Budget.Contracts.Data
+namespace Household.Budget.Domain.Data
 {
     public interface IMonthlyBudgetRepository : IRepository<MonthlyBudget>
     {

@@ -1,4 +1,4 @@
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 using Household.Budget.Contracts.Errors;
 
 namespace Household.Budget.UseCases.Transactions.GetTransactionById;

@@ -3,7 +3,7 @@ using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 

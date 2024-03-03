@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-using Household.Budget.Contracts.Data;
+using Household.Budget.Domain.Data;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Infra.Data.Context;
