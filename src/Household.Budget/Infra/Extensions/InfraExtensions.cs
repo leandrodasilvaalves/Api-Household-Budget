@@ -3,7 +3,7 @@ using AspNetCore.Identity.MongoDbCore.Models;
 using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Infra.Data.Context;
-using Household.Budget.Infra.Data.Repositories;
+using Household.Budget.Infra.Data;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -28,12 +28,12 @@ public static class InfraExtensions
 
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
-        services.AddSingleton<ICategoryRepository, CategoryRepository>();
-        services.AddSingleton<ISubcategoryRepository, SubcategoryRepository>();
-        services.AddSingleton<ITransactionRepository, TransactionRepository>();
-        services.AddSingleton<IImportedSeedConfigRespository, ImportedSeedConfigRespository>();
-        services.AddSingleton<IMonthlyBudgetRepository, MonthlyBudgetRepository>();
+        services.AddSingleton(typeof(IData<>), typeof(Data<>));
+        services.AddSingleton<ICategoryData, CategoryData>();
+        services.AddSingleton<ISubcategoryData, SubcategoryData>();
+        services.AddSingleton<ITransactionData, TransactionData>();
+        services.AddSingleton<IImportedSeedConfigData, ImportedSeedConfigData>();
+        services.AddSingleton<IMonthlyBudgetData, MonthlyBudgetData>();
         return services;
     }
 

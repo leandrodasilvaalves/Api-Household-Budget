@@ -5,16 +5,16 @@ namespace Household.Budget.UseCases.Transactions.GetTransactionById;
 
 public class GetTransacationByIdHandler : IGetTransacationByIdHandler
 {
-    private readonly ITransactionRepository _repository;
+    private readonly ITransactionData _Data;
 
-    public GetTransacationByIdHandler(ITransactionRepository repository)
+    public GetTransacationByIdHandler(ITransactionData Data)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
     }
 
     public async Task<GetTransacationByIdResponse> HandleAsync(GetTransacationByIdRequest request, CancellationToken cancellationToken)
     {
-        var transaction = await _repository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        var transaction = await _Data.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
         return transaction is { } ?
             new GetTransacationByIdResponse(transaction) :
             new GetTransacationByIdResponse(TransactionErrors.TRANSACTION_NOT_FOUND);

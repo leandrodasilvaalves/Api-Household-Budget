@@ -5,23 +5,23 @@ namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
 public class UpdateCategoryHandler : IUpdateCategoryHandler
 {
-    private readonly ICategoryRepository _repository;
+    private readonly ICategoryData _Data;
 
-    public UpdateCategoryHandler(ICategoryRepository repository)
+    public UpdateCategoryHandler(ICategoryData Data)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
     }
 
     public async Task<UpdateCategoryResponse> HandleAsync(UpdateCategoryRequest request, CancellationToken cancellationToken)
     {
-        var category = await  _repository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        var category = await  _Data.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
         if (category is null)
         {
             return new UpdateCategoryResponse(CategoryErrors.CATEGORY_NOT_FOUND);
         }
         
         category.Update(request);
-        await _repository.UpdateAsync(category, cancellationToken);
+        await _Data.UpdateAsync(category, cancellationToken);
         return new UpdateCategoryResponse(category);
     }
 }

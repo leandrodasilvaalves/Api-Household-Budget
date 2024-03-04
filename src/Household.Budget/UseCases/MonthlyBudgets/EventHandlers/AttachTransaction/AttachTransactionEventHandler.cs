@@ -10,15 +10,15 @@ namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransacti
 
 public class AttachTransactionEventHandler : IAttachTransactionEventHandler
 {
-    private readonly IMonthlyBudgetRepository _repository;
+    private readonly IMonthlyBudgetData _Data;
     private readonly ICreateMonthlyBudgetHandler _createMonthlyBudgetHandler;
     private readonly IBus _bus;
 
-    public AttachTransactionEventHandler(IMonthlyBudgetRepository repository,
+    public AttachTransactionEventHandler(IMonthlyBudgetData Data,
                                          ICreateMonthlyBudgetHandler createMonthlyBudgetHandler,
                                          IBus bus)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
         _createMonthlyBudgetHandler = createMonthlyBudgetHandler ?? throw new ArgumentNullException(nameof(createMonthlyBudgetHandler));
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
@@ -27,11 +27,11 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
     {
         var transaction = notification.Data;
         var (year, month) = transaction.GetYearMonth();
-        var monthlyBudget = await _repository.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
+        var monthlyBudget = await _Data.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
 
         if (monthlyBudget is null)
         {
-            lock (_repository)
+            lock (_Data)
             {
                 CreateMonthlyBudgetRequest request = new() { Year = year, Month = month, UserId = transaction?.UserId ?? "" };
                 _createMonthlyBudgetHandler.HandleAsync(request, cancellationToken).Wait(cancellationToken);
@@ -54,7 +54,7 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
         }
 
         await Task.WhenAll(
-            _repository.UpdateAsync(monthlyBudget, cancellationToken),
+            _Data.UpdateAsync(monthlyBudget, cancellationToken),
             PublishNextPaymentsWhenCreditCardAsync(transaction, cancellationToken)
         );
 

@@ -10,23 +10,23 @@ namespace Household.Budget.UseCases.Categories.UpdateSubcategory;
 
 public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
 {
-    private readonly ISubcategoryRepository _subcategoryRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ISubcategoryData _subcategoryData;
+    private readonly ICategoryData _categoryData;
     private readonly IBus _bus;
 
-    public UpdateSubcategoryHandler(ISubcategoryRepository subcategoryRepository,
-                                    ICategoryRepository categoryRepository,
+    public UpdateSubcategoryHandler(ISubcategoryData subcategoryData,
+                                    ICategoryData categoryData,
                                     IBus bus)
     {
-        _subcategoryRepository = subcategoryRepository ?? throw new ArgumentNullException(nameof(subcategoryRepository));
-        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _subcategoryData = subcategoryData ?? throw new ArgumentNullException(nameof(subcategoryData));
+        _categoryData = categoryData ?? throw new ArgumentNullException(nameof(categoryData));
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
     public async Task<UpdateSubcategoryResponse> HandleAsync(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
     {
-        var categoryTask = _categoryRepository.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
-        var subcategoryTask = _subcategoryRepository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        var categoryTask = _categoryData.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
+        var subcategoryTask = _subcategoryData.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
         Task.WaitAll([categoryTask, subcategoryTask], cancellationToken);
 
         var category = categoryTask.Result;
@@ -43,7 +43,7 @@ public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
         }
 
         subcategory.Update(request, category);
-        await _subcategoryRepository.UpdateAsync(subcategory, cancellationToken);
+        await _subcategoryData.UpdateAsync(subcategory, cancellationToken);
         await PublishEventsAsync(subcategory, oldSubcategory, category, cancellationToken);
 
         return new UpdateSubcategoryResponse(subcategory);

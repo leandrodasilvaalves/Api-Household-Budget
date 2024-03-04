@@ -4,7 +4,7 @@ using Household.Budget.Contracts.Entities;
 
 namespace Household.Budget.Domain.Data;
 
-public interface IRepository<T> where T : Entity
+public interface IData<T> where T : Entity
 {
     Task CreateAsync(T model, CancellationToken cancellationToken = default);
     Task<PagedListResult<T>> GetAllAsync(int pageSize, int pageNumber, string userId, CancellationToken cancellationToken = default);

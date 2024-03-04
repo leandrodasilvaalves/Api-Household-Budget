@@ -4,16 +4,16 @@ namespace Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
 
 public class GetMonthlyBudgetsHandler : IGetMonthlyBudgetsHandler
 {
-    private readonly IMonthlyBudgetRepository _repository;
+    private readonly IMonthlyBudgetData _Data;
 
-    public GetMonthlyBudgetsHandler(IMonthlyBudgetRepository repository)
+    public GetMonthlyBudgetsHandler(IMonthlyBudgetData Data)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
     }
 
     public async Task<GetMonthlyBudgetsResponse> HandleAsync(GetMonthlyBudgetsRequest request, CancellationToken cancellationToken)
     {
-        var result = await _repository.GetOneAsync(request.UserId, request.Year, request.Month, cancellationToken);
+        var result = await _Data.GetOneAsync(request.UserId, request.Year, request.Month, cancellationToken);
         return new GetMonthlyBudgetsResponse(result);
     }
 }

@@ -6,11 +6,11 @@ namespace Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCa
 
 public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryEventHandler
 {
-    private readonly ICategoryRepository _repository;
+    private readonly ICategoryData _Data;
 
-    public SubcategoryChangeCategoryEventHandler(ICategoryRepository repository)
+    public SubcategoryChangeCategoryEventHandler(ICategoryData Data)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
     }
 
     public Task HandleAsync(SubcategoryChangedCategory notification, CancellationToken cancellationToken)
@@ -25,21 +25,21 @@ public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryE
 
     private async Task HandleNewCategory(Subcategory subcategory, CancellationToken cancellationToken)
     {
-        var category = await _repository.GetByIdAsync(subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
+        var category = await _Data.GetByIdAsync(subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
         if (category is not null)
         {
             category.Subcategories.Add(new(subcategory.Id, subcategory.Name));
-            await _repository.UpdateAsync(category, cancellationToken);
+            await _Data.UpdateAsync(category, cancellationToken);
         }
     }
 
     private async Task HandleOldCategory(Subcategory subcategory, string categoryId, CancellationToken cancellationToken)
     {
-        var category = await _repository.GetByIdAsync(categoryId ?? "", subcategory.UserId ?? "", cancellationToken);
+        var category = await _Data.GetByIdAsync(categoryId ?? "", subcategory.UserId ?? "", cancellationToken);
         if (category is not null)
         {
             category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
-            await _repository.UpdateAsync(category, cancellationToken);
+            await _Data.UpdateAsync(category, cancellationToken);
         }
     }
 }

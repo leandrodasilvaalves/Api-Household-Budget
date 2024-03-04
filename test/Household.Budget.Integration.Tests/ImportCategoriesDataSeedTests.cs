@@ -25,8 +25,8 @@ public class ImportCategoriesDataSeedTests
     private IFutureDockerImage? ApiImage { get; set; }
     private List<ImportCategorySeedRequest> CategoriesConfig { get; set; } = [];
     private string? RootUserId { get; set; } = "";
-    private ICategoryRepository? CategoryRepository { get; set; }
-    private ISubcategoryRepository? SubcategoryRepository { get; set; }
+    private ICategoryData? CategoryData { get; set; }
+    private ISubcategoryData? SubcategoryData { get; set; }
 
     [Fact]
     public async Task ShouldImportCategoriesDataSeedAsync()
@@ -37,7 +37,7 @@ public class ImportCategoriesDataSeedTests
 
     private async Task AssertCategoriesAsync()
     {
-        var categoriesDb = await CategoryRepository?.GetAllAsync(CategoriesConfig.Count, 1, RootUserId, CancellationToken.None);
+        var categoriesDb = await CategoryData?.GetAllAsync(CategoriesConfig.Count, 1, RootUserId, CancellationToken.None);
 
         categoriesDb.TotalResult.Should().Be(CategoriesConfig.Count);
         CategoriesConfig.ForEach(categoryConfig =>
@@ -166,7 +166,7 @@ public class ImportCategoriesDataSeedTests
             .AddMongo(config)
             .BuildServiceProvider();
 
-        CategoryRepository = services.GetService<ICategoryRepository>();
-        SubcategoryRepository = services.GetService<ISubcategoryRepository>();
+        CategoryData = services.GetService<ICategoryData>();
+        SubcategoryData = services.GetService<ISubcategoryData>();
     }
 }

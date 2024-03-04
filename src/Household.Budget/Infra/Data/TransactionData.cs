@@ -5,11 +5,11 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Infra.Data.Context;
 
-namespace Household.Budget.Infra.Data.Repositories
+namespace Household.Budget.Infra.Data
 {
-    public class TransactionRepository : Repository<Transaction>, ITransactionRepository
+    public class TransactionData : Data<Transaction>, ITransactionData
     {
-        public TransactionRepository(IMongoDbContext<Transaction> context)
+        public TransactionData(IMongoDbContext<Transaction> context)
             : base(context) { }
 
         public Task<PagedListResult<Transaction>> GetAllAsync(int year, int month, int pageSize, int pageNumber,

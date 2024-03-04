@@ -1,12 +1,12 @@
 ﻿using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Infra.Data.Context;
-using Household.Budget.Infra.Data.Repositories;
+using Household.Budget.Infra.Data;
 
 namespace Household.Budget;
 
-public class CategoryRepository : Repository<Category>, ICategoryRepository
+public class CategoryData : Data<Category>, ICategoryData
 {
-    public CategoryRepository(IMongoDbContext<Category> context)
+    public CategoryData(IMongoDbContext<Category> context)
         : base(context) { }
 }

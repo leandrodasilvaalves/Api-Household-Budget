@@ -4,7 +4,7 @@ namespace Household.Budget.Contracts.Http.StatusCodeResults
 {
     public class CustomCreatedResult : CreatedResult
     {
-        public CustomCreatedResult(object? value)
+        public CustomCreatedResult(object value)
             : base(default(string), value) { }
     }
 

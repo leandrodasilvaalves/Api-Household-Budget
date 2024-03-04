@@ -7,13 +7,13 @@ using Household.Budget.Infra.Data.Context;
 
 using MongoDB.Driver;
 
-namespace Household.Budget.Infra.Data.Repositories;
+namespace Household.Budget.Infra.Data;
 
-public class Repository<T> : IRepository<T> where T : Entity
+public class Data<T> : IData<T> where T : Entity
 {
     private readonly IMongoDbContext<T> _context;
 
-    public Repository(IMongoDbContext<T> context)
+    public Data(IMongoDbContext<T> context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }

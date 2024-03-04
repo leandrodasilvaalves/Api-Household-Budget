@@ -3,11 +3,11 @@ using Household.Budget.Contracts.Enums;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Infra.Data.Context;
 
-namespace Household.Budget.Infra.Data.Repositories
+namespace Household.Budget.Infra.Data
 {
-    public class MonthlyBudgetRepository : Repository<MonthlyBudget>, IMonthlyBudgetRepository
+    public class MonthlyBudgetData : Data<MonthlyBudget>, IMonthlyBudgetData
     {
-        public MonthlyBudgetRepository(IMongoDbContext<MonthlyBudget> context)
+        public MonthlyBudgetData(IMongoDbContext<MonthlyBudget> context)
             : base(context) { }
 
         public async Task<bool> ExistsAsync(string userId, int year, Month month, CancellationToken cancellationToken) =>

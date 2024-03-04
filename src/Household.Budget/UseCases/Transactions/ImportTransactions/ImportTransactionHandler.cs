@@ -13,12 +13,12 @@ namespace Household.Budget.UseCases.Transactions.ImportTransactions;
 
 public class ImportTransactionHandler : IImportTransactionHandler
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryData _categoryData;
     private readonly IBus _bus;
 
-    public ImportTransactionHandler(ICategoryRepository categoryRepository, IBus bus)
+    public ImportTransactionHandler(ICategoryData categoryData, IBus bus)
     {
-        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _categoryData = categoryData ?? throw new ArgumentNullException(nameof(categoryData));
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
@@ -92,7 +92,7 @@ public class ImportTransactionHandler : IImportTransactionHandler
         List<Category> categories = [];
         do
         {
-            var result = await _categoryRepository.GetAllAsync(pageSize, pageNumber, userId, cancellationToken);
+            var result = await _categoryData.GetAllAsync(pageSize, pageNumber, userId, cancellationToken);
             hasMorePage = result.HasMorePages;
             pageNumber++;
             categories.AddRange(result.Items ?? []);

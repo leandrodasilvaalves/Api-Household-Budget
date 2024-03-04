@@ -2,7 +2,7 @@ using Household.Budget.Domain.Entities;
 
 namespace Household.Budget.Domain.Data
 {
-    public interface IImportedSeedConfigRespository
+    public interface IImportedSeedConfigData
     {
         Task<ImportedSeedConfig> GetAsync(CancellationToken cancellationToken = default);
         Task SaveAsync(ImportedSeedConfig seedConfig, CancellationToken cancellationToken = default);

@@ -4,13 +4,13 @@ using Household.Budget.Infra.Data.Context;
 
 using MongoDB.Driver;
 
-namespace Household.Budget.Infra.Data.Repositories
+namespace Household.Budget.Infra.Data
 {
-    public class ImportedSeedConfigRespository : IImportedSeedConfigRespository
+    public class ImportedSeedConfigData : IImportedSeedConfigData
     {
         private readonly IMongoDbContext<ImportedSeedConfig> _context;
 
-        public ImportedSeedConfigRespository(IMongoDbContext<ImportedSeedConfig> context)
+        public ImportedSeedConfigData(IMongoDbContext<ImportedSeedConfig> context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

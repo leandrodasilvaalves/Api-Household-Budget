@@ -6,21 +6,21 @@ namespace Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 
 public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
 {
-    private readonly IMonthlyBudgetRepository _monthlyBudgeRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IMonthlyBudgetData _monthlyBudgeData;
+    private readonly ICategoryData _categoryData;
 
-    public CreateMonthlyBudgetHandler(IMonthlyBudgetRepository monthlyBudgeRepository,
-                                      ICategoryRepository categoryRepository)
+    public CreateMonthlyBudgetHandler(IMonthlyBudgetData monthlyBudgeData,
+                                      ICategoryData categoryData)
     {
-        _monthlyBudgeRepository = monthlyBudgeRepository ?? throw new ArgumentNullException(nameof(monthlyBudgeRepository));
-        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _monthlyBudgeData = monthlyBudgeData ?? throw new ArgumentNullException(nameof(monthlyBudgeData));
+        _categoryData = categoryData ?? throw new ArgumentNullException(nameof(categoryData));
     }
 
     public async Task<CreateMonthlyBudgetResponse> HandleAsync(CreateMonthlyBudgetRequest request,
                                                                CancellationToken cancellationToken)
     {
 
-        if (await _monthlyBudgeRepository.ExistsAsync(
+        if (await _monthlyBudgeData.ExistsAsync(
             request.UserId, request.Year, request.Month, cancellationToken))
         {
             return new CreateMonthlyBudgetResponse(BudgetError.BUGET_ALREADY_EXISTS);
@@ -35,7 +35,7 @@ public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
 
         var monthlyBudget = new MonthlyBudget();
         monthlyBudget.Create(request, categories);
-        await _monthlyBudgeRepository.CreateAsync(monthlyBudget, cancellationToken);
+        await _monthlyBudgeData.CreateAsync(monthlyBudget, cancellationToken);
         return new CreateMonthlyBudgetResponse(monthlyBudget);
     }
 
@@ -46,7 +46,7 @@ public class CreateMonthlyBudgetHandler : ICreateMonthlyBudgetHandler
         List<Category> categories = [];
         do
         {
-            var result = await _categoryRepository.GetAllAsync(pageSize, pageNumber, userId, cancellationToken);
+            var result = await _categoryData.GetAllAsync(pageSize, pageNumber, userId, cancellationToken);
             hasMorePage = result.HasMorePages;
             pageNumber++;
             categories.AddRange(result.Items ?? []);

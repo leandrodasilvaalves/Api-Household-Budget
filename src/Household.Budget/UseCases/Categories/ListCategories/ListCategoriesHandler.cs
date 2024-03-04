@@ -4,16 +4,16 @@ namespace Household.Budget.UseCases.Categories.ListCategories;
 
 public class ListCategoriesHandler : IListCategoriesHandler
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryData _categoryData;
 
-    public ListCategoriesHandler(ICategoryRepository categoryRepository)
+    public ListCategoriesHandler(ICategoryData categoryData)
     {
-        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _categoryData = categoryData ?? throw new ArgumentNullException(nameof(categoryData));
     }
 
     public async Task<ListCategoriesResponse> HandleAsync(ListCategoriesRequest request, CancellationToken cancellationToken)
     {
-        var result = await _categoryRepository.GetAllAsync(request.PageSize, request.PageNumber, request.UserId, cancellationToken);
+        var result = await _categoryData.GetAllAsync(request.PageSize, request.PageNumber, request.UserId, cancellationToken);
         return new ListCategoriesResponse(result);
     }
 }

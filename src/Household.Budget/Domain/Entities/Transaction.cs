@@ -32,7 +32,7 @@ public class Transaction : Entity
         UpdatedAt = DateTime.Now;
     }
 
-    public void Merge(UpdateTransactionRequest? request, Category category, Subcategory subcategory)
+    public void Merge(UpdateTransactionRequest request, Category category, Subcategory subcategory)
     {
         if (request is { } && request.Status.HasValue)
         {
@@ -110,7 +110,7 @@ public class Transaction : Entity
     public NextPaymentModel GetFirstNextPayment() =>
         Payment?.CreditCard?.Installment?.NextPayments?.FirstOrDefault();
 
-    private void Merge(CategoryModel? categoryRequest, Category category, Subcategory subcategory)
+    private void Merge(CategoryModel categoryRequest, Category category, Subcategory subcategory)
     {
         if (categoryRequest is { })
         {
@@ -118,7 +118,7 @@ public class Transaction : Entity
         }
     }
 
-    private void Merge(PaymentModel? payment)
+    private void Merge(PaymentModel payment)
     {
         if (payment is { })
         {
@@ -126,7 +126,7 @@ public class Transaction : Entity
         }
     }
 
-    private void Merge(List<string>? tags)
+    private void Merge(List<string> tags)
     {
         if (tags is not null && tags.Any())
         {

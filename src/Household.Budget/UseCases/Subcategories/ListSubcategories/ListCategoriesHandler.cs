@@ -4,16 +4,16 @@ namespace Household.Budget.UseCases.Subcategories.ListSubcategories;
 
 public class ListSubcategoriesHandler : IListSubcategoriesHandler
 {
-    private readonly ISubcategoryRepository _repository;
+    private readonly ISubcategoryData _Data;
 
-    public ListSubcategoriesHandler(ISubcategoryRepository repository)
+    public ListSubcategoriesHandler(ISubcategoryData Data)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
     }
 
     public async Task<ListSubcategoriesResponse> HandleAsync(ListSubcategoriesRequest request, CancellationToken cancellationToken)
     {
-        var result = await _repository.GetAllAsync(request.PageSize, request.PageNumber, request.UserId, cancellationToken);
+        var result = await _Data.GetAllAsync(request.PageSize, request.PageNumber, request.UserId, cancellationToken);
         return new ListSubcategoriesResponse(result);
     }
 }

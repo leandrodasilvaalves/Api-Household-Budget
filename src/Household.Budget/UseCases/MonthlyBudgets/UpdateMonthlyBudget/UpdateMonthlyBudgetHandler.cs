@@ -4,19 +4,19 @@ namespace Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 
 public class UpdateMonthlyBudgetHandler : IUpdateMonthlyBudgetHandler
 {
-    private readonly IMonthlyBudgetRepository _monthlyBudgeRepository;
+    private readonly IMonthlyBudgetData _monthlyBudgeData;
 
-    public UpdateMonthlyBudgetHandler(IMonthlyBudgetRepository monthlyBudgeRepository)
+    public UpdateMonthlyBudgetHandler(IMonthlyBudgetData monthlyBudgeData)
     {
-        _monthlyBudgeRepository = monthlyBudgeRepository ?? throw new ArgumentNullException(nameof(monthlyBudgeRepository));
+        _monthlyBudgeData = monthlyBudgeData ?? throw new ArgumentNullException(nameof(monthlyBudgeData));
     }
 
     public async Task<UpdateMonthlyBudgetResponse> HandleAsync(UpdateMonthlyBudgetRequest request,
                                                     CancellationToken cancellationToken)
     {
 
-        var monthlyBudgetTask = _monthlyBudgeRepository.GetByIdAsync(request.Id, request.UserId, cancellationToken);
-        var alreadyExistsTask = _monthlyBudgeRepository.GetOneAsync(
+        var monthlyBudgetTask = _monthlyBudgeData.GetByIdAsync(request.Id, request.UserId, cancellationToken);
+        var alreadyExistsTask = _monthlyBudgeData.GetOneAsync(
             x => x.Id != request.Id && x.UserId == request.UserId && x.Year == request.Year && x.Month == request.Month, cancellationToken);
 
         await Task.WhenAll(monthlyBudgetTask, alreadyExistsTask);
@@ -30,7 +30,7 @@ public class UpdateMonthlyBudgetHandler : IUpdateMonthlyBudgetHandler
         }
 
         monthlyBudget?.Merge(request);
-        await _monthlyBudgeRepository.UpdateAsync(monthlyBudget, cancellationToken);
+        await _monthlyBudgeData.UpdateAsync(monthlyBudget, cancellationToken);
         return new UpdateMonthlyBudgetResponse(monthlyBudget);
     }
 }

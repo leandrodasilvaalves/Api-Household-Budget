@@ -4,16 +4,16 @@ namespace Household.Budget.UseCases.Categories.GetSubcategoryById;
 
 public class GetSubcategoryByIdHandler : IGetSubcategoryByIdHandler
 {
-    private readonly ISubcategoryRepository _repository;
+    private readonly ISubcategoryData _Data;
 
-    public GetSubcategoryByIdHandler(ISubcategoryRepository repository)
+    public GetSubcategoryByIdHandler(ISubcategoryData Data)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
     }
 
     public async Task<GetSubcategoryByIdResponse> HandleAsync(GetSubcategoryByIdRequest request, CancellationToken cancellationToken)
     {
-        var subcategory = await _repository.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        var subcategory = await _Data.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
         return new GetSubcategoryByIdResponse(subcategory);
     }
 }

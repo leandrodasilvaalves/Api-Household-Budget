@@ -10,15 +10,15 @@ namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransacti
 
 public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPaymentEventHandler
 {
-    private readonly IMonthlyBudgetRepository _repository;
+    private readonly IMonthlyBudgetData _Data;
     private readonly ICreateMonthlyBudgetHandler _createMonthlyBudgetHandler;
     private readonly IBus _bus;
 
-    public AttachTransactionNextPaymentEventHandler(IMonthlyBudgetRepository repository,
+    public AttachTransactionNextPaymentEventHandler(IMonthlyBudgetData Data,
                                          ICreateMonthlyBudgetHandler createMonthlyBudgetHandler,
                                          IBus bus)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
         _createMonthlyBudgetHandler = createMonthlyBudgetHandler ?? throw new ArgumentNullException(nameof(createMonthlyBudgetHandler));
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
@@ -26,11 +26,11 @@ public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPa
     public async Task HandleAsync(BudgetTransactionWithCategoryModel request, CancellationToken cancellationToken)
     {
         var (year, month) = request.GetYearMonth();
-        var monthlyBudget = await _repository.GetOneAsync(request.UserId ?? "", year.Value, month, cancellationToken);
+        var monthlyBudget = await _Data.GetOneAsync(request.UserId ?? "", year.Value, month, cancellationToken);
 
         if (monthlyBudget is null)
         {
-            lock (_repository)
+            lock (_Data)
             {
                 CreateMonthlyBudgetRequest monthlyBudgetRequest = new() { Year = year.Value, Month = month, UserId = request?.UserId ?? "" };
                 _createMonthlyBudgetHandler.HandleAsync(monthlyBudgetRequest, cancellationToken).Wait(cancellationToken);
@@ -40,6 +40,6 @@ public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPa
         }
 
         monthlyBudget?.AttachTransaction(request);
-        await _repository.UpdateAsync(monthlyBudget, cancellationToken);
+        await _Data.UpdateAsync(monthlyBudget, cancellationToken);
     }
 }

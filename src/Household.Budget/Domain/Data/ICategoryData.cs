@@ -2,4 +2,4 @@ using Household.Budget.Domain.Entities;
 
 namespace Household.Budget.Domain.Data;
 
-public interface ICategoryRepository : IRepository<Category>{}
+public interface ICategoryData : IData<Category>{}

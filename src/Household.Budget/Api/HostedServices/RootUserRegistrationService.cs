@@ -11,12 +11,12 @@ public class RootUserRegistrationService : BackgroundService
     private readonly ILogger<RootUserRegistrationService> _logger;
     private readonly IConfiguration _configuration;
     private readonly IServiceScopeFactory _serviceScopeFactory;    
-    private readonly IImportedSeedConfigRespository _respository;
+    private readonly IImportedSeedConfigData _respository;
 
     public RootUserRegistrationService(ILogger<RootUserRegistrationService> logger,
                                   IConfiguration configuration,
                                   IServiceScopeFactory serviceScopeFactory,
-                                  IImportedSeedConfigRespository respository)
+                                  IImportedSeedConfigData respository)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
