@@ -12,6 +12,7 @@ namespace Household.Budget.Unit.Tests.Fixtures
         private static Fixture Factory()
         {
             var fixture = new Fixture();
+            fixture.Customize(new CategoryDataCustomizations());
             fixture.Customize(new CreateCategoryHandlerCustomizations());
             
             return fixture;
