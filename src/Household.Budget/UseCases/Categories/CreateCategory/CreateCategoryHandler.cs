@@ -6,18 +6,18 @@ namespace Household.Budget.UseCases.Categories.CreateCategories;
 
 public class CreateCategoryHandler : ICreateCategoryHandler
 {
-    private readonly ICategoryData _Data;
+    private readonly ICategoryData _data;
 
-    public CreateCategoryHandler(ICategoryData Data)
+    public CreateCategoryHandler(ICategoryData data)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
     public async Task<CreateCategoryResponse> HandleAsync(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = new Category();
         category.Create(request);
-        await _Data.CreateAsync(category, cancellationToken);
+        await _data.CreateAsync(category, cancellationToken);
         return new CreateCategoryResponse(category);
     }
 }

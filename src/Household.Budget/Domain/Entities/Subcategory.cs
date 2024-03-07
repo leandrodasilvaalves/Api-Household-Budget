@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-using Household.Budget.Contracts.Enums;
+﻿using Household.Budget.Contracts.Enums;
 using Household.Budget.UseCases.Categories.UpdateSubcategory;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
 using Household.Budget.Contracts.Entities;

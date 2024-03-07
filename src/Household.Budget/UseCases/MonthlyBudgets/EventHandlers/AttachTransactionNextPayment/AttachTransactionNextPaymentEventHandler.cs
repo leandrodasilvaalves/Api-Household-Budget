@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Models;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;

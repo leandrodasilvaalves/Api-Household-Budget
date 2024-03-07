@@ -1,4 +1,3 @@
-using Household.Budget.Contracts;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Contracts.Helpers;
