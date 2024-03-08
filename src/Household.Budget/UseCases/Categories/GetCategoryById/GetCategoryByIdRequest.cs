@@ -5,7 +5,7 @@ namespace Household.Budget.UseCases.Categories.GetCategoryById;
 public class GetCategoryByIdRequest : Request
 {
     [FromRoute]
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     public override void Validate()
     {

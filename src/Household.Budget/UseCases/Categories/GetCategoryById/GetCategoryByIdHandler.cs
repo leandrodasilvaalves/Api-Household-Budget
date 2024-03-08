@@ -1,4 +1,5 @@
-﻿using Household.Budget.Domain.Data;
+﻿using Household.Budget.Contracts.Errors;
+using Household.Budget.Domain.Data;
 
 
 namespace Household.Budget.UseCases.Categories.GetCategoryById;
@@ -15,6 +16,8 @@ public class GetCategoryByIdHandler : IGetCategoryByIdHandler
     public async Task<GetCategoryByIdResponse> HandleAsync(GetCategoryByIdRequest request, CancellationToken cancellationToken)
     {
         var category = await _categoryData.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
-        return new GetCategoryByIdResponse(category);
+        return category == null ? 
+            new GetCategoryByIdResponse(CategoryErrors.CATEGORY_NOT_FOUND) : 
+            new GetCategoryByIdResponse(category);
     }
 }

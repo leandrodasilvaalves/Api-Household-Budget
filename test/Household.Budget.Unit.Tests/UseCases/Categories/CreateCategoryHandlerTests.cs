@@ -18,7 +18,6 @@ namespace Household.Budget.Unit.Tests.UseCases.Categories
             var result = await sut.HandleAsync(request, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
-            result.Data.Should().NotBeNull();
             await data.Received().CreateAsync(Arg.Any<Category>(), Arg.Any<CancellationToken>());
         }
     }

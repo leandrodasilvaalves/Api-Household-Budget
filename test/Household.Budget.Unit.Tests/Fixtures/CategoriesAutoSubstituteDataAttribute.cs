@@ -13,7 +13,7 @@ namespace Household.Budget.Unit.Tests.Fixtures
         {
             var fixture = new Fixture();
             fixture.Customize(new CategoryDataCustomizations());
-            fixture.Customize(new CreateCategoryHandlerCustomizations());
+            fixture.Customize(new CategoryHandlersCustomizations());
             
             return fixture;
         }
