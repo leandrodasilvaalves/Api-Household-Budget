@@ -21,6 +21,9 @@ public class CategoryDataCustomizations : ICustomization
         categoryData.UpdateAsync(Arg.Any<Category>(), Arg.Any<CancellationToken>())
             .Returns(Task.CompletedTask);
 
+        categoryData.GetAllAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(fixture.Create<PagedListResult<Category>>());
+
         fixture.Register(() => categoryData);
     }
 }

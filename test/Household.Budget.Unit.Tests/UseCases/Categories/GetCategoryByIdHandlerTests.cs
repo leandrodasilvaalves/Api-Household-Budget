@@ -27,7 +27,7 @@ public class GetCategoryByIdHandlerTests
 
     [Theory]
     [CategoriesAutoSubstituteData]
-    public async Task ShouldGetCategoryById(GetCategoryByIdHandler sut, ICategoryData data, GetCategoryByIdRequest request)
+    public async Task ShouldGetCategoryByIdAsync(GetCategoryByIdHandler sut, ICategoryData data, GetCategoryByIdRequest request)
     {
         var result = await sut.HandleAsync(request, CancellationToken.None);
 

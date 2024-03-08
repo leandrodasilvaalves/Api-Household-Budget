@@ -16,7 +16,7 @@ namespace Household.Budget.Domain.Data
         public int PageSize { get; }
         public int TotalPages { get; }
         public bool HasMorePages => CurrentPage < TotalPages;
-        public List<T>? Items { get; }
+        public List<T> Items { get; }
 
         private int CalculateTotalPages(int pageSize) =>
             (int)Math.Ceiling(TotalResult / (double)pageSize);
