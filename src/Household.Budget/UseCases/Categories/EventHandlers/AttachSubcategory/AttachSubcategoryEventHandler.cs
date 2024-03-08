@@ -19,8 +19,7 @@ public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
     {
         await Semaphore.WaitAsync(cancellationToken);
         var subcategory = notification.Data;
-        var category = await _data.GetByIdAsync($"{subcategory.Category.Id}",
-            subcategory.UserId ?? "", cancellationToken);
+        var category = await _data.GetByIdAsync(subcategory.Category.Id, subcategory.UserId, cancellationToken);
 
         if (category is not null)
         {

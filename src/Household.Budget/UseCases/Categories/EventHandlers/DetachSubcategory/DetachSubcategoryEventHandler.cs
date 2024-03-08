@@ -6,22 +6,21 @@ namespace Household.Budget.UseCases.Categories.EventHandlers.DetachSubcategory;
 
 public class DetachSubcategoryEventHandler : IDetachSubcategoryEventHandler
 {
-    private readonly ICategoryData _Data;
+    private readonly ICategoryData _data;
 
-    public DetachSubcategoryEventHandler(ICategoryData Data)
+    public DetachSubcategoryEventHandler(ICategoryData data)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
     public async Task HandleAsync(SubCategoryWasExcluded notification, CancellationToken cancellationToken)
     {
         var subcategory = notification.Data;
-        var category = await _Data.GetByIdAsync(
-            subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
+        var category = await _data.GetByIdAsync(subcategory.Category.Id, subcategory.UserId, cancellationToken);
         if (category is not null)
         {
             category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
-            await _Data.UpdateAsync(category, cancellationToken);
+            await _data.UpdateAsync(category, cancellationToken);
         }
     }
 }
