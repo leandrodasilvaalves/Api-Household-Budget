@@ -7,29 +7,29 @@ namespace Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
 
 public class AttachSubcategoryEventHandler : IAttachSubcategoryEventHandler
 {
-    private readonly ICategoryData _Data;
+    private readonly ICategoryData _data;
     private static readonly SemaphoreSlim Semaphore = new(1, 1);
 
-    public AttachSubcategoryEventHandler(ICategoryData Data)
+    public AttachSubcategoryEventHandler(ICategoryData data)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
-    public async Task<SubcategoryWasCreatedEventResponse> HandleAsync(SubcategoryWasCreated notification, CancellationToken cancellationToken)
+    public async Task<AttachSubcategoryResponse> HandleAsync(SubcategoryWasCreated notification, CancellationToken cancellationToken)
     {
         await Semaphore.WaitAsync(cancellationToken);
         var subcategory = notification.Data;
-        var category = await _Data.GetByIdAsync($"{subcategory.Category.Id}",
+        var category = await _data.GetByIdAsync($"{subcategory.Category.Id}",
             subcategory.UserId ?? "", cancellationToken);
 
         if (category is not null)
         {
             category.Subcategories.Add(new(subcategory.Id, subcategory.Name));
-            await _Data.UpdateAsync(category, cancellationToken);
+            await _data.UpdateAsync(category, cancellationToken);
             Semaphore.Release();
-            return new SubcategoryWasCreatedEventResponse(subcategory);
+            return new AttachSubcategoryResponse(subcategory);
         }
         Semaphore.Release();
-        return new SubcategoryWasCreatedEventResponse(CategoryErrors.CATEGORY_NOT_FOUND);
+        return new AttachSubcategoryResponse(CategoryErrors.CATEGORY_NOT_FOUND);
     }
 }

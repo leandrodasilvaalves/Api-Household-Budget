@@ -2,6 +2,7 @@ using AutoFixture;
 
 using Household.Budget.Domain.Data;
 using Household.Budget.UseCases.Categories.CreateCategories;
+using Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
 using Household.Budget.UseCases.Categories.GetCategoryById;
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
 using Household.Budget.UseCases.Categories.ListCategories;
@@ -32,6 +33,8 @@ public class CategoryHandlersCustomizations : ICustomization
         fixture.Register(() => new ImportCategorySeedHandler(fixture.Create<IBus>(),
                                                              fixture.Create<ILogger<ImportCategorySeedHandler>>(),
                                                              fixture.Create<ICreateCategoryHandler>()));
+
+        fixture.Register(() => new AttachSubcategoryEventHandler(fixture.Create<ICategoryData>()));
     }
 
     private static void RegisterCreateCategoryHandler(IFixture fixture)

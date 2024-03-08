@@ -7,18 +7,17 @@ using Household.Budget.UseCases.Categories.CreateCategories;
 
 using NSubstitute;
 
-namespace Household.Budget.Unit.Tests.UseCases.Categories
-{
-    public class CreateCategoryHandlerTests
-    {
-        [Theory]
-        [CategoriesAutoSubstituteData]
-        public async Task ShouldCreateCategoryAsync(CreateCategoryHandler sut, ICategoryData data, CreateCategoryRequest request)
-        {
-            var result = await sut.HandleAsync(request, CancellationToken.None);
+namespace Household.Budget.Unit.Tests.UseCases.Categories;
 
-            result.IsSuccess.Should().BeTrue();
-            await data.Received().CreateAsync(Arg.Any<Category>(), Arg.Any<CancellationToken>());
-        }
+public class CreateCategoryHandlerTests
+{
+    [Theory]
+    [CategoriesAutoSubstituteData]
+    public async Task ShouldCreateCategoryAsync(CreateCategoryHandler sut, ICategoryData data, CreateCategoryRequest request)
+    {
+        var result = await sut.HandleAsync(request, CancellationToken.None);
+
+        result.IsSuccess.Should().BeTrue();
+        await data.Received().CreateAsync(Arg.Any<Category>(), Arg.Any<CancellationToken>());
     }
 }

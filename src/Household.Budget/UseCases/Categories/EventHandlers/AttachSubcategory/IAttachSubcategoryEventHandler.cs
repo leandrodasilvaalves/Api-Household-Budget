@@ -5,5 +5,5 @@ namespace Household.Budget.UseCases.Categories.EventHandlers.AttachSubcategory;
 
 public interface IAttachSubcategoryEventHandler
 {
-    Task<SubcategoryWasCreatedEventResponse> HandleAsync(SubcategoryWasCreated notification, CancellationToken cancellationToken);
+    Task<AttachSubcategoryResponse> HandleAsync(SubcategoryWasCreated notification, CancellationToken cancellationToken);
 }
