@@ -33,12 +33,11 @@ public class ImportCategorySeedHandler : IImportCategorySeedHandler
         var categoryResponse = await _createCategoryHandler.HandleAsync(createCategoryRequest, cancellationToken);
         if (categoryResponse.IsSuccess)
         {
-            var categoryId = Guid.Parse(categoryResponse.Data?.Id ?? "");
             var sendEndpoint = await _bus.GetPublishSendEndpoint<CreateSubcategoryRequest>();
 
             request.SubCategories.ForEach(subcategory =>
                 sendEndpoint.Send(
-                    new CreateSubcategoryRequest(subcategory.Name, categoryId),
+                    new CreateSubcategoryRequest(subcategory.Name, categoryResponse.Data?.Id),
                     ctx => ctx.Headers.Set(KnownHeaders.IMORT_PROCESS, true),
                     cancellationToken));
 
