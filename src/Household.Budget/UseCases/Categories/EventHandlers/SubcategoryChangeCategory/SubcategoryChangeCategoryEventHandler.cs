@@ -6,11 +6,11 @@ namespace Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCa
 
 public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryEventHandler
 {
-    private readonly ICategoryData _Data;
+    private readonly ICategoryData _data;
 
-    public SubcategoryChangeCategoryEventHandler(ICategoryData Data)
+    public SubcategoryChangeCategoryEventHandler(ICategoryData data)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
     public Task HandleAsync(SubcategoryChangedCategory notification, CancellationToken cancellationToken)
@@ -25,21 +25,21 @@ public class SubcategoryChangeCategoryEventHandler : ISubcategoryChangeCategoryE
 
     private async Task HandleNewCategory(Subcategory subcategory, CancellationToken cancellationToken)
     {
-        var category = await _Data.GetByIdAsync(subcategory.Category.Id ?? "", subcategory.UserId ?? "", cancellationToken);
+        var category = await _data.GetByIdAsync(subcategory.Category.Id, subcategory.UserId, cancellationToken);
         if (category is not null)
         {
             category.Subcategories.Add(new(subcategory.Id, subcategory.Name));
-            await _Data.UpdateAsync(category, cancellationToken);
+            await _data.UpdateAsync(category, cancellationToken);
         }
     }
 
     private async Task HandleOldCategory(Subcategory subcategory, string categoryId, CancellationToken cancellationToken)
     {
-        var category = await _Data.GetByIdAsync(categoryId ?? "", subcategory.UserId ?? "", cancellationToken);
+        var category = await _data.GetByIdAsync(categoryId, subcategory.UserId, cancellationToken);
         if (category is not null)
         {
             category.Subcategories.RemoveAll(x => x.Id == subcategory.Id);
-            await _Data.UpdateAsync(category, cancellationToken);
+            await _data.UpdateAsync(category, cancellationToken);
         }
     }
 }
