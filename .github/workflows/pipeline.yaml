@@ -16,16 +16,16 @@ on:
 
 jobs:
   versioning:
-    uses: leandrodasilvaalves/actions/.github/workflows/git-version.yaml@v1.0.0
+    uses: leandrodasilvaalves/actions/.github/workflows/git-version.yaml@v1.2.0
 
   build:
-    uses: leandrodasilvaalves/actions/.github/workflows/build-net.yaml@v1.0.0
+    uses: leandrodasilvaalves/actions/.github/workflows/build-net.yaml@v1.2.0
     needs: Versioning
     with:
       solution-name: household.budget.sln
 
   docker:
-    uses: leandrodasilvaalves/actions/.github/workflows/docker-build-publish.yaml@v1.0.0
+    uses: leandrodasilvaalves/actions/.github/workflows/docker-build-publish.yaml@v1.2.0
     needs: [versioning, build]
     with:
       username: leandroalves86
@@ -38,7 +38,7 @@ jobs:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
 
   deploy:
-    uses: leandrodasilvaalves/actions/.github/workflows/azure-deploy.yaml@v1.0.0
+    uses: leandrodasilvaalves/actions/.github/workflows/azure-deploy.yaml@v1.2.0
     needs: [docker]
     with:
       appname: householdbudget
@@ -48,7 +48,7 @@ jobs:
       azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
 
   tag:
-    uses: leandrodasilvaalves/actions/.github/workflows/create-tag.yaml@v1.0.0
+    uses: leandrodasilvaalves/actions/.github/workflows/create-tag.yaml@v1.2.0
     needs: [versioning, deploy]
     with:
       version: ${{needs.versioning.outputs.version}}
