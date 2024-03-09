@@ -5,7 +5,7 @@ namespace Household.Budget.UseCases.Transactions.GetTransactionById;
 public class GetTransacationByIdRequest : Request
 {
     [FromRoute]
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
 
     public override void Validate()
