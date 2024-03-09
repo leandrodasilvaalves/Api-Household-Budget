@@ -3,6 +3,7 @@ using AutoFixture;
 using Household.Budget.Domain.Data;
 using Household.Budget.UseCases.Transactions.CreateTransaction;
 using Household.Budget.UseCases.Transactions.GetTransactionById;
+using Household.Budget.UseCases.Transactions.ListTransactions;
 
 using MassTransit;
 
@@ -21,5 +22,6 @@ public class TransactionHandlersCustomizations : ICustomization
                                                             fixture.Create<IBus>()));
                                                             
         fixture.Register(()=> new GetTransacationByIdHandler(fixture.Create<ITransactionData>()));                                                            
+        fixture.Register(()=> new ListTransactionHandler(fixture.Create<ITransactionData>()));                                                            
     }
 }
