@@ -27,7 +27,7 @@ public class CreateTransactionHandler : ICreateTransactionHandler
     public async Task<CreateTransactionResponse> HandleAsync(CreateTransactionRequest request, CancellationToken cancellationToken)
     {
         var categoryTask = _categoryData.GetByIdAsync(request.Category.Id, request.UserId, cancellationToken);
-        var subcategoryTask = _subcategoryData.GetByIdAsync(request.Category.Subcategory?.Id ?? "", request.UserId, cancellationToken);
+        var subcategoryTask = _subcategoryData.GetByIdAsync(request.Category.Subcategory?.Id, request.UserId, cancellationToken);
 
         await Task.WhenAll(categoryTask, subcategoryTask);
         var category = categoryTask.Result;

@@ -2,6 +2,7 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 
 using Household.Budget.Unit.Tests.Fixtures.Customizations;
+using Household.Budget.Unit.Tests.Fixtures.Customizations.Data;
 
 namespace Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 
