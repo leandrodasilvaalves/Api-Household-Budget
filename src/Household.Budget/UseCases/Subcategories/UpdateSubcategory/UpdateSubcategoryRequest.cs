@@ -4,8 +4,8 @@ namespace Household.Budget.UseCases.Categories.UpdateSubcategory;
 
 public class UpdateSubcategoryRequest : Request
 {
-    public string? Id { get; private set; }
-    public string? CategoryId { get; set; }
+    public string Id { get; private set; }
+    public string CategoryId { get; set; }
     public string Name { get; set; } = "";
     public ModelStatus Status { get; set; }
     public ModelOwner Owner { get; set; }

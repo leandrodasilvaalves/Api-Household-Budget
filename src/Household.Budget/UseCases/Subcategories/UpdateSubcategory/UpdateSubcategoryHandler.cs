@@ -25,13 +25,12 @@ public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
 
     public async Task<UpdateSubcategoryResponse> HandleAsync(UpdateSubcategoryRequest request, CancellationToken cancellationToken)
     {
-        var categoryTask = _categoryData.GetByIdAsync($"{request.CategoryId}", request.UserId, cancellationToken);
-        var subcategoryTask = _subcategoryData.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        var categoryTask = _categoryData.GetByIdAsync(request.CategoryId, request.UserId, cancellationToken);
+        var subcategoryTask = _subcategoryData.GetByIdAsync(request.Id, request.UserId, cancellationToken);
         Task.WaitAll([categoryTask, subcategoryTask], cancellationToken);
 
         var category = categoryTask.Result;
         var subcategory = subcategoryTask.Result;
-        var oldSubcategory = subcategory.Clone();
 
         if (category is null)
         {
@@ -42,6 +41,7 @@ public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
             return new UpdateSubcategoryResponse(SubcategoryErrors.SUBCATEGORY_NOT_FOUND);
         }
 
+        var oldSubcategory = subcategory.Clone();
         subcategory.Update(request, category);
         await _subcategoryData.UpdateAsync(subcategory, cancellationToken);
         await PublishEventsAsync(subcategory, oldSubcategory, category, cancellationToken);
@@ -53,7 +53,7 @@ public class UpdateSubcategoryHandler : IUpdateSubcategoryHandler
     {
         if (updatedSubcategory.Status == ModelStatus.EXCLUDED)
         {
-            _bus.Publish(new SubCategoryWasExcluded(updatedSubcategory), cancellationToken);
+            _bus.Publish(new SubcategoryWasExcluded(updatedSubcategory), cancellationToken);
         }
         if (category.Id != oldSubcategory.Category.Id && updatedSubcategory.Status == ModelStatus.ACTIVE)
         {

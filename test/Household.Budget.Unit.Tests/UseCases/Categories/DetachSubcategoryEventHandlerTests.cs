@@ -12,7 +12,7 @@ public class DetachSubcategoryEventHandlerTests
 {
     [Theory]
     [CategoriesAutoSubstituteData]
-    public async Task ShouldNotDetachWhenCategoryDoesNotExistsAsync(DetachSubcategoryEventHandler sut, SubCategoryWasExcluded notification, ICategoryData data)
+    public async Task ShouldNotDetachWhenCategoryDoesNotExistsAsync(DetachSubcategoryEventHandler sut, SubcategoryWasExcluded notification, ICategoryData data)
     {
         data.GetByIdAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns((Category)null);
@@ -25,7 +25,7 @@ public class DetachSubcategoryEventHandlerTests
 
     [Theory]
     [CategoriesAutoSubstituteData]
-    public async Task ShouldAttachSubcategoryAsync(DetachSubcategoryEventHandler sut, SubCategoryWasExcluded notification, ICategoryData data)
+    public async Task ShouldAttachSubcategoryAsync(DetachSubcategoryEventHandler sut, SubcategoryWasExcluded notification, ICategoryData data)
     {
         await sut.HandleAsync(notification, CancellationToken.None);
 

@@ -13,7 +13,7 @@ public class DetachSubcategoryEventHandler : IDetachSubcategoryEventHandler
         _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
-    public async Task HandleAsync(SubCategoryWasExcluded notification, CancellationToken cancellationToken)
+    public async Task HandleAsync(SubcategoryWasExcluded notification, CancellationToken cancellationToken)
     {
         var subcategory = notification.Data;
         var category = await _data.GetByIdAsync(subcategory.Category.Id, subcategory.UserId, cancellationToken);
