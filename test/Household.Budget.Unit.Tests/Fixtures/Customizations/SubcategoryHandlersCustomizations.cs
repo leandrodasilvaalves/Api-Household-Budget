@@ -3,6 +3,7 @@ using AutoFixture;
 using Household.Budget.Domain.Data;
 using Household.Budget.UseCases.Categories.GetSubcategoryById;
 using Household.Budget.UseCases.Subcategories.CreateSubcategory;
+using Household.Budget.UseCases.Subcategories.ListSubcategories;
 
 using MassTransit;
 
@@ -20,5 +21,6 @@ public class SubcategoryHandlersCustomizations : ICustomization
                                                             fixture.Create<IBus>()));
 
         fixture.Register(() => new GetSubcategoryByIdHandler(fixture.Create<ISubcategoryData>()));
+        fixture.Register(() => new ListSubcategoriesHandler(fixture.Create<ISubcategoryData>()));
     }
 }

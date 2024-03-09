@@ -30,8 +30,8 @@ public class GetSubcategoryByIdHandlerTests
     [Theory]
     [SubcategoriesAutoSubstituteData]
     public async Task ShouldGetSubcategoryByIdAsync(GetSubcategoryByIdHandler sut,
-                                                                        GetSubcategoryByIdRequest request,
-                                                                        ISubcategoryData data)
+                                                    GetSubcategoryByIdRequest request,
+                                                    ISubcategoryData data)
     {
         var result = await sut.HandleAsync(request, CancellationToken.None);
 
