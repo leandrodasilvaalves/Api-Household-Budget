@@ -1,19 +1,22 @@
-﻿using Household.Budget.Domain.Data;
+﻿using Household.Budget.Contracts.Errors;
+using Household.Budget.Domain.Data;
 
 namespace Household.Budget.UseCases.Categories.GetSubcategoryById;
 
 public class GetSubcategoryByIdHandler : IGetSubcategoryByIdHandler
 {
-    private readonly ISubcategoryData _Data;
+    private readonly ISubcategoryData _data;
 
-    public GetSubcategoryByIdHandler(ISubcategoryData Data)
+    public GetSubcategoryByIdHandler(ISubcategoryData data)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
     public async Task<GetSubcategoryByIdResponse> HandleAsync(GetSubcategoryByIdRequest request, CancellationToken cancellationToken)
     {
-        var subcategory = await _Data.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
-        return new GetSubcategoryByIdResponse(subcategory);
+        var subcategory = await _data.GetByIdAsync($"{request.Id}", request.UserId, cancellationToken);
+        return subcategory == null
+            ? new GetSubcategoryByIdResponse(SubcategoryErrors.SUBCATEGORY_NOT_FOUND)
+            : new GetSubcategoryByIdResponse(subcategory);
     }
 }

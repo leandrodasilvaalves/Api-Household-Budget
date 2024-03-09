@@ -28,7 +28,7 @@ public class CreateSubcategoryHandlerTests
         await categoryData.Received().GetByIdAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
         await subcategoryData.DidNotReceive().CreateAsync(Arg.Any<Subcategory>(), Arg.Any<CancellationToken>());
     }
-    
+
     [Theory]
     [SubcategoriesAutoSubstituteData]
     public async Task ShouldCreateSubcategoryAsync(CreateSubcategoryHandler sut,
@@ -42,5 +42,4 @@ public class CreateSubcategoryHandlerTests
         await categoryData.Received().GetByIdAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
         await subcategoryData.Received().CreateAsync(Arg.Any<Subcategory>(), Arg.Any<CancellationToken>());
     }
-
 }
