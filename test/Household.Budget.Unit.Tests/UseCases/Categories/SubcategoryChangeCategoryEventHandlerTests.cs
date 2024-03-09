@@ -1,7 +1,7 @@
 using Household.Budget.Contracts.Events;
 using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
-using Household.Budget.Unit.Tests.Fixtures;
+using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 using Household.Budget.UseCases.Categories.EventHandlers.SubcategoryChangeCategory;
 
 using NSubstitute;

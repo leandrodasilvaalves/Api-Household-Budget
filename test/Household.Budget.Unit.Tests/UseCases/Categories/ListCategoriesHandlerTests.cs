@@ -1,7 +1,7 @@
 using FluentAssertions;
 
 using Household.Budget.Domain.Data;
-using Household.Budget.Unit.Tests.Fixtures;
+using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 using Household.Budget.UseCases.Categories.ListCategories;
 
 using NSubstitute;

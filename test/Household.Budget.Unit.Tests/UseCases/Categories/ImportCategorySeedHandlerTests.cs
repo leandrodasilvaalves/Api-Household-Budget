@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-using Household.Budget.Unit.Tests.Fixtures;
+using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 using Household.Budget.UseCases.Categories.CreateCategories;
 using Household.Budget.UseCases.Categories.ImportCategorySeed;
 

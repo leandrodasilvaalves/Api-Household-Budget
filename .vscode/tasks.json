@@ -36,6 +36,18 @@
                 "${workspaceFolder}/household.budget.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "--no-restore",
+                "${workspaceFolder}/household.budget.sln"
+            ],
+            "problemMatcher": "$msCompile",
+            "dependsOn": "build"
         }
     ]
 }

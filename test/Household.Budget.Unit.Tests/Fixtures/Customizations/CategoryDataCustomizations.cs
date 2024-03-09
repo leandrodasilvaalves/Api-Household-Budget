@@ -7,6 +7,7 @@ using NSubstitute;
 
 namespace Household.Budget.Unit.Tests.Fixtures.Customizations;
 
+
 public class CategoryDataCustomizations : ICustomization
 {
     public void Customize(IFixture fixture)
