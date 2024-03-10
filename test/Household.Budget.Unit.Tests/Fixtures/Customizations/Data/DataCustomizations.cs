@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using AutoFixture;
 
 using Household.Budget.Contracts.Entities;
@@ -7,13 +9,10 @@ using NSubstitute;
 
 namespace Household.Budget.Unit.Tests.Fixtures.Customizations.Data;
 
-public class DataCustomizations<TEntity, TData> : ICustomization
-    where TEntity : Entity where TData : IData<TEntity>
+public class DataCustomizations<TEntity, TData>(Func<TData> data)
+    : ICustomization where TEntity : Entity where TData : IData<TEntity>
 {
-
-    public DataCustomizations(Func<TData> data) => Data = data();
-
-    public TData Data { get; }
+    public TData Data { get; } = data();
 
     public void Customize(IFixture fixture)
     {
@@ -28,6 +27,9 @@ public class DataCustomizations<TEntity, TData> : ICustomization
 
         Data.GetAllAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(fixture.Create<PagedListResult<TEntity>>());
+
+        Data.GetOneAsync(Arg.Any<Expression<Func<TEntity, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(fixture.Create<TEntity>());
 
         fixture.Register(() => Data);
     }
