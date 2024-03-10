@@ -17,7 +17,7 @@ public class TransactionDataCustomizations : ICustomization
                         .Returns(fixture.Create<PagedListResult<Transaction>>());
 
         fixture.Register(() => transactionData);
-        var x = new DataCustomizations<Transaction, ITransactionData>(() => fixture.Create<ITransactionData>());
-        x.Customize(fixture);
+        var dataCustomizations = new DataCustomizations<Transaction, ITransactionData>(() => fixture.Create<ITransactionData>());
+        dataCustomizations.Customize(fixture);
     }
 }

@@ -20,8 +20,8 @@ public class TransactionHandlersCustomizations : ICustomization
                                                             fixture.Create<ICategoryData>(),
                                                             fixture.Create<ISubcategoryData>(),
                                                             fixture.Create<IBus>()));
-                                                            
-        fixture.Register(()=> new GetTransacationByIdHandler(fixture.Create<ITransactionData>()));                                                            
-        fixture.Register(()=> new ListTransactionHandler(fixture.Create<ITransactionData>()));                                                            
+
+        fixture.Register(() => new GetTransacationByIdHandler(fixture.Create<ITransactionData>()));
+        fixture.Register(() => new ListTransactionHandler(fixture.Create<ITransactionData>()));
     }
 }

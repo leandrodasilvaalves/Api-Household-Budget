@@ -23,14 +23,14 @@ public class TransactionsAutoSubstituteDataAttribute : AutoDataAttribute
             .ForEach(b => fixture.Behaviors.Remove(b));
         fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
-        RegisterCateogryData(fixture);
+        RegisterCategoryData(fixture);
         fixture.Customize(new TransactionDataCustomizations());
         fixture.Customize(new TransactionHandlersCustomizations());
 
         return fixture;
     }
 
-    public static void RegisterCateogryData(Fixture fixture)
+    public static void RegisterCategoryData(Fixture fixture)
     {
         var categoryData = Substitute.For<ICategoryData>();
         var subcategoryData = Substitute.For<ISubcategoryData>();
