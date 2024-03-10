@@ -5,6 +5,7 @@ using Bogus;
 using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
+using Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
 
 using NSubstitute;
 
@@ -17,6 +18,7 @@ public class MonthlyBudgetHandlersCustomizations : ICustomization
         var categoryData = fixture.Create<ICategoryData>();
         CustomizeRequest(fixture, categoryData);
         fixture.Register(() => new CreateMonthlyBudgetHandler(fixture.Create<IMonthlyBudgetData>(), categoryData));
+        fixture.Register(() => new GetMonthlyBudgetsHandler(fixture.Create<IMonthlyBudgetData>()));
     }
 
     private static void CustomizeRequest(IFixture fixture, ICategoryData categoryData)
