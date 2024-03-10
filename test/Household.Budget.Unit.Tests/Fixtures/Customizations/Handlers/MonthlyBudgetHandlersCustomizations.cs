@@ -5,8 +5,11 @@ using Bogus;
 using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
+using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransaction;
 using Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
+
+using MassTransit;
 
 using NSubstitute;
 
@@ -21,6 +24,12 @@ public class MonthlyBudgetHandlersCustomizations : ICustomization
         fixture.Register(() => new CreateMonthlyBudgetHandler(fixture.Create<IMonthlyBudgetData>(), categoryData));
         fixture.Register(() => new GetMonthlyBudgetsHandler(fixture.Create<IMonthlyBudgetData>()));
         fixture.Register(() => new UpdateMonthlyBudgetHandler(fixture.Create<IMonthlyBudgetData>()));
+
+        fixture.Register(()=> Substitute.For<ICreateMonthlyBudgetHandler>());
+        fixture.Register(()=> Substitute.For<IBus>());
+        fixture.Register(() => new AttachTransactionEventHandler(fixture.Create<IMonthlyBudgetData>(),
+                                                                 fixture.Create<ICreateMonthlyBudgetHandler>(),
+                                                                 fixture.Create<IBus>()));
     }
 
     private static void CustomizeRequest(IFixture fixture, ICategoryData categoryData)

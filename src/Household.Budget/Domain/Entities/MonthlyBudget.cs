@@ -118,7 +118,7 @@ public class MonthlyBudget : Entity
         return subcategoriesModel;
     }
 
-    public void AttachTransaction(Transaction? transaction)
+    public void AttachTransaction(Transaction transaction)
     {
         Categories?.FirstOrDefault(c => c.Id == transaction?.Category.Id)
             ?.Subcategories?.FirstOrDefault(s => s.Id == transaction?.Category?.Subcategory?.Id)
@@ -127,7 +127,7 @@ public class MonthlyBudget : Entity
         Recalculate();
     }
 
-    public void AttachTransaction(BudgetTransactionWithCategoryModel? transaction)
+    public void AttachTransaction(BudgetTransactionWithCategoryModel transaction)
     {
         Categories?.FirstOrDefault(c => c.Id == transaction?.Category)
             ?.Subcategories?.FirstOrDefault(s => s.Id == transaction?.Subcategory)

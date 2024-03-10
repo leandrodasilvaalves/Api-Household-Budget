@@ -6,20 +6,20 @@ namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.DetachTransacti
 
 public class DetachTransactionEventHandler : IDetachTransactionEventHandler
 {
-    private readonly IMonthlyBudgetData _Data;
+    private readonly IMonthlyBudgetData _data;
 
-    public DetachTransactionEventHandler(IMonthlyBudgetData Data)
+    public DetachTransactionEventHandler(IMonthlyBudgetData data)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
     public async Task HandleAsync(TransactionWasUpdated notification, CancellationToken cancellationToken)
     {
         var transaction = notification?.Data;
         var transactionDate = transaction?.TransactionDate;
-        var monthlyBudget = await _Data.GetOneAsync(transaction?.UserId, transactionDate.Value.Year, (Month)transactionDate.Value.Month, cancellationToken);
+        var monthlyBudget = await _data.GetOneAsync(transaction?.UserId, transactionDate.Value.Year, (Month)transactionDate.Value.Month, cancellationToken);
 
         monthlyBudget?.DetachTransaction(transaction);
-        await _Data.UpdateAsync(monthlyBudget, cancellationToken);
+        await _data.UpdateAsync(monthlyBudget, cancellationToken);
     }
 }

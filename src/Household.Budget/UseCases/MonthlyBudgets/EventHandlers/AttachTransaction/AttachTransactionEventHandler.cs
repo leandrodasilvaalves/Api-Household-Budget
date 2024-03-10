@@ -10,15 +10,15 @@ namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransacti
 
 public class AttachTransactionEventHandler : IAttachTransactionEventHandler
 {
-    private readonly IMonthlyBudgetData _Data;
+    private readonly IMonthlyBudgetData _data;
     private readonly ICreateMonthlyBudgetHandler _createMonthlyBudgetHandler;
     private readonly IBus _bus;
 
-    public AttachTransactionEventHandler(IMonthlyBudgetData Data,
+    public AttachTransactionEventHandler(IMonthlyBudgetData data,
                                          ICreateMonthlyBudgetHandler createMonthlyBudgetHandler,
                                          IBus bus)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
         _createMonthlyBudgetHandler = createMonthlyBudgetHandler ?? throw new ArgumentNullException(nameof(createMonthlyBudgetHandler));
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
@@ -27,13 +27,13 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
     {
         var transaction = notification.Data;
         var (year, month) = transaction.GetYearMonth();
-        var monthlyBudget = await _Data.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
+        var monthlyBudget = await _data.GetOneAsync(transaction.UserId, year, month, cancellationToken);
 
         if (monthlyBudget is null)
         {
-            lock (_Data)
+            lock (_data)
             {
-                CreateMonthlyBudgetRequest request = new() { Year = year, Month = month, UserId = transaction?.UserId ?? "" };
+                CreateMonthlyBudgetRequest request = new() { Year = year, Month = month, UserId = transaction?.UserId };
                 _createMonthlyBudgetHandler.HandleAsync(request, cancellationToken).Wait(cancellationToken);
                 _bus.Publish(notification, cancellationToken).Wait(cancellationToken);
                 return new TransactionWasCreatedEventResponse(notification);
@@ -54,7 +54,7 @@ public class AttachTransactionEventHandler : IAttachTransactionEventHandler
         }
 
         await Task.WhenAll(
-            _Data.UpdateAsync(monthlyBudget, cancellationToken),
+            _data.UpdateAsync(monthlyBudget, cancellationToken),
             PublishNextPaymentsWhenCreditCardAsync(transaction, cancellationToken)
         );
 

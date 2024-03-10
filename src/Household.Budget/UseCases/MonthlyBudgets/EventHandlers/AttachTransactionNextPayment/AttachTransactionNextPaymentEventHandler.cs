@@ -8,15 +8,15 @@ namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransacti
 
 public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPaymentEventHandler
 {
-    private readonly IMonthlyBudgetData _Data;
+    private readonly IMonthlyBudgetData _data;
     private readonly ICreateMonthlyBudgetHandler _createMonthlyBudgetHandler;
     private readonly IBus _bus;
 
-    public AttachTransactionNextPaymentEventHandler(IMonthlyBudgetData Data,
+    public AttachTransactionNextPaymentEventHandler(IMonthlyBudgetData data,
                                          ICreateMonthlyBudgetHandler createMonthlyBudgetHandler,
                                          IBus bus)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
         _createMonthlyBudgetHandler = createMonthlyBudgetHandler ?? throw new ArgumentNullException(nameof(createMonthlyBudgetHandler));
         _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
@@ -24,11 +24,11 @@ public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPa
     public async Task HandleAsync(BudgetTransactionWithCategoryModel request, CancellationToken cancellationToken)
     {
         var (year, month) = request.GetYearMonth();
-        var monthlyBudget = await _Data.GetOneAsync(request.UserId ?? "", year.Value, month, cancellationToken);
+        var monthlyBudget = await _data.GetOneAsync(request.UserId ?? "", year.Value, month, cancellationToken);
 
         if (monthlyBudget is null)
         {
-            lock (_Data)
+            lock (_data)
             {
                 CreateMonthlyBudgetRequest monthlyBudgetRequest = new() { Year = year.Value, Month = month, UserId = request?.UserId ?? "" };
                 _createMonthlyBudgetHandler.HandleAsync(monthlyBudgetRequest, cancellationToken).Wait(cancellationToken);
@@ -38,6 +38,6 @@ public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPa
         }
 
         monthlyBudget?.AttachTransaction(request);
-        await _Data.UpdateAsync(monthlyBudget, cancellationToken);
+        await _data.UpdateAsync(monthlyBudget, cancellationToken);
     }
 }

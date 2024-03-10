@@ -8,15 +8,15 @@ namespace Household.Budget.UseCases.MonthlyBudgets.EventHandlers.UpdateTransacti
 
 public class UpdateTransactionEventHandler : IUpdateTransactionEventHandler
 {
-    private readonly IMonthlyBudgetData _Data;
+    private readonly IMonthlyBudgetData _data;
     private readonly IDetachTransactionEventHandler _detachHandler;
     private readonly IAttachTransactionEventHandler _attachHandler;
 
-    public UpdateTransactionEventHandler(IMonthlyBudgetData Data,
+    public UpdateTransactionEventHandler(IMonthlyBudgetData data,
                                           IDetachTransactionEventHandler detachHandler,
                                           IAttachTransactionEventHandler attachHandler)
     {
-        _Data = Data ?? throw new ArgumentNullException(nameof(Data));
+        _data = data ?? throw new ArgumentNullException(nameof(data));
         _detachHandler = detachHandler ?? throw new ArgumentNullException(nameof(detachHandler));
         _attachHandler = attachHandler ?? throw new ArgumentNullException(nameof(attachHandler));
     }
@@ -34,9 +34,9 @@ public class UpdateTransactionEventHandler : IUpdateTransactionEventHandler
         {
             var year = transaction.TransactionDate.Year;
             var month = (Month)transaction.TransactionDate.Month;
-            var monthlyBudget = await _Data.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
+            var monthlyBudget = await _data.GetOneAsync(transaction.UserId ?? "", year, month, cancellationToken);
             monthlyBudget?.UpdateTransacation(transaction);
-            await _Data.UpdateAsync(monthlyBudget ?? new(), cancellationToken);
+            await _data.UpdateAsync(monthlyBudget ?? new(), cancellationToken);
         }
     }
 }
