@@ -1,12 +1,11 @@
 using AutoFixture;
 
-using Bogus;
-
 using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransaction;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransactionNextPayment;
+using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.DetachTransaction;
 using Household.Budget.UseCases.MonthlyBudgets.GetMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.UpdateMonthlyBudget;
 
@@ -25,6 +24,7 @@ public class MonthlyBudgetHandlersCustomizations : ICustomization
         fixture.Register(() => new CreateMonthlyBudgetHandler(fixture.Create<IMonthlyBudgetData>(), categoryData));
         fixture.Register(() => new GetMonthlyBudgetsHandler(fixture.Create<IMonthlyBudgetData>()));
         fixture.Register(() => new UpdateMonthlyBudgetHandler(fixture.Create<IMonthlyBudgetData>()));
+        fixture.Register(() => new DetachTransactionEventHandler(fixture.Create<IMonthlyBudgetData>()));
 
         fixture.Register(() => Substitute.For<ICreateMonthlyBudgetHandler>());
         fixture.Register(() => Substitute.For<IBus>());

@@ -17,9 +17,13 @@ public class DetachTransactionEventHandler : IDetachTransactionEventHandler
     {
         var transaction = notification?.Data;
         var transactionDate = transaction?.TransactionDate;
-        var monthlyBudget = await _data.GetOneAsync(transaction?.UserId, transactionDate.Value.Year, (Month)transactionDate.Value.Month, cancellationToken);
+        var monthlyBudget = await _data.GetOneAsync(transaction?.UserId, transactionDate.Value.Year,
+                                                    (Month)transactionDate.Value.Month, cancellationToken);
 
-        monthlyBudget?.DetachTransaction(transaction);
-        await _data.UpdateAsync(monthlyBudget, cancellationToken);
+        if (monthlyBudget is { })
+        {
+            monthlyBudget.DetachTransaction(transaction);
+            await _data.UpdateAsync(monthlyBudget, cancellationToken);
+        }
     }
 }
