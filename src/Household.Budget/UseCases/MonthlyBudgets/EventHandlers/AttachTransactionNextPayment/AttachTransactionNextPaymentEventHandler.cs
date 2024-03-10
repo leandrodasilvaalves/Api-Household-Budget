@@ -24,7 +24,7 @@ public class AttachTransactionNextPaymentEventHandler : IAttachTransactionNextPa
     public async Task HandleAsync(BudgetTransactionWithCategoryModel request, CancellationToken cancellationToken)
     {
         var (year, month) = request.GetYearMonth();
-        var monthlyBudget = await _data.GetOneAsync(request.UserId ?? "", year.Value, month, cancellationToken);
+        var monthlyBudget = await _data.GetOneAsync(request.UserId, year.Value, month, cancellationToken);
 
         if (monthlyBudget is null)
         {
