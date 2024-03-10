@@ -8,6 +8,9 @@ namespace Household.Budget.Domain.Entities;
 
 public class Category : Entity
 {
+    public const int MinLengthName = 3;
+    public const int MaxLengthName = 25;
+    
     public Category() => Subcategories = [];
 
     public string Name { get; set; }

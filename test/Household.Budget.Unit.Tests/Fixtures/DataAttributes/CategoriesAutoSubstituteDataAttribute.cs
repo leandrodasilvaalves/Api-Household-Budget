@@ -3,6 +3,7 @@ using AutoFixture.Xunit2;
 
 using Household.Budget.Unit.Tests.Fixtures.Customizations;
 using Household.Budget.Unit.Tests.Fixtures.Customizations.Data;
+using Household.Budget.Unit.Tests.Fixtures.Fakers.Subcategories;
 
 namespace Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 
@@ -22,6 +23,7 @@ public class CategoriesAutoSubstituteDataAttribute : AutoDataAttribute
         fixture.Customize(new CategoryDataCustomizations());
         fixture.Customize(new CategoryHandlersCustomizations());
 
+        fixture.Register(() => new UpdateCategoryRequestFaker());
         return fixture;
     }
 }

@@ -4,7 +4,7 @@ namespace Household.Budget.UseCases.Categories.UpdateCategory;
 
 public class UpdateCategoryRequest : Request
 {
-    public string? Id { get; private set; }
+    public string Id { get; private set; }
     public string Name { get; set; } = "";
     public ModelStatus Status { get; set; }
     public ModelOwner Owner { get; set; }

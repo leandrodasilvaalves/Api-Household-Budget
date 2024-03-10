@@ -7,7 +7,7 @@ using Household.Budget.UseCases.Categories.CreateCategories;
 
 using NSubstitute;
 
-namespace Household.Budget.Unit.Tests.UseCases.Categories.CreateCategory;
+namespace Household.Budget.Unit.Tests.UseCases.Categories;
 
 public class CreateCategoryHandlerTests
 {

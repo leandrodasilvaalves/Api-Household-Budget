@@ -3,15 +3,16 @@ using AutoFixture.Xunit2;
 using FluentAssertions;
 
 using Household.Budget.Contracts.Errors;
+using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 using Household.Budget.Unit.Tests.Fixtures.Fakers.Subcategories;
 using Household.Budget.UseCases.Categories.CreateCategories;
 
-namespace Household.Budget.Unit.Tests.UseCases.Categories.CreateCategory;
+namespace Household.Budget.Unit.Tests.UseCases.Categories.Contracts;
 
 public class CreateCategoryRequestContractTests
 {
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShouldFailWhenNameIsNull(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithNullName());
@@ -19,7 +20,7 @@ public class CreateCategoryRequestContractTests
     }
 
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShouldFailWhenNameIsEmpty(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithEmptyName());
@@ -27,7 +28,7 @@ public class CreateCategoryRequestContractTests
     }
 
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShouldFailWhenNameIsTooLong(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithLongName());
@@ -35,7 +36,7 @@ public class CreateCategoryRequestContractTests
     }
 
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShouldFailWhenNameIsTooShort(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithShortName());
@@ -43,7 +44,7 @@ public class CreateCategoryRequestContractTests
     }
 
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShouldFailWhenHaveInvalidOnwerType(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithInvalidOnwerType());
@@ -51,7 +52,7 @@ public class CreateCategoryRequestContractTests
     }
 
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShoudBeSuccessWhenIsValidWithOwnerSystem(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithValidSystemOnwerType());
@@ -59,7 +60,7 @@ public class CreateCategoryRequestContractTests
     }
 
     [Theory]
-    [AutoData]
+    [CategoriesAutoSubstituteData]
     public void ShouldBeSuccessWhenIsValidWithOwnerUser(CreateCategoryRequestFaker request)
     {
         var result = new CreateCategoryRequestContract(request.WithValidUserOnwerType());
