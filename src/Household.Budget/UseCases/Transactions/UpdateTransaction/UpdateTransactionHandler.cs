@@ -24,8 +24,8 @@ public class UpdateTransactionHandler : IUpdateTransactionHandler
     public async Task<UpdateTransactionResponse> HandleAsync(UpdateTransactionRequest request, CancellationToken cancellationToken)
     {
         var transactionTask = _transactionData.GetByIdAsync(request.Id, request.UserId, cancellationToken);
-        var categoryTask = _categoryData.GetByIdAsync(request?.Category?.Id ?? "", request?.UserId ?? "", cancellationToken);
-        var subcategoryTask = _subcategoryData.GetByIdAsync(request?.Category?.Subcategory?.Id ?? "", request?.UserId ?? "", cancellationToken);
+        var categoryTask = _categoryData.GetByIdAsync(request?.Category?.Id, request?.UserId, cancellationToken);
+        var subcategoryTask = _subcategoryData.GetByIdAsync(request?.Category?.Subcategory?.Id, request?.UserId, cancellationToken);
 
         await Task.WhenAll(transactionTask, categoryTask, subcategoryTask);
 
@@ -33,7 +33,7 @@ public class UpdateTransactionHandler : IUpdateTransactionHandler
         var category = categoryTask.Result;
         var subcategory = subcategoryTask.Result;
 
-        var contract = new UpdateTransactionRequestContract(request ?? new(), transaction, category, subcategory);
+        var contract = new UpdateTransactionRequestContract(request, transaction, category, subcategory);
         if (contract.IsValid is false)
         {
             return new UpdateTransactionResponse(contract.Notifications);
