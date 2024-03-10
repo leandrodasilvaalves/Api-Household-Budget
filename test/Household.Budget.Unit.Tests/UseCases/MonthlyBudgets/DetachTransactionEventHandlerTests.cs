@@ -4,7 +4,6 @@ using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Domain.Models;
 using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
-using Household.Budget.UseCases.MonthlyBudgets.CreateMonthlyBudget;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.AttachTransactionNextPayment;
 using Household.Budget.UseCases.MonthlyBudgets.EventHandlers.DetachTransaction;
 

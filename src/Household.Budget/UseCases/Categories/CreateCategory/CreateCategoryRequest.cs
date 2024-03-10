@@ -13,11 +13,11 @@ public class CreateCategoryRequest : Request
         Type = type;
     }
 
-    public string Name { get; }
+    public string Name { get; protected set; }
 
-    public ModelOwner Owner { get; }
+    public ModelOwner Owner { get; protected set; }
 
-    public CategoryType Type { get; }
+    public CategoryType Type { get; protected set; }
 
     public override void Validate() =>
         AddNotifications(new CreateCategoryRequestContract(this));
