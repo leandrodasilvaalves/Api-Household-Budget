@@ -1,6 +1,6 @@
 namespace Household.Budget.Contracts.Helpers;
 
-public static class CurrentYear
+public static class Year
 {
     public static int Current => DateTime.UtcNow.Year;
     public static int Min => 5;

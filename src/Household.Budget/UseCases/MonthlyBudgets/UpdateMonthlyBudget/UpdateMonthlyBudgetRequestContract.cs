@@ -19,7 +19,7 @@ public class UpdateMonthlyBudgetRequestContract : Contract<UpdateMonthlyBudgetRe
                 BudgetError.CATEGORY_PLANNED_TOTAL_MUST_BE_SUM_OF_SUBCATEGORIES)
             .IsSatified(request, 
                 x => x.Year.HasValue, 
-                x => CurrentYear.IsValid(x?.Year ?? 0), 
+                x => Year.IsValid(x?.Year ?? 0), 
                 CommonErrors.INVALID_YEAR);
     }
 

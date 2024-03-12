@@ -44,7 +44,7 @@ public class UpdateTransactionRequestContract : Contract<UpdateTransactionReques
 
             .IsSatified(request,
                 x => x.TransactionDate is not null,
-                x => CurrentYear.IsValid(x.TransactionDate?.Year ?? 0),
+                x => Year.IsValid(x.TransactionDate?.Year ?? 0),
                 TransactionErrors.TRANSACTION_DATE_INVALID_YEAR);
     }
 

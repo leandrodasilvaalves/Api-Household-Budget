@@ -11,7 +11,7 @@ public class GetMonthlyBudgetsRequest : Request
 
     public override void Validate()
     {   
-        if(CurrentYear.IsValid(Year) is false)
+        if(Contracts.Helpers.Year.IsValid(Year) is false)
             AddNotification(CommonErrors.INVALID_YEAR);        
     }
 }

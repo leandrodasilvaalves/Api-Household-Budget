@@ -9,7 +9,7 @@ namespace Household.Budget.Domain.Entities;
 public class AppIdentityUser : MongoIdentityUser<string>
 {
     public AppIdentityUser() => Id = $"{Guid.NewGuid()}";
-    public string? FullName { get; set; }
+    public string FullName { get; set; }
 
     public void CreateUser(RegisterUserRequest request)
     {

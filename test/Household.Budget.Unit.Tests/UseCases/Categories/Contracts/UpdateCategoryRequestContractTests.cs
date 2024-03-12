@@ -4,7 +4,7 @@ using FluentAssertions;
 
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
-using Household.Budget.Unit.Tests.Fixtures.Fakers.Subcategories;
+using Household.Budget.Unit.Tests.Fixtures.Fakers.Categories;
 using Household.Budget.UseCases.Categories.UpdateCategory;
 
 namespace Household.Budget.Unit.Tests.UseCases.Categories.Contracts;

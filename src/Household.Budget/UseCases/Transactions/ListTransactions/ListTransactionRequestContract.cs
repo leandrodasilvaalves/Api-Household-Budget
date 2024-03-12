@@ -12,7 +12,7 @@ public class ListTransactionRequestContract : Contract<ListTransactionRequest>
     {
         Requires()
             .IsLowerOrEqualsThan(50, request.PageSize, CommonErrors.MAX_PAGE_SIZE)
-            .IsTrue(CurrentYear.IsValid(request.Year), CommonErrors.INVALID_YEAR)
+            .IsTrue(Year.IsValid(request.Year), CommonErrors.INVALID_YEAR)
             .IsBetween(request.Month, 1, 12, CommonErrors.INVALID_MONTH);
     }
 }

@@ -3,7 +3,7 @@ using AutoFixture.Xunit2;
 
 using Household.Budget.Unit.Tests.Fixtures.Customizations;
 using Household.Budget.Unit.Tests.Fixtures.Customizations.Data;
-using Household.Budget.Unit.Tests.Fixtures.Fakers.Subcategories;
+using Household.Budget.Unit.Tests.Fixtures.Fakers.Categories;
 
 namespace Household.Budget.Unit.Tests.Fixtures.DataAttributes;
 

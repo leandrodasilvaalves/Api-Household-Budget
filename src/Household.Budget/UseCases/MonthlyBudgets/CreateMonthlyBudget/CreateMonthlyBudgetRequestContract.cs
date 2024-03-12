@@ -18,7 +18,7 @@ public class CreateMonthlyBudgetRequestContract : Contract<CreateMonthlyBudgetRe
                 SubcategoryErrors.SUBCATEGORY_ID_IS_REQUIRED)
             .IsTrue(request.Categories.All(x => x.PlannedTotal == x.Subcategories.Sum(x => x.PlannedTotal)),
                 BudgetError.CATEGORY_PLANNED_TOTAL_MUST_BE_SUM_OF_SUBCATEGORIES)
-            .IsTrue(CurrentYear.IsValid(request.Year), CommonErrors.INVALID_YEAR);
+            .IsTrue(Year.IsValid(request.Year), CommonErrors.INVALID_YEAR);
     }
 
     public CreateMonthlyBudgetRequestContract(CreateMonthlyBudgetRequest request, List<Category> categories)
@@ -31,7 +31,7 @@ public class CreateMonthlyBudgetRequestContract : Contract<CreateMonthlyBudgetRe
                 foreach (var requestSubcategory in requestCategory.Subcategories)
                 {
                     var subcategory = category.Subcategories?.FirstOrDefault(x => x.Id == requestSubcategory.Id);
-                    if (subcategory is null)
+                    if (subcategory?.Id is null)
                     {
                         AddNotification(SubcategoryErrors.SUBCATEGORY_NOT_FOUND, requestSubcategory.Id);
                     }

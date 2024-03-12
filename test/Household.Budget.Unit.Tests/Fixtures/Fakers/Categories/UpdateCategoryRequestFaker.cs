@@ -3,57 +3,62 @@ using Bogus;
 using Household.Budget.Contracts.Constants;
 using Household.Budget.Contracts.Enums;
 using Household.Budget.Domain.Entities;
-using Household.Budget.UseCases.Categories.CreateCategories;
+using Household.Budget.UseCases.Categories.UpdateCategory;
 
-namespace Household.Budget.Unit.Tests.Fixtures.Fakers.Subcategories;
+namespace Household.Budget.Unit.Tests.Fixtures.Fakers.Categories;
 
-public class CreateCategoryRequestFaker : CreateCategoryRequest
+public class UpdateCategoryRequestFaker : UpdateCategoryRequest
 {
-    public CreateCategoryRequestFaker() : base("name", default, default)
+    public UpdateCategoryRequestFaker()
     {
         Faker = new Faker();
+        Name = "name";
+        Type = default;
+        Owner = default;
+        Status = default;
     }
+
     public Faker Faker { get; }
 
-    public CreateCategoryRequest WithNullName()
+    public UpdateCategoryRequest WithNullName()
     {
         Name = null;
         return this;
     }
 
-    public CreateCategoryRequest WithEmptyName()
+    public UpdateCategoryRequest WithEmptyName()
     {
         Name = string.Empty;
         return this;
     }
 
-    public CreateCategoryRequest WithLongName()
+    public UpdateCategoryRequest WithLongName()
     {
         Name = Faker.Random.Words(Category.MaxLengthName + 1);
         return this;
     }
 
-    public CreateCategoryRequest WithShortName()
+    public UpdateCategoryRequest WithShortName()
     {
         Name = Faker.Random.String(Category.MinLengthName - 1);
         return this;
     }
 
-    public CreateCategoryRequest WithInvalidOnwerType()
+    public UpdateCategoryRequest WithInvalidOnwerType()
     {
         Owner = ModelOwner.SYSTEM;
         UserClaims = [];
         return this;
     }
 
-    public CreateCategoryRequest WithValidSystemOnwerType()
+    public UpdateCategoryRequest WithValidSystemOnwerType()
     {
         Owner = ModelOwner.SYSTEM;
         UserClaims = [IdentityClaims.ADMIN_WRITER];
         return this;
     }
 
-    public CreateCategoryRequest WithValidUserOnwerType()
+    public UpdateCategoryRequest WithValidUserOnwerType()
     {
         Owner = ModelOwner.USER;
         UserClaims = [IdentityClaims.USER_WRITER];

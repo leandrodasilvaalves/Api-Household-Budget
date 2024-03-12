@@ -1,10 +1,8 @@
-using AutoFixture.Xunit2;
-
 using FluentAssertions;
 
 using Household.Budget.Contracts.Errors;
 using Household.Budget.Unit.Tests.Fixtures.DataAttributes;
-using Household.Budget.Unit.Tests.Fixtures.Fakers.Subcategories;
+using Household.Budget.Unit.Tests.Fixtures.Fakers.Categories;
 using Household.Budget.UseCases.Categories.CreateCategories;
 
 namespace Household.Budget.Unit.Tests.UseCases.Categories.Contracts;

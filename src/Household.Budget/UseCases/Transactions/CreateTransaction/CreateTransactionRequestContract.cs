@@ -19,7 +19,7 @@ public class CreateTransactionRequestContract : Contract<CreateTransactionReques
             .IsNotNull(request.TransactionDate, TransactionErrors.TRANSACTION_DATE_IS_REQUIRED)
             .IsLowerOrEqualsThan(request.Description, 50, TransactionErrors.DESCRIPTION_MAX_LENGTH)
             .IsNotNull(request.Payment.Type, TransactionErrors.PAYMENT_TOTAL_IS_REQUIRED)
-            .IsTrue(CurrentYear.IsValid(request.TransactionDate.Year), TransactionErrors.TRANSACTION_DATE_INVALID_YEAR)
+            .IsTrue(Year.IsValid(request.TransactionDate.Year), TransactionErrors.TRANSACTION_DATE_INVALID_YEAR)
             .IsSatified(request,
                 x => x.Payment.Type == PaymentType.CREDIT_CARD,
                 x => x.Payment.CreditCard is not null,
