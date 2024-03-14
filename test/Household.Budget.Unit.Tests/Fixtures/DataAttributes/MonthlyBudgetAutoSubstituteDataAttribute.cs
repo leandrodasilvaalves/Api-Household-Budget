@@ -25,6 +25,7 @@ public class MonthlyBudgetAutoSubstituteDataAttribute : AutoDataAttribute
         fixture.Customize(new MonthlyBudgetHandlersCustomizations());
 
         fixture.Register(()=> new CreateMonthlyBudgetRequestFaker(fixture));
+        fixture.Register(()=> new UpdateMonthlyBudgetRequestFaker(fixture));
 
         return fixture;
     }
