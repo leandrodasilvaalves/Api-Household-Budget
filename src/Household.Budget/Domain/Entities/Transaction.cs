@@ -23,7 +23,7 @@ public class Transaction : Entity
         Description = request.Description;
         Category = CategoryModel.CreateFrom(category, subcategory);
         Payment = request.Payment.Process();
-        TransactionDate = request.TransactionDate;
+        TransactionDate = request.TransactionDate.Value;
         Tags = request.Tags;
         Status = ModelStatus.ACTIVE;
         Owner = ModelOwner.USER;

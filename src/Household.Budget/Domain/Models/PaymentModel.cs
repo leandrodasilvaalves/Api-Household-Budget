@@ -5,7 +5,7 @@ namespace Household.Budget.Domain.Models;
 public class PaymentModel
 {
     public decimal Total { get; set; }
-    public PaymentType Type { get; set; }
+    public PaymentType? Type { get; set; }
     public CreditCardModel? CreditCard { get; set; }
 
     public PaymentModel Process()
@@ -25,7 +25,7 @@ public class PaymentModel
         }
         if (Type != payment.Type && payment.Type is not PaymentType.CREDIT_CARD)
         {
-            MergeWhenIsNotCreditCard(payment.Type);
+            MergeWhenIsNotCreditCard(payment.Type.Value);
         }
         if (payment.Type is PaymentType.CREDIT_CARD)
         {

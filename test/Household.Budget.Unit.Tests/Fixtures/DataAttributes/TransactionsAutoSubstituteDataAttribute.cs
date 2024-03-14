@@ -5,6 +5,7 @@ using Household.Budget.Domain.Data;
 using Household.Budget.Domain.Entities;
 using Household.Budget.Unit.Tests.Fixtures.Customizations;
 using Household.Budget.Unit.Tests.Fixtures.Customizations.Data;
+using Household.Budget.Unit.Tests.Fixtures.Fakers.Transactions;
 
 using NSubstitute;
 
@@ -27,6 +28,7 @@ public class TransactionsAutoSubstituteDataAttribute : AutoDataAttribute
         fixture.Customize(new TransactionDataCustomizations());
         fixture.Customize(new TransactionHandlersCustomizations());
 
+        fixture.Register(() => new CreateTransactionRequestFaker(fixture));
         return fixture;
     }
 

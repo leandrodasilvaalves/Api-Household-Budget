@@ -10,6 +10,7 @@ namespace Household.Budget.UseCases.Transactions.CreateTransaction;
 
 public class CreateTransactionRequestContract : Contract<CreateTransactionRequest>
 {
+    public const short DESCRIPTION_MAX_LENGTH = 50;
     public CreateTransactionRequestContract(CreateTransactionRequest request)
     {
         Requires()
@@ -17,9 +18,9 @@ public class CreateTransactionRequestContract : Contract<CreateTransactionReques
             .IsNotNullOrEmpty(request.Category.Subcategory?.Id ?? "", TransactionErrors.SUBCATEGORY_IS_REQUIRED)
             .IsGreaterThan(request.Payment.Total, 0, TransactionErrors.PAYMENT_TOTAL_IS_REQUIRED)
             .IsNotNull(request.TransactionDate, TransactionErrors.TRANSACTION_DATE_IS_REQUIRED)
-            .IsLowerOrEqualsThan(request.Description, 50, TransactionErrors.DESCRIPTION_MAX_LENGTH)
-            .IsNotNull(request.Payment.Type, TransactionErrors.PAYMENT_TOTAL_IS_REQUIRED)
-            .IsTrue(Year.IsValid(request.TransactionDate.Year), TransactionErrors.TRANSACTION_DATE_INVALID_YEAR)
+            .IsLowerOrEqualsThan(request.Description, DESCRIPTION_MAX_LENGTH, TransactionErrors.DESCRIPTION_MAX_LENGTH)
+            .IsNotNull(request.Payment.Type, TransactionErrors.PAYMENT_TYPE_IS_REQUIRED)
+            .IsTrue(Year.IsValid(request.TransactionDate?.Year), TransactionErrors.TRANSACTION_DATE_INVALID_YEAR)
             .IsSatified(request,
                 x => x.Payment.Type == PaymentType.CREDIT_CARD,
                 x => x.Payment.CreditCard is not null,

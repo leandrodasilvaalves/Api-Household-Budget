@@ -4,7 +4,7 @@ namespace Household.Budget.Domain.Models;
 
 public class CategoryModel
 {
-    public CategoryModel() {}
+    public CategoryModel() { }
 
     public CategoryModel(string id, string name)
     {
