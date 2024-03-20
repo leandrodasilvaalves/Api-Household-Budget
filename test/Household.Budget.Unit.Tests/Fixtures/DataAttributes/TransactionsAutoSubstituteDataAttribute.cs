@@ -29,6 +29,7 @@ public class TransactionsAutoSubstituteDataAttribute : AutoDataAttribute
         fixture.Customize(new TransactionHandlersCustomizations());
 
         fixture.Register(() => new CreateTransactionRequestFaker(fixture));
+        fixture.Register(() => new UpdateTransactionRequestFaker(fixture));
         return fixture;
     }
 

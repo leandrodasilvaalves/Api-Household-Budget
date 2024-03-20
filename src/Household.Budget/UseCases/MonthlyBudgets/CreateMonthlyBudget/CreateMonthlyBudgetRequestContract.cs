@@ -31,7 +31,7 @@ public class CreateMonthlyBudgetRequestContract : Contract<CreateMonthlyBudgetRe
                 foreach (var requestSubcategory in requestCategory.Subcategories)
                 {
                     var subcategory = category.Subcategories?.FirstOrDefault(x => x.Id == requestSubcategory.Id);
-                    if (subcategory?.Id is null)
+                    if (subcategory is { Id: null })
                     {
                         AddNotification(SubcategoryErrors.SUBCATEGORY_NOT_FOUND, requestSubcategory.Id);
                     }
