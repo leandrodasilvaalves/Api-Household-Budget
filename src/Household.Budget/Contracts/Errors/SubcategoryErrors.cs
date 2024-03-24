@@ -14,4 +14,5 @@ public class SubcategoryErrors
     public static Notification SUBCATEGORY_PAGE_SIZE_MAX = new("SUBCATEGORY_PAGE_SIZE_MAX", "Page size cannot be greater than 50");
     public static Notification SUBCATEGORY_CATEGORY_ID_IS_REQUIRED = new("SUBCATEGORY_CATEGORY_ID_IS_REQUIRED", "Category Id is required");
     public static Notification SUBCATEGORY_ID_IS_REQUIRED= new("SUBCATEGORY_ID_IS_REQUIRED", "Subcategory Id is required");
+    public static Notification SUBCATEGORY_OWNER_FORBIDDEN_FOR_USER = new("SUBCATEGORY_OWNER_FORBIDDEN_FOR_USER", "Only administrator users can register or update subcategories for the SYSTEM owner");
 }
